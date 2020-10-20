@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Note extends Model
 {
     use HasFactory;
+
+    function author(){
+        $this->belongsTo(User::class, 'author_id');
+    }
 }
