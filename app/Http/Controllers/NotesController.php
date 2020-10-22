@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateNoteRequest;
 use App\Models\Tag;
 use App\Models\Note;
-
+use Illuminate\Auth\AuthenticationException;
 
 class NotesController extends Controller
 {
@@ -30,4 +30,19 @@ class NotesController extends Controller
         return Note::with(['user', 'tags'])->find($createdNote->id);
         
     }
+
+    function delete($noteId)
+    {
+
+        $user = Auth::user();
+
+        $note = $user->find($noteId);
+
+        if($note == null){
+            throw new AuthenticationException("${$noteId}への削除権限がありません");
+        }
+
+        $note->delete();
+    }
+
 }
