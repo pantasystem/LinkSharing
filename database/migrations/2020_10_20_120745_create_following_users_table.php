@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFollowingUserTable extends Migration
+class CreateFollowingUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -33,6 +33,6 @@ class CreateFollowingUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('following_user');
+        Schema::dropIfExists('following_users');
     }
 }
