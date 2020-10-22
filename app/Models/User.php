@@ -84,7 +84,12 @@ class User extends Authenticatable
 
     function follow(User $user)
     {
-        return $this->followings()->attach($user);
+        if($user->id == $this->id){
+            return false;
+        }
+        $this->followings()->attach($user);
+
+        return true;
     }
 
     function unfollow(User $user){

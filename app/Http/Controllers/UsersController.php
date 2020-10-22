@@ -19,8 +19,15 @@ class UsersController extends Controller
         $me = Auth::user();
        
         $user = User::find($userId);
+        if($user == null){
+            abort(404);
+        }
         
-        $me->follow($user);
+        if($me->follow($user)){
+            return response()->json(null, 204);
+        }else{
+            abort(422);
+        }
     }
 
     function unfollow($userId)
@@ -29,7 +36,9 @@ class UsersController extends Controller
 
         $user = User::find($userId);
 
-        $me->follow($me);
+        $me->unfollow($user);
+
+        return response()->json(null, 204);
     }
 
     function get($userId)
