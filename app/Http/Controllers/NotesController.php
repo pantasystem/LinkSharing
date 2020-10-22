@@ -31,7 +31,7 @@ class NotesController extends Controller
         }
 
 
-        return Note::with(['author', 'tags'])->find($createdNote->id);
+        return Note::with(['author', 'tags'])->findOrFail($createdNote->id);
         
     }
 
@@ -40,7 +40,7 @@ class NotesController extends Controller
 
         $user = Auth::user();
 
-        $note = $user->find($noteId);
+        $note = $user->findOrFail($noteId);
 
         if($note == null){
             throw new AuthenticationException("${$noteId}への削除権限がありません");
@@ -58,7 +58,7 @@ class NotesController extends Controller
 
     function get($noteId)
     {
-        return Note::withFavoriteCount()->with(['author', 'tags'])->find($noteId);
+        return Note::withFavoriteCount()->with(['author', 'tags'])->findOrFail($noteId);
     }
 
 

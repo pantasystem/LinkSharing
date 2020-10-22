@@ -29,14 +29,14 @@ class FavoritesController extends Controller
 
         $user = Auth::user();
 
-        $note = $user->favoritedNotes()->find($noteId);
+        $note = $user->favoritedNotes()->findOrFail($noteId);
         return [ 'isFavorited' => $note != null ];
 
     }
 
     function favorites($noteId)
     {
-        $note = Note::find($noteId);
+        $note = Note::findOrFail($noteId);
 
         return $note->favoritedUsers()->paginate(30);
     }

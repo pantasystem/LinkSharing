@@ -19,9 +19,6 @@ class UsersController extends Controller
         $me = Auth::user();
        
         $user = User::findOrFail($userId);
-        if($user == null){
-            abort(404);
-        }
         
         if($me->follow($user)){
             return response()->json(null, 204);
