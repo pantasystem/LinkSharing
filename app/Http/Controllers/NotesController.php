@@ -52,6 +52,11 @@ class NotesController extends Controller
         return $user->timeline()->withFavoriteCount()->with('user')->paginate(30);
     }
 
+    function get($noteId)
+    {
+        return Note::with(['user', 'tags'])->find($noteId);
+    }
+
 
 
 }
