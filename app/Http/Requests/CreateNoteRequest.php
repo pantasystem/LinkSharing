@@ -25,8 +25,8 @@ class CreateNoteRequest extends FormRequest
     {
         return [
             'url' => 'required|url',
-            'text' => 'required|max:400',
-            'tags.*' => 'string|max:50'
+            'text' => 'required|max:400|min:3',
+            'tags.*' => 'string|max:50|min:3'
         ];
     }
 }
