@@ -19,4 +19,19 @@ class Note extends Model
     function author(){
         $this->belongsTo(User::class, 'author_id');
     }
+
+    function favoritedUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'note_id', 'user_id');
+    }
+
+    function favorite(User $user)
+    {
+        return $this->favoritedUsers()->attach($user);
+    }
+
+    function unfavorite(User $user)
+    {
+        return $this->favoritedUsers()->detach($user);
+    }
 }

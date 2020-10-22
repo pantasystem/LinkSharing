@@ -76,6 +76,19 @@ class User extends Authenticatable
     function notes(){
         return $this->hasMany(Note::class, 'author_id');
     }
-    
+
+    function favoritedNotes()
+    {
+        return $this->belongsToMany(Note::class, 'favorites', 'user_id', 'note_id');
+    }
+
+    function follow(User $user)
+    {
+        return $this->followings()->attach($user);
+    }
+
+    function unfollow(User $user){
+        return $this->followings()->detach($user);
+    }
 
 }
