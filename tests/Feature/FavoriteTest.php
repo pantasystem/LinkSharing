@@ -43,6 +43,14 @@ class FavoriteTest extends TestCase
         Assert::assertEquals($note->favorite_count, 100);
 
 
+        foreach($users as $user){
+            $note->unfavorite($user);
+        }
+
+        $note = Note::withFavoriteCount()->find($this->targetNote->id);
+        Assert::assertEquals($note->favorite_count, 0);
+
+
 
         
         
