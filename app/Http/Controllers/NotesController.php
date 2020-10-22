@@ -45,4 +45,13 @@ class NotesController extends Controller
         $note->delete();
     }
 
+    function timeline()
+    {
+        $user = Auth::user();
+
+        return $user->timeline()->withFavoriteCount()->with('user')->paginate(30);
+    }
+
+
+
 }
