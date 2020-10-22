@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Note;
-use App\Modelss\FollowingUser;
+use App\Models\FollowingUser;
 
 class User extends Authenticatable
 {
@@ -48,21 +48,21 @@ class User extends Authenticatable
     function followings(){
 
         // 引数を間違えているかも知れない
-        return $this->belongsToMany(User::class, 'following_user', 'user_id', 'following_user_id');
+        return $this->belongsToMany(User::class, 'following_users', 'user_id', 'following_user_id');
     }
 
     function followers(){
-        return $this->belongsToMany(User::class, 'following_user', 'following_user_id', 'user_id');
+        return $this->belongsToMany(User::class, 'following_users', 'following_user_id', 'user_id');
     }
 
     function timeline(){
 
         return $this->hasManyThrough(
-            Note::class,
-            FollowingUser::class,
-            'user_id', // FollowingUserの外部キー(Userを参照している)
-            'id', // Noteの外部キー(FollowingUserのfollowing_user_idを主キー, Noteのidを外部キーということにしている)
-            'id', // Userのローカルキー
+            Note::class,//ok
+            FollowingUser::class,//ok
+            'user_id', // FollowingUserの外部キー(Userを参照している) ok
+            'author_id', // Noteの外部キー(FollowingUserのfollowing_user_idを主キー, Noteのidを外部キーということにしている)
+            null,
             'following_user_id' // FollowingUser のローカルキー
             
         );
