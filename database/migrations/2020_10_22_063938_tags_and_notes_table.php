@@ -36,5 +36,9 @@ class TagsAndNotesTable extends Migration
     public function down()
     {
         //
+        //Schema::dropIfExists('tags_and_notes_id_seq');
+
+        Schema::dropIfExists('tags_and_notes');
+
     }
 }
