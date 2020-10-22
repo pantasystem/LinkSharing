@@ -14,11 +14,10 @@ class Note extends Model
     protected $fillable = [
         'url',
         'text',
-        'password',
     ];
 
     function author(){
-        $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     function favoritedUsers()
