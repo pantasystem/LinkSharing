@@ -25,8 +25,7 @@ Route::middleware('auth:api')->group(function() {
 
     Route::put('notes/{noteId}/favorites', 'FavoritesController@favorite');
     Route::delete('notes/{noteId}/favorites', 'FavoritesController@unfavorite');
-    Route::get('notes/{noteId}/favorites', 'FavoritesController@favorites');
-    Route::get('notes/{noteId}/favorites/my-favorite', 'FavoritesController@myFavorite');
+    Route::get('notes/{noteId}/favorites/my-favorite', 'FavoritesController@isFavorited');
 
     Route::put('users/{userId}', 'UsersController@follow');
     Route::delete('users/{userId}', 'UsersController@unfollow');
@@ -45,6 +44,9 @@ Route::get('users/{userId}/notes', 'UserController@notes');
 Route::get('tags/{name?}', 'TagsController@search');
 
 Route::post('notes/search-by-tag', 'NotesController@searchByTag');
+
+Route::get('notes/{noteId}/favorites', 'FavoritesController@favorites');
+
 
 
 
