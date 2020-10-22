@@ -7,14 +7,18 @@ use App\Http\Requests\CreateNoteRequest;
 use App\Models\Tag;
 use App\Models\Note;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Auth;
 
 class NotesController extends Controller
 {
+
+
+
     function create(CreateNoteRequest $request)
     {
-        $user = $request->user();
+        $user = Auth::user();
         
-        $createdNote = $user->notes()->create($request->only(['title', 'text']));
+        $createdNote = $user->notes()->create($request->only(['url', 'text']));
 
         $reqTags = $request->only('tags');
 
@@ -27,7 +31,7 @@ class NotesController extends Controller
         }
 
 
-        return Note::with(['user', 'tags'])->find($createdNote->id);
+        return Note::with(['author', 'tags'])->find($createdNote->id);
         
     }
 

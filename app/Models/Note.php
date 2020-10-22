@@ -17,7 +17,7 @@ class Note extends Model
     ];
 
     function author(){
-        $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     function favoritedUsers()

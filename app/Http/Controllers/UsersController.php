@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Notes;
+use Illuminate\Support\Facades\Auth;
 
 
 class UsersController extends Controller
 {
     
+   
+
     function follow($userId)
     {
 
@@ -36,6 +39,6 @@ class UsersController extends Controller
 
     function notes($userId)
     {
-        return User::find($userId)->notes()->get();
+        return User::find($userId)->notes()->paginate(30);
     }
 }

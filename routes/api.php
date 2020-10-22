@@ -3,6 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\NotesController;
+use App\Http\Controllers\TagsController;
+use App\Http\Controllers\UsersController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,38 +20,43 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:web')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->group(function() {
-    Route::post('notes', 'NotesController@create');
-    Route::delete('notes/{noteId}', 'NotesController@delete');
-    Route::get('notes', 'NotesController@timeline');
 
-    Route::put('notes/{noteId}/favorites', 'FavoritesController@favorite');
-    Route::delete('notes/{noteId}/favorites', 'FavoritesController@unfavorite');
-    Route::get('notes/{noteId}/favorites/my-favorite', 'FavoritesController@isFavorited');
+Route::middleware('auth:web')->group(function() {
+Route::get('me', [HomeController::class, 'me']);
 
-    Route::put('users/{userId}', 'UsersController@follow');
-    Route::delete('users/{userId}', 'UsersController@unfollow');
+    Route::post('notes', [NotesController::class, 'create']);
+    Route::get('notes', [NotesController::class, 'timeline']);
+
+    Route::delete('notes/{noteId}', [NotesController::class, 'delete']);
+
+    Route::put('notes/{noteId}/favorites', [FavoritesController::class, 'favorite']);
+    Route::delete('notes/{noteId}/favorites', [FavoritesController::class, 'unfavorite']);
+    Route::get('notes/{noteId}/favorites/my-favorite', [FavoritesController::class, 'isFavorited']);
+
+    Route::put('users/{userId}', [UsersController::class, 'follow']);
+    Route::delete('users/{userId}', [UsersController::class, 'unfollow']);
 
 
 });
 Auth::routes();
 
 
-Route::get('notes/{noteId}', 'NotesController@get');
 
-Route::get('users/{userId}', 'UsersController@get');
+Route::get('notes/{noteId}', [NotesController::class, 'get']);
 
-Route::get('users/{userId}/notes', 'UsersController@notes');
+Route::get('users/{userId}', [UsersController::class, 'get']);
 
-Route::get('tags/{name?}', 'TagsController@search');
+Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
 
-Route::post('notes/search-by-tag', 'NotesController@searchByTag');
+Route::get('tags/{name?}', [TagsController::class, 'search']);
 
-Route::get('notes/{noteId}/favorites', 'FavoritesController@favorites');
+Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
+
+Route::get('notes/{noteId}/favorites', [FavoritesController::class, 'favorites']);
 
 
 
