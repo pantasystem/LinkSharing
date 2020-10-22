@@ -23,8 +23,10 @@ Route::middleware('auth:api')->group(function() {
     Route::delete('notes/{noteId}', 'NotesController@delete');
     Route::get('notes', 'NotesController@timeline');
 
-    Route::post('notes/{noteId}/favorite', 'FavoriteController@create');
-    Route::delete('notes/{noteId}/favorite', 'FavoriteController@delete');
+    Route::put('notes/{noteId}/favorites', 'FavoritesController@favorite');
+    Route::delete('notes/{noteId}/favorites', 'FavoritesController@unfavorite');
+    Route::get('notes/{noteId}/favorites', 'FavoritesController@favorites');
+    Route::get('notes/{noteId}/favorites/my-favorite', 'FavoritesController@myFavorite');
 
     Route::put('users/{userId}', 'UsersController@follow');
     Route::delete('users/{userId}', 'UsersController@unfollow');
