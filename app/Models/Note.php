@@ -14,7 +14,6 @@ class Note extends Model
     protected $fillable = [
         'url',
         'text',
-        'password',
     ];
 
     function author(){
