@@ -34,4 +34,14 @@ class Note extends Model
     {
         return $this->favoritedUsers()->detach($user);
     }
+
+    function favoriteCount()
+    {
+        return $this->favoritedUsers()->count();
+    }
+
+    function scopeWithFavoriteCount($query)
+    {
+        return $query->withCount(['favoritedUsers', 'favoritedUsers as favorite_count']);
+    }
 }

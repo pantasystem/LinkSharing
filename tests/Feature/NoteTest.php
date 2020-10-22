@@ -24,7 +24,7 @@ class NoteTest extends TestCase
 
     public function testCreateNote(){
 
-        $targetUser = User::find(1);
+        $targetUser = User::first();
         
         $targetUser->notes()->saveMany(Note::factory()->count(100)->make());
 

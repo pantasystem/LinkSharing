@@ -28,7 +28,7 @@ class FollowingUser extends TestCase
         $target = User::find(1);
 
         foreach($followUsers as $followUser){
-            $target->followings()->attach($followUser);
+            $target->follow($followUser);
         }
 
         Assert::assertEquals($followingCount, count($target->followings()->get()));
@@ -45,7 +45,7 @@ class FollowingUser extends TestCase
         $followersCount = count($followersUsers);
 
         foreach($followersUsers as $follower){
-            $follower->followings()->attach($target);
+            $follower->follow($target);
         }
 
         Assert::assertEquals($followersCount, count($target->followers()->get()));

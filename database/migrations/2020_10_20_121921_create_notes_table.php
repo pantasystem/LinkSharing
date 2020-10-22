@@ -21,7 +21,6 @@ class CreateNotesTable extends Migration
             $table->text('url');
             $table->text('text');
             $table->bigInteger('author_id');
-            $table->bigInteger('favorite_count')->default(0);
 
             $table->foreign('author_id')->references('id')->on('users')
                     ->onDelete('cascade')->onUpdate('cascade');
