@@ -18,7 +18,7 @@ class UsersController extends Controller
 
         $me = Auth::user();
        
-        $user = User::find($userId);
+        $user = User::findOrFail($userId);
         if($user == null){
             abort(404);
         }
@@ -34,7 +34,7 @@ class UsersController extends Controller
     {
         $me = Auth::user();
 
-        $user = User::find($userId);
+        $user = User::findOrFail($userId);
 
         $me->unfollow($user);
 
@@ -43,12 +43,12 @@ class UsersController extends Controller
 
     function get($userId)
     {
-        return User::withCountRelationModels()->find($userId);
+        return User::withCountRelationModels()->findOrFail($userId);
     }
 
     function notes($userId)
     {
-        return User::find($userId)->notes()->paginate(30);
+        return User::findOrFail($userId)->notes()->paginate(30);
     }
 
     function followerCountsRanking()
@@ -58,6 +58,6 @@ class UsersController extends Controller
 
     function favoriteNotes($userId)
     {
-        return User::find($userId)->favoritedNotes()->with('author')->paginate(30);
+        return User::findOrFail($userId)->favoritedNotes()->with('author')->paginate(30);
     }
 }
