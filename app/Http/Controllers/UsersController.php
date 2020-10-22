@@ -46,4 +46,9 @@ class UsersController extends Controller
     {
         return User::withCountRelationModels()->orderBy('followers_count', 'desc')->paginate(30);
     }
+
+    function favoriteNotes($userId)
+    {
+        return User::find($userId)->favoritedNotes()->with('author')->paginate(30);
+    }
 }

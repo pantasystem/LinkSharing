@@ -58,7 +58,7 @@ class NotesController extends Controller
 
     function get($noteId)
     {
-        return Note::withFavoriteCount()->with(['user', 'tags'])->find($noteId);
+        return Note::withFavoriteCount()->with(['author', 'tags'])->find($noteId);
     }
 
 

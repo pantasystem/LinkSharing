@@ -56,6 +56,8 @@ Route::get('users/{userId}', [UsersController::class, 'get']);
 
 Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
 
+Route::get('users/{userId}/favorites', [UsersController::class, 'favoriteNotes']);
+
 Route::get('tags/{name?}', [TagsController::class, 'search']);
 
 Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
