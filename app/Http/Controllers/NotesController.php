@@ -53,7 +53,7 @@ class NotesController extends Controller
     {
         $user = Auth::user();
 
-        return $user->timeline()->withFavoriteCount()->with('user')->paginate(30);
+        return $user->timeline()->paginate();
     }
 
     function get($noteId)
