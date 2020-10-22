@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\Tag;
 
 class Note extends Model
 {
@@ -23,6 +24,11 @@ class Note extends Model
     function favoritedUsers()
     {
         return $this->belongsToMany(User::class, 'favorites', 'note_id', 'user_id');
+    }
+
+    function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tags_and_notes');
     }
 
     function favorite(User $user)
