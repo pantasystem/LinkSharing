@@ -12,8 +12,11 @@ class TagsController extends Controller
     
 
     
-    function search($tag)
+    function search(Request $request)
     {
-        return Tag::where('name', 'like', "%${$tag}%")->orderBy('name', 'asc')->get();
+        
+        return Tag::where('name', 'like', "%{$request->name}%")
+            ->orderBy('name', 'asc')->paginate(30);
+        
     }
 }

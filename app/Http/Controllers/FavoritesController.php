@@ -24,7 +24,7 @@ class FavoritesController extends Controller
         $user->favoritedNotes()->detach($noteId);
     }
 
-    function isFavorite($noteId)
+    function isFavorited($noteId)
     {
 
         $user = Auth::user();
