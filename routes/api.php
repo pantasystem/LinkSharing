@@ -39,7 +39,7 @@ Route::get('notes/{noteId}', 'NotesController@get');
 
 Route::get('users/{userId}', 'UsersController@get');
 
-Route::get('users/{userId}/notes', 'UserController@notes');
+Route::get('users/{userId}/notes', 'UsersController@notes');
 
 Route::get('tags/{name?}', 'TagsController@search');
 
