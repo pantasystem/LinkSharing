@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,6 @@ class HomeController extends Controller
     }
 
     public function me(){
-        return Auth::user();
+        return User::withCountRelationModels()->find(Auth::user()->id);
     }
 }

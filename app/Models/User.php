@@ -91,4 +91,8 @@ class User extends Authenticatable
         return $this->followings()->detach($user);
     }
 
+    function scopeWithCountRelationModels($query){
+        return $this->withCount(['followers', 'followings', 'notes', 'favoritedNotes']);
+    }
+
 }

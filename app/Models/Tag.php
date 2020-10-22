@@ -14,6 +14,8 @@ class Tag extends Model
         'name'
     ];
 
+    protected $visible = ['name'];
+
     function notes(){
         return $this->belongsToMany(Note::class, 'tags_and_notes');
     }

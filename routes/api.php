@@ -48,7 +48,11 @@ Auth::routes();
 
 Route::get('notes/{noteId}', [NotesController::class, 'get']);
 
+Route::get('users/followers-count-ranking', [UsersController::class, 'followerCountsRanking']);
+
+
 Route::get('users/{userId}', [UsersController::class, 'get']);
+
 
 Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
 

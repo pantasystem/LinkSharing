@@ -34,11 +34,16 @@ class UsersController extends Controller
 
     function get($userId)
     {
-        return User::find($userId);
+        return User::withCountRelationModels()->find($userId);
     }
 
     function notes($userId)
     {
         return User::find($userId)->notes()->paginate(30);
+    }
+
+    function followerCountsRanking()
+    {
+        return User::withCountRelationModels()->orderBy('followers_count', 'desc')->paginate(30);
     }
 }
