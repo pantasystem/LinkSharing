@@ -10,6 +10,12 @@ class Note extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'url',
+        'text',
+        'password',
+    ];
+
     function author(){
         $this->belongsTo(User::class, 'author_id');
     }

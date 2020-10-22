@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Note;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
 
 class NoteFactory extends Factory
 {
@@ -23,7 +25,7 @@ class NoteFactory extends Factory
     {
         return [
             'url' => $this->faker->url,
-            'text' => $this->faker->Str::random(100)
+            'text' => Str::random(100)
         ];
     }
 }
