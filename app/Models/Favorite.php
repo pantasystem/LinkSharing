@@ -10,6 +10,9 @@ use App\Models\Note;
 
 class Favorite extends Pivot
 {
+    protected $hidden = [
+        'pivot'
+    ];
 
     function user()
     {

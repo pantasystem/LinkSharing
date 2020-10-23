@@ -58,6 +58,10 @@ Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
 
 Route::get('users/{userId}/favorites', [UsersController::class, 'favoriteNotes']);
 
+Route::get('users/{userId}/followers', [UsersController::class, 'followers']);
+
+Route::get('users/{userId}/followings', [UsersController::class, 'followings']);
+
 Route::get('tags/{name?}', [TagsController::class, 'search']);
 
 Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);

@@ -16,6 +16,10 @@ class Note extends Model
         'text',
     ];
 
+    protected $hidden = [
+        'pivot'
+    ];
+
     function author(){
         return $this->belongsTo(User::class, 'author_id');
     }
