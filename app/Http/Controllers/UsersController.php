@@ -57,4 +57,15 @@ class UsersController extends Controller
     {
         return User::findOrFail($userId)->favoritedNotes()->with('author')->paginate(30);
     }
+
+    function followers($userId)
+    {
+        return User::findOrFail($userId)->followers()->paginate(30);
+    }
+
+    function followings($userId)
+    {
+        return User::findOrFail($userId)->followings()->paginate(30);
+    }
+
 }
