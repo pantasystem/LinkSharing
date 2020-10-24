@@ -49,12 +49,12 @@ class DatabaseSeeder extends Seeder
 
         foreach($notMe as $u){
             
-            $u->notes()->saveMany(Note::factory()->count(100)->make());
+            $u->notes()->saveMany(Note::factory()->count(rand(1, 50))->make());
 
             $notes = $u->notes()->get();
 
             foreach($notes as $nt){
-                $tagCount = rand(0, TAG_COUNT / 3 * 2);
+                $tagCount = rand(0, TAG_COUNT / 10);
                 for($i = 0; $i < $tagCount; $i++){
                     $tags->find(rand(1, TAG_COUNT))->notes()->attach($nt);
                 }

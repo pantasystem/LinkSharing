@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Models;
+
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Summary extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['url', 'title', 'image', 'description'];
+
+
+
+    public function __construct($url = null)
+    {
+        if(isset($url)){
+            $this->{"url"} = $url;
+        }
+    }
+
+    public function loadSummary(){
+        if(isset($this->url)){
+            $this->getSummary($this->url);
+        }
+    }
+
+    public function getSummary($url){
+
+        $normalizedUrl = $url;
+
+        $content = null;
+        if(mb_ereg_match('/\Ahttps://twitter.com\/.*/', $normalizedUrl)){
+            $content = $this->getTwitterContent($normalizedUrl);
+        }else{
+            $content = $this->getNormalContent($normalizedUrl);
+        }
+        if(isset($content)){
+            $attrs = $this->getSummaryAttrs($url,$content);
+            foreach($attrs as $key => $value){
+                $this->{$key} = $value;
+                
+            }
+        }
+    }
+
+    private function getTwitterContent($url)
+    {
+        return file_get_contents($url, false, stream_context_create(array(
+            'http'=>array(
+                'method'=>'GET',
+                'header'=>'User-Agent: bot',
+                'ignore_errors'=>true
+            ))));
+    }
+
+    private function getNormalContent($url)
+    {
+        return file_get_contents($url);
+
+    }
+
+    private function getSummaryAttrs($url, $body)
+    {
+        $content = mb_convert_encoding($body, 'UTF-8');
+        $dom = new \DOMDocument();
+        @$dom->loadHTML($content);
+
+        $xml = simplexml_import_dom($dom);
+
+        $ogTitle = $xml->xpath('//meta[@property="og:title"]/@content');
+        $ogDescription = $xml->xpath('//meta[@property="og:description"]/@content');
+        $ogImage = $xml->xpath('//meta[@property="og:image"]/@content');
+
+        $attrs = [
+            'url' => $url,
+            'title' => null,
+            'description' => null,
+            'image' => null
+        ];
+
+        if(!empty($ogTitle)){
+            $attrs['title'] = $ogTitle[0];
+        }
+
+        if(isset($attrs['title'])){
+            $attrs['title'] = $dom->getElementsByTagName('title')->item(0)->textContent;
+        }
+
+        if(!empty($ogDescription)){
+            $attrs['description'] = (string)$ogDescription[0];
+        }
+
+        if(!empty($ogImage) && !empty($ogImage[0]['content']) && !empty($ogImage[0]['content'][0])){
+            $attrs['image'] = (string)$ogImage[0]['content'];
+        }
+
+        return $attrs;
+    }
+}
