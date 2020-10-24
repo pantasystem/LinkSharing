@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Note;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\Summary;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +20,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         define('TAG_COUNT', 50);
+        define('SUMMARY_COUNT', 1000);
+
+       
+
+        Summary::factory()->count(SUMMARY_COUNT)->create();
+
 
         // \App\Models\User::factory(10)->create();
         $me = User::create([
@@ -49,12 +55,19 @@ class DatabaseSeeder extends Seeder
 
         foreach($notMe as $u){
             
-            $u->notes()->saveMany(Note::factory()->count(100)->make());
+            $notes = Note::factory()->count(rand(1, 50))->make();
+
+            foreach($notes as $note){
+                $note->summary()->associate(Summary::find(rand(1, SUMMARY_COUNT)));
+                $note->author()->associate($u);
+                $note->save();
+            }
+                
 
             $notes = $u->notes()->get();
 
             foreach($notes as $nt){
-                $tagCount = rand(0, TAG_COUNT / 3 * 2);
+                $tagCount = rand(0, TAG_COUNT / 10);
                 for($i = 0; $i < $tagCount; $i++){
                     $tags->find(rand(1, TAG_COUNT))->notes()->attach($nt);
                 }
