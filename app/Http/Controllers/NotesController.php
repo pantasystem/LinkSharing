@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\Note;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Summary;
 
 class NotesController extends Controller
 {
@@ -17,8 +18,21 @@ class NotesController extends Controller
     function create(CreateNoteRequest $request)
     {
         $user = Auth::user();
+
+        $url = $request->only('url');
         
-        $createdNote = $user->notes()->create($request->only(['url', 'text']));
+        $summary = Summary::where('url', '=', $url)->first();
+        if(isset($summary)){
+            $summary = new Summary($url);
+            $summary->save();
+        }
+
+        $note = new Note;
+        $note->text = $request->only('text');
+        $note->associate($user);
+        $note->associate($summary);
+
+        $createdNote = $note->save();
 
         $reqTags = $request->only('tags');
 
@@ -31,7 +45,7 @@ class NotesController extends Controller
         }
 
 
-        return Note::with(['author', 'tags'])->findOrFail($createdNote->id);
+        return Note::with(['author', 'tags', 'summary'])->findOrFail($createdNote->id);
         
     }
 
@@ -53,12 +67,12 @@ class NotesController extends Controller
     {
         $user = Auth::user();
 
-        return $user->timeline()->with(['author', 'tags'])->simplePaginate(30);
+        return $user->timeline()->with(['author', 'tags', 'summary'])->simplePaginate(30);
     }
 
     function get($noteId)
     {
-        return Note::withFavoriteCount()->with(['author', 'tags'])->findOrFail($noteId);
+        return Note::withFavoriteCount()->with(['author', 'tags','summary'])->findOrFail($noteId);
     }
 
 

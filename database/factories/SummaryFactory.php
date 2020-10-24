@@ -2,19 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Note;
+use App\Models\Summary;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 
-class NoteFactory extends Factory
+class SummaryFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Note::class;
+    protected $model = Summary::class;
 
     /**
      * Define the model's default state.
@@ -24,7 +24,10 @@ class NoteFactory extends Factory
     public function definition()
     {
         return [
-            'text' => Str::random(100)
+            'url' => $this->faker->url . '/' . Str::random(20),
+            'title' => $this->faker->title,
+            'description' => Str::random(100),
+            'image' => Str::random(20)
         ];
     }
 }

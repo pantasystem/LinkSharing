@@ -17,13 +17,14 @@ class CreateNotesTable extends Migration
             $table->id();
             $table->timestamps();
 
-            // 2 ^ 16 以上入力されることは想定していないのでTEXT型を指定する
-            $table->text('url');
             $table->text('text');
             $table->bigInteger('author_id');
+            $table->bigInteger('summary_id');
 
             $table->foreign('author_id')->references('id')->on('users')
                     ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('summary_id')->references('id')->on('summaries')->onDelete('cascade')->onUpdate('cascade');
 
         });
     }

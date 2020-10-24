@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Tag;
+use App\Models\Summary;
 
 class Note extends Model
 {
@@ -22,6 +23,11 @@ class Note extends Model
 
     function author(){
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    function summary()
+    {
+        return $this->belongsTo(Summary::class, 'summary_id');
     }
 
     function favoritedUsers()

@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Note;
 
 class Summary extends Model
 {
@@ -12,13 +13,23 @@ class Summary extends Model
 
     protected $fillable = ['url', 'title', 'image', 'description'];
 
+    protected $hidden = ['created_at', 'updated_at'];
 
 
-    public function __construct($url = null)
+    public function __construct(array $attributes = array())
     {
-        if(isset($url)){
-            $this->{"url"} = $url;
+        parent::__construct($attributes);
+    
+
+        if(isset($attributes['url'])){
+            $this->{'url'} = $attributes['url'];
         }
+    }
+     
+
+    public function notes()
+    {
+        return $this->hasMany(Summary::class, 'summary_id');
     }
 
     public function loadSummary(){
