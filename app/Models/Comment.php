@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
 use App\Models\Note;
+use App\Models\Notification;
+use App\Notificable;
 
-class Comment extends Model
+class Comment extends Model implements Notificable
 {
     use HasFactory;
 
@@ -28,4 +30,8 @@ class Comment extends Model
         return $this->belongsTo(Comment::class, 'reply_to_note_id');
     }
 
+    public function notificable()
+    {
+        return $this->hasOne(Notification::class, 'reply_to_comment_id');
+    }
 }
