@@ -19,8 +19,9 @@ class CreateCommentsTable extends Migration
 
             $table->bigInteger('reply_to_comment')->nullable(true);
 
-            $table->bigInteger('reply_to_note')
-                ->foreign('notes')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('reply_to_note');
+                
+            $table->foreign('reply_to_note')->references('id')->on('notes')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

@@ -18,21 +18,28 @@ class CreateNotificationsTable extends Migration
             $table->timestamps();
 
             // 通知の発行者
-            $table->bigInteger('publisher_id')
-                ->foreign('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('publisher_id');
+                
+            $table->foreign('publisher_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             // 通知の受信者
-            $table->bigInteger('subscriber_id')
-                ->foreign('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('subscriber_id');
+            $table->foreign('subscribe_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             // 通知のタイプ
             $table->text('type');
 
-            $table->bigInteger('reply_comment_id')->nullable(true)
-                ->foreign('id')->on('comments')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('reply_comment_id')->nullable(true);
+            $table->foreign('reply_comment_id')->references('id')->on('comments')->onDelete('cascade')->onUpdate('cascade');
 
             $table->boolean('is_read')->default(false);
 
+            $table->bigInteger('follow_id')->nullable(true);
+                
+            $table->foreign('follow_id')->references('id')->on('following_users')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->bigInteger('favorite_id')->nullable(true);
+            $table->foreign('favorite_id')->references('id')->on('favorites')->onDelete('cascade')->onUpdate('cascade');
 
 
 
