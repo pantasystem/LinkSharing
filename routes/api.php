@@ -8,6 +8,7 @@ use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,10 @@ Route::get('me', [HomeController::class, 'me']);
     Route::put('users/{userId}', [UsersController::class, 'follow']);
     Route::delete('users/{userId}', [UsersController::class, 'unfollow']);
 
+    Route::post('notes/{noteId}/comments', [CommentController::class, 'replyToNote']);
+    Route::post('notes/{noteId}/comments/{commentId}', [CommentController::class, 'replyToComment']);
+    Route::delete('notes/{noteId}/comments/{commentId}', [CommentController::class, 'delete']);
+
 
 });
 Auth::routes();
@@ -67,6 +72,15 @@ Route::get('tags/{name?}', [TagsController::class, 'search']);
 Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
 
 Route::get('notes/{noteId}/favorites', [FavoritesController::class, 'favorites']);
+
+
+Route::get('notes/{noteId}/comments', [CommentController::class, 'findNotesComments']);
+Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'findCommentsComments']);
+
+
+
+
+
 
 
 
