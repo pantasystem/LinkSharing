@@ -14,6 +14,10 @@ class Notification extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'subscriber_id', 'publisher_id', 'comment_id', 'favorite_id', 'follow_id'
+    ];
+
     public function subscriber()
     {
         return $this->belongsTo(User::class, 'subscriber_id');
