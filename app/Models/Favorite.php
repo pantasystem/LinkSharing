@@ -15,6 +15,10 @@ class Favorite extends Pivot
         'pivot'
     ];
 
+    protected $fillable = [
+        'user_id', 'note_id'
+    ];
+
     function user()
     {
         return $this->belongsTo(User::class);

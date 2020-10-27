@@ -15,6 +15,8 @@ class FollowingUser extends Pivot
 
     protected $table = 'following_users';
 
+    protected $fillable = ['following_user_id', 'user_id'];
+
     /**
      * フォローしている相手
      */

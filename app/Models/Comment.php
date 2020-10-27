@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Note;
 use App\Models\Notification;
 use App\Notificable;
+use App\Models\NotificationFactory;
 
 class Comment extends Model
 {
@@ -27,7 +28,7 @@ class Comment extends Model
 
     public function replyToNote(): Note
     {
-        return $this->belongsTo(Comment::class, 'reply_to_note_id');
+        return $this->belongsTo(Note::class, 'reply_to_note_id');
     }
 
 

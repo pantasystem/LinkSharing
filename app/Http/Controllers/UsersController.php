@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Notes;
 use Illuminate\Support\Facades\Auth;
+use App\Services\NotificationService;
+use App\Models\FollowingUser;
 
 
 class UsersController extends Controller
@@ -13,18 +15,21 @@ class UsersController extends Controller
     
    
 
-    function follow($userId)
+    function follow(NotificationService $notificationService, $userId)
     {
 
         $me = Auth::user();
        
         $user = User::findOrFail($userId);
         
-        if($me->follow($user)){
-            return response()->json(null, 204);
-        }else{
-            abort(422);
-        }
+        $followingUser = FollowingUser::create([
+            'following_user_id' => $user->id,
+            'user_id' => $user->id
+        ]);
+
+        return response()->json(null, 204);
+
+        
     }
 
     function unfollow($userId)
