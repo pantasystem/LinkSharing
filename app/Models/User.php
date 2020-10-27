@@ -107,4 +107,8 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'author_id');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'subscriber_id');
+    }
 }

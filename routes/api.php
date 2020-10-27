@@ -9,6 +9,7 @@ use App\Http\Controllers\NotesController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,12 @@ Route::get('me', [HomeController::class, 'me']);
     Route::post('notes/{noteId}/comments', [CommentController::class, 'replyToNote']);
     // Route::post('notes/{noteId}/comments/{commentId}', [CommentController::class, 'replyToComment']);
     Route::delete('notes/{noteId}/comments/{commentId}', [CommentController::class, 'delete']);
+
+    Route::get('notifications', [NotificationController::class, 'notifications']);
+
+    Route::put('notifications/{notificationId}', [ NotificationController::class ,'read']);
+
+    Route::get('notifications/{notificationId}', [NotificationController::class, 'find']);
 
 
 

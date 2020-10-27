@@ -41,7 +41,7 @@ class CreateNotificationsTable extends Migration
             $table->bigInteger('favorite_id')->nullable(true);
             $table->foreign('favorite_id')->references('id')->on('favorites')->onDelete('cascade')->onUpdate('cascade');
 
-
+            $table->boolean('is_read')->default(false);
 
         });
     }
