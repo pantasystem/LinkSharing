@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\Note;
+use App\Models\Favorite;
+use App\Models\Follow;
 
 class Notification extends Model
 {
@@ -21,10 +24,7 @@ class Notification extends Model
         return $this->belongsTo(User::class, 'publisher_id');
     }
 
-    public function replyToComment()
-    {
-        return $this->belongsTo(Comment::class, 'reply_to_comment_id');
-    }
+    
 
     public function subscribe(User $user)
     {
@@ -36,6 +36,20 @@ class Notification extends Model
     {
         $this->subscriber()->associate($user);
         return $this;
+    }
+
+    public function comment(){
+        return $this->belongsTo(Comment::class, 'comment_id');
+    }
+
+    
+
+    public function favorite(){
+        return $this->belongsTo(Favorite::class, 'favorite_id');
+    }
+
+    public function follow(){
+        return $this->belongsTo(Follow::class, 'follow_id');
     }
     
 }

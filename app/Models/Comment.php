@@ -10,7 +10,7 @@ use App\Models\Note;
 use App\Models\Notification;
 use App\Notificable;
 
-class Comment extends Model implements Notificable
+class Comment extends Model
 {
     use HasFactory;
 
@@ -30,8 +30,5 @@ class Comment extends Model implements Notificable
         return $this->belongsTo(Comment::class, 'reply_to_note_id');
     }
 
-    public function notificable()
-    {
-        return $this->hasOne(Notification::class, 'reply_to_comment_id');
-    }
+
 }

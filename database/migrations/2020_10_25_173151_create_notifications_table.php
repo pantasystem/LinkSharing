@@ -29,8 +29,8 @@ class CreateNotificationsTable extends Migration
             // 通知のタイプ
             $table->text('type');
 
-            $table->bigInteger('reply_comment_id')->nullable(true);
-            $table->foreign('reply_comment_id')->references('id')->on('comments')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('comment_id')->nullable(true);
+            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade')->onUpdate('cascade');
 
             $table->boolean('is_read')->default(false);
 
