@@ -10,7 +10,7 @@ use App\Models\Notification;
 use App\Notificable;
 
 
-class FollowingUser extends Pivot implements Notificable
+class FollowingUser extends Pivot
 {
 
     protected $table = 'following_users';
@@ -31,9 +31,5 @@ class FollowingUser extends Pivot implements Notificable
      }
 
 
-     public function notificable()
-     {
-         return $this->hasOne(Notification::class, 'follow_id');
-     }
-
+   
 }
