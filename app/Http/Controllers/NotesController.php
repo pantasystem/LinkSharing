@@ -9,43 +9,18 @@ use App\Models\Note;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Summary;
+use App\Services\NoteService;
 
 class NotesController extends Controller
 {
 
 
 
-    function create(CreateNoteRequest $request)
+    function create(NoteService $noteService, CreateNoteRequest $request)
     {
         $user = Auth::user();
 
-        $url = $request->only('url');
-        
-        $summary = Summary::where('url', '=', $url)->first();
-        if(isset($summary)){
-            $summary = new Summary($url);
-            $summary->save();
-        }
-
-        $note = new Note;
-        $note->text = $request->only('text');
-        $note->associate($user);
-        $note->associate($summary);
-
-        $createdNote = $note->save();
-
-        $reqTags = $request->only('tags');
-
-        foreach($reqTags as $reqTag){
-            $tag = Tag::firstOrCreate([
-                'name' => $reqTag
-            ]);
-
-            $tag->notes()->attach($createdNote);
-        }
-
-
-        return Note::with(['author', 'tags', 'summary'])->findOrFail($createdNote->id);
+        return $noteService->create($user, $noteService);
         
     }
 

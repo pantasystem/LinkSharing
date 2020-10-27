@@ -27,9 +27,5 @@ class Favorite extends Pivot
         
     }
 
-    public function notificable()
-    {
-        return $this->hasOne(Notificatin::class, 'favorite_id');
-    }
 
 }
