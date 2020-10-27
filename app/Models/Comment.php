@@ -15,20 +15,21 @@ class Comment extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['author_id', 'commentable_id'];
+
     public function author(): User
     {
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    
-    public function replyToComment(): ?Comment
+    public function commentable()
     {
-        return $this->belongsTo(Comment::class, 'reply_tocomment_id');
+        return $this->morphTo();
     }
 
-    public function replyToNote(): Note
+    public function comments()
     {
-        return $this->belongsTo(Note::class, 'reply_to_note_id');
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
 

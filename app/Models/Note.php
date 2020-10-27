@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Summary;
+use App\Models\Comment;
 
 class Note extends Model
 {
@@ -58,5 +59,10 @@ class Note extends Model
     function scopeWithFavoriteCount($query)
     {
         return $query->withCount(['favoritedUsers', 'favoritedUsers as favorite_count']);
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }
