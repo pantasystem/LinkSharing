@@ -24,7 +24,7 @@ class NotificationController extends Controller
         return $notification->save();
     }
 
-    public function show($notificationId)
+    public function find($notificationId)
     {
         $user = Auth::user();
         return $user->notifications()
