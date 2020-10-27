@@ -19,9 +19,8 @@ class NotificationService
         $notification->publish($publisher);
 
         if($model instanceof Comment){
-            $notification->publisher()->associate($model->user);
 
-            $to = $model->replyToComment ?? $model->replyToNote;
+            $to = $model->commentable()->author()->get();
             $notification->subscribe($to);
             $notification->comment()->associate($model);
 
