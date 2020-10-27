@@ -24,7 +24,7 @@ class CreateNotificationsTable extends Migration
 
             // 通知の受信者
             $table->bigInteger('subscriber_id');
-            $table->foreign('subscribe_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('subscriber_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             // 通知のタイプ
             $table->text('type');
