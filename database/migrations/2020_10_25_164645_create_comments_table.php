@@ -17,11 +17,10 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->bigInteger('reply_to_comment')->nullable(true);
-
-            $table->bigInteger('reply_to_note');
+            $table->text('text');
+            $table->bigInteger('commentable_id')->index();
+            $table->string('commentable_type')->index();
                 
-            $table->foreign('reply_to_note')->references('id')->on('notes')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
