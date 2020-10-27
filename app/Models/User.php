@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Note;
 use App\Models\FollowingUser;
+use App\Models\Comment;
 
 class User extends Authenticatable
 {
@@ -99,6 +100,11 @@ class User extends Authenticatable
 
     function scopeWithCountRelationModels($query){
         return $this->withCount(['followers', 'followings', 'notes', 'favoritedNotes']);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'author_id');
     }
 
 }

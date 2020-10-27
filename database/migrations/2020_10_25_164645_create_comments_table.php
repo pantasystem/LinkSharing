@@ -20,6 +20,9 @@ class CreateCommentsTable extends Migration
             $table->text('text');
             $table->bigInteger('commentable_id')->index();
             $table->string('commentable_type')->index();
+            $table->bigInteger('author_id');
+            $table->foreign('author_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
                 
         });
     }

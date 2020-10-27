@@ -42,8 +42,9 @@ Route::get('me', [HomeController::class, 'me']);
     Route::delete('users/{userId}', [UsersController::class, 'unfollow']);
 
     Route::post('notes/{noteId}/comments', [CommentController::class, 'replyToNote']);
-    Route::post('notes/{noteId}/comments/{commentId}', [CommentController::class, 'replyToComment']);
+    // Route::post('notes/{noteId}/comments/{commentId}', [CommentController::class, 'replyToComment']);
     Route::delete('notes/{noteId}/comments/{commentId}', [CommentController::class, 'delete']);
+
 
 
 });
@@ -74,8 +75,12 @@ Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
 Route::get('notes/{noteId}/favorites', [FavoritesController::class, 'favorites']);
 
 
-Route::get('notes/{noteId}/comments', [CommentController::class, 'findNotesComments']);
-Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'findCommentsComments']);
+Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote']);
+//Route::get('notes/{noteId}/comments/{commentId}/all', [CommentController::class, 'findAllByNoteAndCommentId']);
+
+Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
+
+
 
 
 
