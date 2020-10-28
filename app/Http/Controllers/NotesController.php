@@ -20,7 +20,7 @@ class NotesController extends Controller
     {
         $user = Auth::user();
 
-        return $noteService->create($user, $noteService);
+        return $noteService->create($user, $request);
         
     }
 

@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use PHPUnit\Framework\Assert;
 use App\Models\Note;
+use App\Models\Summary;
 
 class NoteTest extends TestCase
 {
@@ -18,7 +19,7 @@ class NoteTest extends TestCase
     function setUp(): void{
         parent::setUp();
 
-        User::factory()->count(100)->create();
+        Summary::factory()->count(50)->create();
     }
     
 
