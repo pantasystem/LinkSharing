@@ -14,22 +14,30 @@ class NoteTest extends TestCase
 {
     use RefreshDatabase;
 
-    
+    private $summaries = null;
 
     function setUp(): void{
         parent::setUp();
 
-        Summary::factory()->count(50)->create();
+        $this->summaries = Summary::factory()->count(50)->create();
+
+        User::factory()->count(100)->create();
     }
     
 
     public function testCreateNote(){
 
         $targetUser = User::first();
-        
-        $targetUser->notes()->saveMany(Note::factory()->count(100)->make());
 
-        Assert::assertEquals(count($targetUser->notes()->get()), 100);
+        foreach($this->summaries as $summary){
+            $note = Note::factory()->count(10)->create([
+                'author_id' => $targetUser->id,
+                'summary_id' => $summary->id
+            ]);
+        }
+
+    
+        Assert::assertEquals(count($targetUser->notes()->get()), 500);
     }
 
     public function testFindUsersNotes(){
@@ -37,17 +45,9 @@ class NoteTest extends TestCase
 
         Assert::assertNotNull($targetUser);
 
-        $targetUser->notes()->saveMany(Note::factory()->count(100)->make());
-        Assert::assertEquals(count($targetUser->notes()->get()), 100);
+        $summary = Summary::factory()->create();
 
-
-        $otherUsers = User::where('id', '>', $targetUser->id)->get();
-
-        foreach($otherUsers as $other){
-            $other->notes()->saveMany(Note::factory()->count(10)->make());
-
-        }
-
+        $targetUser->notes()->saveMany(Note::factory()->count(100)->make(['summary_id' => $summary->id]));
         Assert::assertEquals(count($targetUser->notes()->get()), 100);
 
     }
