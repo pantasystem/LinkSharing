@@ -16,6 +16,7 @@ class Note extends Model
     protected $fillable = [
         'url',
         'text',
+        'summary_id'
     ];
 
     protected $hidden = [
