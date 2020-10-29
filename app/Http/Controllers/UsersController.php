@@ -55,7 +55,7 @@ class UsersController extends Controller
 
     function followerCountsRanking()
     {
-        return User::withCountRelationModels()->orderBy('followers_count', 'desc')->paginate(30);
+        return User::withCountRelationModels()->orderBy('followers_count', 'desc')->simplePaginate(30);
     }
 
     function favoriteNotes($userId)
