@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Tag;
+use App\Models\Note;
 
+use App\Models\Summary;
 /**
  * ノートのテスト用データを作成する
  * 作成パターン
@@ -28,9 +30,10 @@ class NoteSeeder extends Seeder
         //
         User::all()->each(function(User $user){
             $summary = Summary::factory()->make();
-            $summary = Summary::firstOrCreate([ 'url' => $tag->url ], $summary->toArray());
+            $summary = Summary::firstOrCreate([ 'url' => $summary->url ], $summary->toArray());
             Note::factory()->create([
-                'summary_id' => $summary->id
+                'summary_id' => $summary->id,
+                'author_id' => $user->id,
             ]);
         });
     }

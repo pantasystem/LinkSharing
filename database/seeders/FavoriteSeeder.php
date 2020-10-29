@@ -19,7 +19,7 @@ class FavoriteSeeder extends Seeder
      */
     public function run()
     {
-        User::where('mod(id, 2)', '<>', '0')->each(function(User $user){
+        User::whereRaw('mod(id, 2) <> 0')->each(function(User $user){
             $noteIds = Note::where('author_id', '<>', $user->id)->pluck('id')->toArray();
             $user->favoritedNotes()->sync($noteIds);
         });
