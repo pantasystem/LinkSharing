@@ -50,6 +50,17 @@ class NotesController extends Controller
         return Note::withFavoriteCount()->with(['author', 'tags','summary'])->findOrFail($noteId);
     }
 
+    public function searchByTag(Request $request){
+        $builder = Note::with(['author', 'tags', 'summary']);
+
+        $conditions = $request->input('conditions');
+
+        foreach($conditions as $orConditions){
+            $builder = $builder->whereIn('name', $orConditions);
+        }
+
+        return $builder->simplePaginate(30);
+    }
 
 
 }
