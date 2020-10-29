@@ -50,7 +50,7 @@ class UsersController extends Controller
 
     function notes($userId)
     {
-        return User::findOrFail($userId)->notes()->paginate(30);
+        return User::findOrFail($userId)->notes()->simplePaginate(30);
     }
 
     function followerCountsRanking()
@@ -60,17 +60,17 @@ class UsersController extends Controller
 
     function favoriteNotes($userId)
     {
-        return User::findOrFail($userId)->favoritedNotes()->with('author')->paginate(30);
+        return User::findOrFail($userId)->favoritedNotes()->with('author')->simplePaginate(30);
     }
 
     function followers($userId)
     {
-        return User::findOrFail($userId)->followers()->paginate(30);
+        return User::findOrFail($userId)->followers()->simplePaginate(30);
     }
 
     function followings($userId)
     {
-        return User::findOrFail($userId)->followings()->paginate(30);
+        return User::findOrFail($userId)->followings()->simplePaginate(30);
     }
 
 }
