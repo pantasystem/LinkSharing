@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
 /**
  * ユーザーのフォロー関係を保持するFollowingUserSeeder
@@ -19,6 +20,9 @@ class FollowingUserSeeder extends Seeder
      */
     public function run()
     {
-        //
+        User::all()->each(function(User $user){
+            $otherUsers = User::where('id', '<>', $user->id)->pluck('id')->toArray();
+            $user->followings()->sync($otherUsers);
+        });
     }
 }

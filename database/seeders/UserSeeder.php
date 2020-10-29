@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             'user_name' => 'Panta'
         ]);
 
-        User::factory()->count(500)->create();
+        User::factory()->count(100)->create();
 
     }
 }

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Tag;
 
 /**
  * ノートのテスト用データを作成する
@@ -24,5 +26,12 @@ class NoteSeeder extends Seeder
     public function run()
     {
         //
+        User::all()->each(function(User $user){
+            $summary = Summary::factory()->make();
+            $summary = Summary::firstOrCreate([ 'url' => $tag->url ], $summary->toArray());
+            Note::factory()->create([
+                'summary_id' => $summary->id
+            ]);
+        });
     }
 }
