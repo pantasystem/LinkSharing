@@ -22,9 +22,8 @@ class FavoritesController extends Controller
             'user_id' => $user->id
         ]);
 
-        $service->create($user, $created);
+        //$service->create($user, $created);
 
-        $user->favoritedNotes()->attach($noteId);
     }
 
     function unfavorite($noteId)

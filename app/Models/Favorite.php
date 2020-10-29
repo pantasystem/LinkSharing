@@ -11,6 +11,8 @@ use App\Models\Notification;
 
 class Favorite extends Pivot
 {
+    protected $table = 'favorites';
+    
     protected $hidden = [
         'pivot'
     ];
