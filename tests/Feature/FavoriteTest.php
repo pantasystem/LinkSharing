@@ -18,14 +18,7 @@ class FavoriteTest extends TestCase
     private $targetNote = null;
 
 
-    function setUp(): void
-    {
-        parent::setUp();
-
-
-        $user = User::factory()->create();
-        $this->targetNote = $user->notes()->save(Note::factory()->make());
-    }
+    
 
     function testFavorite()
     {
