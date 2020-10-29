@@ -19,17 +19,17 @@ class NoteService
         $url = $request->only('url');
         
         $summary = Summary::where('url', '=', $url)->first();
-        if(isset($summary)){
+        if(!isset($summary)){
             $summary = new Summary($url);
+            $summary->loadSummary();
             $summary->save();
         }
 
-        $note = new Note;
-        $note->text = $request->only('text');
-        $note->associate($user);
-        $note->associate($summary);
+        $createdNote = $user->notes()->create([
+            'text' => $request->input('text'),
+            'summary_id' => $summary->id
+        ]);
 
-        $createdNote = $note->save();
 
         $reqTags = $request->only('tags');
 
