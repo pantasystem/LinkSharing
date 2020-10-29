@@ -87,6 +87,8 @@ Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote'
 
 Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
 
+Route::get('csrf', [HomeController::class, 'csrfToken']);
+
 
 
 

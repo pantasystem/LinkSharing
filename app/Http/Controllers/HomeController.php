@@ -51,5 +51,8 @@ class HomeController extends Controller
     }
 
     
+    public function csrfToken(){
+        return csrf_token();
+    }
 
 }
