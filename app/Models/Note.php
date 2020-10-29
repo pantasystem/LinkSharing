@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Tag;
 use App\Models\Summary;
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Note extends Model
 {
@@ -21,6 +22,10 @@ class Note extends Model
 
     protected $hidden = [
         'pivot'
+    ];
+
+    protected $casts = [
+        'is_favorited' => 'boolean'
     ];
 
     function author(){
@@ -55,6 +60,18 @@ class Note extends Model
     function favoriteCount()
     {
         return $this->favoritedUsers()->count();
+    }
+
+    public function scopeIsFavorite($query, User $user)
+    {
+        $relation = Relation::noConstraints(function () {
+            return $this->favoritedUsers();
+        });
+        $q = $this->favoritedUsers()->getRelationExistenceCountQuery(
+            $relation->getRelated()->where('user_id', $user->id)->newQuery(), $query
+        );
+
+        $query->selectSub($q->toBase(), 'is_favorited');
     }
 
     function scopeWithFavoriteCount($query)

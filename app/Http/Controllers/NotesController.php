@@ -42,7 +42,10 @@ class NotesController extends Controller
     {
         $user = Auth::user();
 
-        return $user->timeline()->with(['author', 'tags', 'summary'])->simplePaginate(30);
+        return $user->timeline()->with(['author', 'tags', 'summary'])->isFavorite($user)->simplePaginate(30);
+        /*return $user->timeline()->with(['author', 'tags', 'summary', 'favoritedUsers as my_favorite' => function($query)use($user){
+            $query->where('user_id', '=', $user->id);
+        }])->get();*/
     }
 
     function get($noteId)
