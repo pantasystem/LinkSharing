@@ -22,6 +22,8 @@ class FavoritesController extends Controller
             'user_id' => $user->id
         ]);
 
+        return $created;
+
         //$service->create($user, $created);
 
     }
@@ -31,6 +33,8 @@ class FavoritesController extends Controller
         $user = Auth::user();
 
         $user->favoritedNotes()->detach($noteId);
+
+        return [ 'user_id' => $user->id, 'note_id' => $noteId ];
     }
 
     function isFavorited($noteId)

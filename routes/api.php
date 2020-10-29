@@ -35,7 +35,7 @@ Route::get('me', [HomeController::class, 'me']);
 
     Route::delete('notes/{noteId}', [NotesController::class, 'delete']);
 
-    Route::put('notes/{noteId}/favorites', [FavoritesController::class, 'favorite']);
+    Route::post('notes/{noteId}/favorites', [FavoritesController::class, 'favorite']);
     Route::delete('notes/{noteId}/favorites', [FavoritesController::class, 'unfavorite']);
     Route::get('notes/{noteId}/favorites/my-favorite', [FavoritesController::class, 'isFavorited']);
 
