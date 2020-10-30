@@ -5,7 +5,9 @@ export default new Vuex.Store({
     namespaced: true,
 
     state:{
-
+        account: null,
+        notes: [],
+        
     },
     getters:{
 
@@ -16,6 +18,6 @@ export default new Vuex.Store({
     },
 
     actions: {
-        
+
     }
 });

@@ -11,7 +11,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 var _default = new _vuex["default"].Store({
   namespaced: true,
-  state: {},
+  state: {
+    account: null,
+    notes: []
+  },
   getters: {},
   mutations: {},
   actions: {}
