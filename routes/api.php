@@ -11,6 +11,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NotificationController;
 use App\Models\User;
+use App\Http\Controllers\Auth\RegisterController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -88,6 +89,8 @@ Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'sh
 
 Route::get('csrf', [HomeController::class, 'csrfToken']);
 
+Route::post('register', [RegisterController::class, 'register']);
+
 Route::post('login', function (Request $request) {
     //return "Hoge";
     $request->validate([
@@ -107,6 +110,7 @@ Route::post('login', function (Request $request) {
     return $user->createToken($request->device_name)->plainTextToken;
     //return "hoge";
 });
+
 
 
 
