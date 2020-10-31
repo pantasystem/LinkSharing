@@ -10,7 +10,7 @@ use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NotificationController;
-
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,12 +22,12 @@ use App\Http\Controllers\NotificationController;
 |
 */
 
-Route::middleware('auth:web')->get('/user', function (Request $request) {
+Route::middleware('auth:airlock')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
-Route::middleware('auth:web')->group(function() {
+Route::middleware('auth:airlock')->group(function() {
 Route::get('me', [HomeController::class, 'me']);
 
     Route::post('notes', [NotesController::class, 'create']);
@@ -55,7 +55,6 @@ Route::get('me', [HomeController::class, 'me']);
 
 
 });
-Auth::routes();
 
 
 
@@ -88,6 +87,26 @@ Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote'
 Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
 
 Route::get('csrf', [HomeController::class, 'csrfToken']);
+
+Route::post('login', function (Request $request) {
+    //return "Hoge";
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+        'device_name' => 'required',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    return $user->createToken($request->device_name)->plainTextToken;
+    //return "hoge";
+});
 
 
 

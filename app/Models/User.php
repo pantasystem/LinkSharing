@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Note;
 use App\Models\FollowingUser;
 use App\Models\Comment;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    use HasApiTokens;
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     /**
