@@ -23,12 +23,12 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-Route::middleware('auth:airlock')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
-Route::middleware('auth:airlock')->group(function() {
+Route::middleware('auth:sanctum')->group(function() {
 Route::get('me', [HomeController::class, 'me']);
 
     Route::post('notes', [NotesController::class, 'create']);
