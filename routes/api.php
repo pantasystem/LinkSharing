@@ -12,6 +12,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NotificationController;
 use App\Models\User;
 use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Validation\ValidationException;
+    
 /*
 |--------------------------------------------------------------------------
 | API Routes
