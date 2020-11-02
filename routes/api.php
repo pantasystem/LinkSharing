@@ -107,7 +107,9 @@ Route::post('login', function (Request $request) {
         ]);
     }
 
-    return $user->createToken($request->device_name)->plainTextToken;
+    $token = $user->createToken($request->device_name)->plainTextToken;
+
+    return [ "token" => $token ];
     //return "hoge";
 });
 
