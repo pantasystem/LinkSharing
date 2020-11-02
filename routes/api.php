@@ -13,7 +13,8 @@ use App\Http\Controllers\NotificationController;
 use App\Models\User;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Validation\ValidationException;
-    
+use App\Http\Controllers\Auth\LoginController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -93,6 +94,8 @@ Route::get('csrf', [HomeController::class, 'csrfToken']);
 
 Route::post('register', [RegisterController::class, 'register']);
 
+Route::post('login', [LoginController::class, 'login']);
+/*
 Route::post('login', function (Request $request) {
     //return "Hoge";
     $request->validate([
@@ -114,7 +117,7 @@ Route::post('login', function (Request $request) {
     return [ "token" => $token ];
     //return "hoge";
 });
-
+*/
 
 
 

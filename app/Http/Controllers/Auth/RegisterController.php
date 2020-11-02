@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-
+use App\Http\Requests\CreateUserRequest;
 
 class RegisterController extends Controller
 {
@@ -78,14 +78,10 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(CreateUserRequest $request)
     {
-        $validated = $this->validator($request->all());//->validate();
 
-        if(count($validated->errors())){
-
-            return $validated->errors();
-        }
+        
 
         $res = DB::transaction(function() use ($request){
             $user = $this->create($request->all());
