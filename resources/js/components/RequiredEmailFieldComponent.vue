@@ -26,14 +26,14 @@ export default {
             required: false,
 
         },
-        value: {
+        input: {
             type: 'String',
             required: false,
         },
     },
     methods: {
         onInput(event){
-            this.$emit('onInput');
+            this.$emit('input');
         }
     }
 }
