@@ -1,5 +1,6 @@
-const mix = require('laravel-mix');
+"use strict";
 
+var mix = require('laravel-mix');
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -10,6 +11,7 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+
 mix.sourceMaps().js('node_modules/popper.js/dist/popper.js', 'public/js').sourceMaps();
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+mix.js('resources/js/app.js', 'public/js').sass('resources/sass/app.scss', 'public/css');

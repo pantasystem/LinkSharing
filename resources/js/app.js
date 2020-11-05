@@ -21,7 +21,6 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login-page', require('./pages/LoginPage.vue').default);
-Vue.component('text-field', require('./components/TextFieldComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -31,7 +30,4 @@ Vue.component('text-field', require('./components/TextFieldComponent.vue').defau
 
 const app = new Vue({
     el: '#app',
-    mounted() {
-        console.log("this is app.js");
-    }
 });

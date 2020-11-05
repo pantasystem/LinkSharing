@@ -20,7 +20,6 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue')["default"]);
 Vue.component('login-page', require('./pages/LoginPage.vue')["default"]);
-Vue.component('text-field', require('./components/TextFieldComponent.vue')["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -28,8 +27,5 @@ Vue.component('text-field', require('./components/TextFieldComponent.vue')["defa
  */
 
 var app = new Vue({
-  el: '#app',
-  mounted: function mounted() {
-    console.log("this is app.js");
-  }
+  el: '#app'
 });

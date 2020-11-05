@@ -7,7 +7,7 @@
 
                 <div class="card-body">
                     <form v-on:submit.prevent="doLogin">
-                                <!--<required-email-field v-bind:text="email" ></required-email-field>-->
+                
                         <text-field 
                             hint="メールアドレス" 
                             :error="errors.email" 
@@ -30,8 +30,7 @@
                                 </button>
                             </div>
                         </div>
-                        <textarea type="text" v-model="deviceName"/>
-                                {{ deviceName }}
+                        
 
                     </form>            
                     
@@ -47,39 +46,29 @@
 
 </template>
 <script>
-import RequiredEmailFieldCompoent from './../components/RequiredEmailFieldComponent';
 import TextFieldComponent from './../components/TextFieldComponent';
 
 export default {
     
     components: {
-        'required-email-field': RequiredEmailFieldCompoent,
         'text-field': TextFieldComponent
     },
-    data: function(){
+    data(){
         return {
             errors: {
                 'email': '',
                 'password': '',
-                'device_name': ''  
             },
-            email: 'hogehogehogepi',
+            email: '',
             password: '',
-            deviceName: 'deviceName'
                         
         };
     },
     methods: {
-        onInputEmail($event){
-            console.log("入力を受けた:" + $event.target.value);
-            //this.$emit('input', $event.data);
-        },
+        
         doLogin(){
 
         }
-    },
-    mounted(){
-        console.log("mounted");
     }
 }
 </script>
