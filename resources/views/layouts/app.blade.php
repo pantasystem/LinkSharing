@@ -28,7 +28,7 @@
 <body>
     <div id="app">
         <example-component></example-component>
-        <text-field></text-field>
+        <login-page></login-page>
     </div>
     <script src="{{ mix('/js/app.js') }}" defer></script>
 </body>

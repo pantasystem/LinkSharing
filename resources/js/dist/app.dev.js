@@ -19,7 +19,8 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue')["default"]);
-Vue.component('text-field', required('./components/TextFieldComponent.vue')["default"]);
+Vue.component('login-page', require('./pages/LoginPage.vue')["default"]);
+Vue.component('text-field', require('./components/TextFieldComponent.vue')["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

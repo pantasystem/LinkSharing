@@ -1,6 +1,6 @@
 <template>
 <div class="form-group row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <label v-if="hint" for="input-text-field" class="text-md-left">{{ hint }}</label>
 
         <input 
@@ -8,16 +8,17 @@
             :type="type"
             class="form-control" 
             :class="{ 'is-invalid': error }" 
-            :value="error" 
             :placeholder="hint"
             
-            @input="onChanged"
             :required="required"
             :autofocus="autofocus"
 
             :autocomplete="autocomplete"
+            v-on:input="$emit('input', $event.target.value)"
+            v-bind:value="value"
+
             
-        >
+        />
         <!--
             
             -->
@@ -30,42 +31,6 @@
 </template>
 <script>
 export default {
-    //props: {
-        /*error: {
-            type: 'String',
-            default: '',
-            required: false
-        },*/
-        /*required: {
-            type: 'Boolean',
-            default: false,
-            required: false
-
-        },
-        autofocus: {
-            type: 'Boolean',
-            default: false,
-            required: false
-        },
-        type: {
-            type: 'String',
-            default: 'text',
-            required: false
-        },*/
-        /*hint: {
-            
-            type: 'String',
-            default: '',
-            required: false
-        },*/
-        /*autocomplete: {
-            type: 'String',
-            default: 'on',
-            required: false
-        }*/
-
-    //},
-    //props: ['hint', 'error', 'type'],
     props: {
         hint: {
             type: String,
@@ -93,12 +58,17 @@ export default {
         },
         autocomplete: {
             type: String,
-            default: 'on',
+            default: 'off',
+            required: false
+        },
+        value: {
+            type: String,
             required: false
         }
     },
     methods: {
         onChanged(event){
+            console.log(event.target.value);
             this.$emit('change', event.target.value);
         }
     },
