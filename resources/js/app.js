@@ -6,6 +6,7 @@
 
 require('./bootstrap');
 import Vue from 'vue';
+import router from './router.js';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
@@ -37,6 +38,7 @@ Vue.component('login-page', require('./pages/LoginPage.vue').default);
  
 const app = new Vue({
     el: '#app',
-    store: store
+    store: store,
+    router: router
 });
 

@@ -2,6 +2,8 @@
 
 var _vue = _interopRequireDefault(require("vue"));
 
+var _router = _interopRequireDefault(require("./router.js"));
+
 var _vuex = _interopRequireDefault(require("vuex"));
 
 var _store = _interopRequireDefault(require("./store"));
@@ -40,5 +42,6 @@ _vue["default"].component('login-page', require('./pages/LoginPage.vue')["defaul
 
 var app = new _vue["default"]({
   el: '#app',
-  store: _store["default"]
+  store: _store["default"],
+  router: _router["default"]
 });
