@@ -41,6 +41,8 @@ _vue["default"].component('login-page', require('./pages/LoginPage.vue')["defaul
 _vue["default"].component('register-page', _RegisterPage["default"]["default"]);
 
 _vue["default"].component('header-component', _HeaderComponent["default"]);
+
+_vue["default"].component('app-component', require('./pages/App.vue')["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

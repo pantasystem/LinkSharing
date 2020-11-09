@@ -32,6 +32,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('login-page', require('./pages/LoginPage.vue').default);
 Vue.component('register-page', RegisterPage.default);
 Vue.component('header-component', HeaderComponent);
+Vue.component('app-component', require('./pages/App.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
