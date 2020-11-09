@@ -6,7 +6,7 @@
                 <div class="card-header">ログイン</div>
 
                 <div class="card-body">
-                    <form v-on:submit.prevent="doLogin">
+                    <form v-on:submit.prevent="loginAccount">
                 
                         <text-field 
                             hint="メールアドレス" 
@@ -21,7 +21,8 @@
                             :error="errors.email" 
                             type="password"
                             :required="true"
-                            :autofocus="false"></text-field>
+                            :autofocus="false"
+                            v-model="password"></text-field>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-12 offset-md-9">
@@ -46,6 +47,7 @@
 
 </template>
 <script>
+import { mapActions } from 'vuex';
 import TextFieldComponent from './../components/TextFieldComponent';
 
 export default {
@@ -66,8 +68,20 @@ export default {
     },
     methods: {
         
-        doLogin(){
-
+        loginAccount(){
+            let email = this.email;
+            let password = this.password;
+            let req = {
+                email, password
+            };
+            console.log("email, password" + JSON.stringify(req));
+            let res = this.$store.dispatch("login", req);
+            res.then((response)=>{
+                console.log("レスポンスが来た");
+                console.log(response);
+            }).catch((e)=>{
+                console.log(e);
+            });
         }
     }
 }

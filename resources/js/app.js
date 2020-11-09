@@ -5,8 +5,14 @@
  */
 
 require('./bootstrap');
+import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
 
-window.Vue = require('vue');
+import store from './store';
+
+window.Vue = Vue;
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -28,6 +34,9 @@ Vue.component('login-page', require('./pages/LoginPage.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ 
 const app = new Vue({
     el: '#app',
+    store: store
 });
+
