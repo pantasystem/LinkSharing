@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router';
 import Vue from 'vue';
 import LoginPage from './pages/LoginPage.vue';
-import RegisterPage from './pages/RegsiterPage.vue';
+import RegisterPage from './pages/RegisterPage.vue';
 
 Vue.use(VueRouter);
 
@@ -17,7 +17,7 @@ export default new VueRouter({
         {
             path: '/register',
             name: 'register',
-            compoennt: RegisterPage
+            component: RegisterPage
         }
     ]
 });

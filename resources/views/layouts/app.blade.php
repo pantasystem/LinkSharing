@@ -26,8 +26,9 @@
 </head>
 <body>
     <div id="app">
-        <example-component></example-component>
-        <login-page></login-page>
+        <main class="py-4">
+            <router-view/>
+        </main>
     </div>
     <script src="{{ mix('/js/app.js') }}" defer></script>
 </body>

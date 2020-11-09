@@ -11,7 +11,7 @@ var _vue = _interopRequireDefault(require("vue"));
 
 var _LoginPage = _interopRequireDefault(require("./pages/LoginPage.vue"));
 
-var _RegsiterPage = _interopRequireDefault(require("./pages/RegsiterPage.vue"));
+var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -26,7 +26,7 @@ var _default = new _vueRouter["default"]({
   }, {
     path: '/register',
     name: 'register',
-    compoennt: _RegsiterPage["default"]
+    component: _RegisterPage["default"]
   }]
 });
 

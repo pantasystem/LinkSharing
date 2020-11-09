@@ -8,6 +8,8 @@ var _vuex = _interopRequireDefault(require("vuex"));
 
 var _store = _interopRequireDefault(require("./store"));
 
+var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
@@ -33,6 +35,8 @@ window.Vue = _vue["default"];
 _vue["default"].component('example-component', require('./components/ExampleComponent.vue')["default"]);
 
 _vue["default"].component('login-page', require('./pages/LoginPage.vue')["default"]);
+
+_vue["default"].component('register-page', _RegisterPage["default"]["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

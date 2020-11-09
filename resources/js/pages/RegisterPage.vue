@@ -36,6 +36,13 @@
                                 hint="パスワードの確認"
                                 :error="errors.password"
                             />
+                            <div class="form-group row mb-0">
+                                <div class="col-md-12 offset-md-9">
+                                    <button type="submit" class="btn btn-primary">
+                                        登録
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -45,7 +52,7 @@
     </div>
 </template>
 <script>
-import TextFieldComponent from '../components/TextFieldComponent';
+import TextFieldComponent from '../components/TextFieldComponent.vue';
 export default {
     data(){
         return {

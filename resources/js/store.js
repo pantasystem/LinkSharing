@@ -35,7 +35,7 @@ export default new Vuex.Store({
                     user_name: req.userName, 
                     password: req.password,
                     password_confirmation: req.confirmPassword,
-                    deviceName: 'Client' 
+                    device_name: 'Client' 
                 }
             );
             if(response.data){
