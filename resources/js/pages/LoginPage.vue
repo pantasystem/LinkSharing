@@ -77,6 +77,7 @@ export default {
             res.then((response)=>{
                 console.log("レスポンスが来た");
                 this.errors = {};
+                this.$router.push("/");
             }).catch((e)=>{
                 console.log(e.response);
                 let errors = e.response.data.errors;

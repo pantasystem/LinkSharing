@@ -75,6 +75,8 @@ export default {
         register(){
             this.$store.dispatch('register', this).then((response)=>{
                 console.log("アカウント作成完了");
+                this.$router.push("/");
+
             }).catch((e)=>{
                 console.log("エラー発生" + JSON.stringify(e.response));
                 let errors = e.response.data.errors;
