@@ -24,13 +24,19 @@ export default new Vuex.Store({
     },
 
     actions: {
-        async createAccount(
+        async register(
             { commit }, 
-            { email, userName, password, confirmPassword}
+            req,
         ){
             const response = await axios.post(
                 '/api/register',
-                { email, userName, password, confirmPassword, deviceName: 'Client' }
+                { 
+                    email: req.email, 
+                    user_name: req.userName, 
+                    password: req.password,
+                    password_confirmation: req.confirmPassword,
+                    deviceName: 'Client' 
+                }
             );
             if(response.data){
                 commit("setAccount", response.data);

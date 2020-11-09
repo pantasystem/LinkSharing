@@ -16,14 +16,25 @@
                                 :error="errors.email"
                             />
                             <text-field 
-                                v-bind:input="inputUserName"
-                                :value="userName"
+                                v-model="userName"
                                 :required="true"
                                 hint="ユーザー名"
                                 :error="errors.userName"
                             />
                             <text-field
+                                v-model="password"
+                                type="password"
+                                :required="true"
+                                hint="パスワード"
+                                :error="errors.password"
                                 
+                            />
+                            <text-field
+                                v-model="confirmPassword"
+                                type="password"
+                                :required="true"
+                                hint="パスワードの確認"
+                                :error="errors.password"
                             />
                         </form>
                     </div>
@@ -42,7 +53,6 @@ export default {
                 email: '',
                 userName: '',
                 password: '',
-                confirmPassword: ''
             },
             email: '',
             userName: '',
@@ -56,7 +66,22 @@ export default {
     },
     methods: {
         register(){
-
+            this.$store.dispatch('register', this).then((response)=>{
+                console.log("アカウント作成完了");
+            }).catch((e)=>{
+                console.log("エラー発生" + JSON.stringify(e.response));
+                let data = e.response.data.errors;
+                if(data.email){
+                    this.errors.email = data.email[0];
+                }
+                if(data.password){
+                    this.errors.password = data.password[0];
+                }
+                
+                if(data.user_name){
+                    this.errors.userName = data.user_name[0];
+                }
+            });
         },
         inputUserName(userName){
             this.userName = userName;

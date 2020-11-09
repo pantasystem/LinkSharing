@@ -37,24 +37,23 @@ var _default = new _vuex["default"].Store({
     }
   },
   actions: {
-    createAccount: function createAccount(_ref2, _ref3) {
-      var commit, email, userName, password, confirmPassword, response;
-      return regeneratorRuntime.async(function createAccount$(_context) {
+    register: function register(_ref2, req) {
+      var commit, response;
+      return regeneratorRuntime.async(function register$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               commit = _ref2.commit;
-              email = _ref3.email, userName = _ref3.userName, password = _ref3.password, confirmPassword = _ref3.confirmPassword;
-              _context.next = 4;
+              _context.next = 3;
               return regeneratorRuntime.awrap(_axios["default"].post('/api/register', {
-                email: email,
-                userName: userName,
-                password: password,
-                confirmPassword: confirmPassword,
+                email: req.email,
+                user_name: req.userName,
+                password: req.password,
+                password_confirmation: req.confirmPassword,
                 deviceName: 'Client'
               }));
 
-            case 4:
+            case 3:
               response = _context.sent;
 
               if (response.data) {
@@ -63,20 +62,20 @@ var _default = new _vuex["default"].Store({
 
               return _context.abrupt("return", response);
 
-            case 7:
+            case 6:
             case "end":
               return _context.stop();
           }
         }
       });
     },
-    login: function login(_ref4, req) {
+    login: function login(_ref3, req) {
       var commit, data, res;
       return regeneratorRuntime.async(function login$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref4.commit;
+              commit = _ref3.commit;
               data = _objectSpread({}, req, {
                 device_name: 'Web Client'
               });
