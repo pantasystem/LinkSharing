@@ -12,6 +12,7 @@ Vue.use(Vuex);
 
 import store from './store';
 import RegisterPage from './pages/RegisterPage.vue';
+import HeaderComponent from './components/HeaderComponent.vue';
 
 window.Vue = Vue;
 
@@ -30,6 +31,7 @@ window.Vue = Vue;
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login-page', require('./pages/LoginPage.vue').default);
 Vue.component('register-page', RegisterPage.default);
+Vue.component('header-component', HeaderComponent);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -26,6 +26,7 @@
 </head>
 <body>
     <div id="app">
+        <header-component />
         <main class="py-4">
             <router-view/>
         </main>

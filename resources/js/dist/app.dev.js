@@ -10,6 +10,8 @@ var _store = _interopRequireDefault(require("./store"));
 
 var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
 
+var _HeaderComponent = _interopRequireDefault(require("./components/HeaderComponent.vue"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
@@ -37,6 +39,8 @@ _vue["default"].component('example-component', require('./components/ExampleComp
 _vue["default"].component('login-page', require('./pages/LoginPage.vue')["default"]);
 
 _vue["default"].component('register-page', _RegisterPage["default"]["default"]);
+
+_vue["default"].component('header-component', _HeaderComponent["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
