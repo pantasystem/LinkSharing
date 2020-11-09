@@ -18,7 +18,7 @@
                             ></text-field>
                         <text-field 
                             hint="パスワード" 
-                            :error="errors.email" 
+                            :error="errors.password" 
                             type="password"
                             :required="true"
                             :autofocus="false"
@@ -78,9 +78,17 @@ export default {
             let res = this.$store.dispatch("login", req);
             res.then((response)=>{
                 console.log("レスポンスが来た");
-                console.log(response);
+                this.errors = {};
             }).catch((e)=>{
-                console.log(e);
+                console.log(e.response);
+                let errors = e.response.data.errors;
+                if(errors.password){
+                    this.errors.password = errors.password[0];
+                }
+                if(errors.email){
+                    this.errors.email = errors.email[0];
+                }
+                console.log(this.errors);
             });
         }
     }

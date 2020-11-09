@@ -32,24 +32,28 @@ export default new Vuex.Store({
                 '/api/register',
                 { email, userName, password, confirmPassword, deviceName: 'Client' }
             );
-            commit("setAccount", response.data);
+            if(response.data){
+                commit("setAccount", response.data);
+            }
             return response;
         },
 
         async login({ commit }, req){
             
-            data = {
+            let data = {
                 ...req,
                 device_name: 'Web Client'
             };
 
-            const response = await axios.post(
+            const res = await axios.post(
                 '/api/login',
                 data
             );
-            commit("setAccount", response.data);
-            console.log(response);
-            return response;
+            if (res.data) {
+                commit("setAccount", res.data);
+            }
+            return res;
+            
         },
 
 

@@ -56,7 +56,11 @@ var _default = new _vuex["default"].Store({
 
             case 4:
               response = _context.sent;
-              commit("setAccount", response.data);
+
+              if (response.data) {
+                commit("setAccount", response.data);
+              }
+
               return _context.abrupt("return", response);
 
             case 7:
@@ -67,7 +71,7 @@ var _default = new _vuex["default"].Store({
       });
     },
     login: function login(_ref4, req) {
-      var commit, response;
+      var commit, data, res;
       return regeneratorRuntime.async(function login$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -80,12 +84,15 @@ var _default = new _vuex["default"].Store({
               return regeneratorRuntime.awrap(_axios["default"].post('/api/login', data));
 
             case 4:
-              response = _context2.sent;
-              commit("setAccount", response.data);
-              console.log(response);
-              return _context2.abrupt("return", response);
+              res = _context2.sent;
 
-            case 8:
+              if (res.data) {
+                commit("setAccount", res.data);
+              }
+
+              return _context2.abrupt("return", res);
+
+            case 7:
             case "end":
               return _context2.stop();
           }
