@@ -24,13 +24,11 @@
                             :autofocus="false"
                             v-model="password"></text-field>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-12 offset-md-9">
-                                <button type="submit" class="btn btn-primary">
-                                    ログイン
-                                </button>
-                            </div>
-                        </div>
+                        <router-link class="btn btn-link btn-lg btn-block" to="/register">登録</router-link>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">
+                            ログイン
+                        </button>
+                        
                         
 
                     </form>            

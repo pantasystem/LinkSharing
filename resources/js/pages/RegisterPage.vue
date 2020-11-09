@@ -1,9 +1,10 @@
 <template>
     <div class="container">
-        <div class="row justify-content">
+        <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
+                        登録
                     </div>
                     <div class="card-body">
                         <form v-on:submit.prevent="register">
@@ -36,13 +37,12 @@
                                 hint="パスワードの確認"
                                 :error="errors.password"
                             />
-                            <div class="form-group row mb-0">
-                                <div class="col-md-12 offset-md-9">
-                                    <button type="submit" class="btn btn-primary">
-                                        登録
-                                    </button>
-                                </div>
-                            </div>
+
+                            <router-link class="btn btn-link btn-lg btn-block" to="/login">ログイン</router-link>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                登録
+                            </button>
+                            
                         </form>
                     </div>
                 </div>
@@ -77,17 +77,12 @@ export default {
                 console.log("アカウント作成完了");
             }).catch((e)=>{
                 console.log("エラー発生" + JSON.stringify(e.response));
-                let data = e.response.data.errors;
-                if(data.email){
-                    this.errors.email = data.email[0];
-                }
-                if(data.password){
-                    this.errors.password = data.password[0];
-                }
+                let errors = e.response.data.errors;
                 
-                if(data.user_name){
-                    this.errors.userName = data.user_name[0];
-                }
+                this.errors.email = errors.email ? errors.email[0] : ''
+                this.errors.password = errors.password ? errors.password[0] : ''
+                this.errors.userName = errors.user_name ? errors.user_name[0] : ''
+                
             });
         },
         inputUserName(userName){
