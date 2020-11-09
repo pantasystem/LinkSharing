@@ -15,6 +15,8 @@ var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
 
 var _HomePage = _interopRequireDefault(require("./pages/HomePage.vue"));
 
+var _store = _interopRequireDefault(require("./store"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].use(_vueRouter["default"]);
@@ -24,7 +26,14 @@ var _default = new _vueRouter["default"]({
   routes: [{
     path: '/',
     component: _HomePage["default"],
-    name: 'home'
+    name: 'home',
+    beforeEnter: function beforeEnter(to, from, next) {
+      if (_store["default"].state.token == null) {
+        next('/login');
+      } else {
+        next();
+      }
+    }
   }, {
     path: '/login',
     name: 'login',

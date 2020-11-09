@@ -79,7 +79,7 @@ export default {
                 this.errors = {};
                 this.$router.push("/");
             }).catch((e)=>{
-                console.log(e.response);
+                console.log(e);
                 let errors = e.response.data.errors;
                 if(errors.password){
                     this.errors.password = errors.password[0];

@@ -11,6 +11,8 @@ var _vue = _interopRequireDefault(require("vue"));
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _lodash = require("lodash");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -25,7 +27,7 @@ var _default = new _vuex["default"].Store({
   namespaced: true,
   state: {
     user: null,
-    token: null
+    token: localStorage.getItem("token")
   },
   getters: {},
   mutations: {
@@ -34,6 +36,9 @@ var _default = new _vuex["default"].Store({
           user = _ref.user;
       state.user = user;
       state.token = token;
+    },
+    setToken: function setToken(_state, token) {
+      localStorage.setItem('token', token);
     }
   },
   actions: {
@@ -57,6 +62,7 @@ var _default = new _vuex["default"].Store({
               response = _context.sent;
 
               if (response.data) {
+                this.localStorage.setItem("token", response.data.token);
                 commit("setAccount", response.data);
               }
 
@@ -67,7 +73,7 @@ var _default = new _vuex["default"].Store({
               return _context.stop();
           }
         }
-      });
+      }, null, this);
     },
     login: function login(_ref3, req) {
       var commit, data, res;
@@ -86,6 +92,7 @@ var _default = new _vuex["default"].Store({
               res = _context2.sent;
 
               if (res.data) {
+                localStorage.setItem("token", res.data.token);
                 commit("setAccount", res.data);
               }
 
@@ -97,6 +104,57 @@ var _default = new _vuex["default"].Store({
           }
         }
       });
+    },
+    loadMe: function loadMe(_ref4) {
+      var commit, token, res, account;
+      return regeneratorRuntime.async(function loadMe$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              commit = _ref4.commit;
+              console.log(this.state);
+              token = this.state.token;
+
+              if (!token) {
+                token = localStorage.getItem("token");
+                commit('setAccount', {
+                  token: token,
+                  user: null
+                });
+              }
+
+              console.log("token: ".concat(token));
+              _context3.next = 7;
+              return regeneratorRuntime.awrap(_axios["default"].get('/api/me', {
+                headers: {
+                  Authorization: "Bearer ".concat(token)
+                }
+              }));
+
+            case 7:
+              res = _context3.sent;
+
+              if (!(res.status == 200)) {
+                _context3.next = 12;
+                break;
+              }
+
+              account = {
+                token: token,
+                user: res.data
+              };
+              commit("setAccount", account);
+              return _context3.abrupt("return", account);
+
+            case 12:
+              return _context3.abrupt("return", null);
+
+            case 13:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, null, this);
     }
   }
 });

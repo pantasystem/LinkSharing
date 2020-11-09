@@ -1,6 +1,7 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import axios from 'axios';
+import { reject } from 'lodash';
 
 Vue.use(Vuex);
 
@@ -9,7 +10,7 @@ export default new Vuex.Store({
 
     state:{
         user: null,
-        token: null,
+        token: localStorage.getItem("token"),
         
     },
     getters:{
@@ -20,6 +21,10 @@ export default new Vuex.Store({
         setAccount(state, { token, user }){
             state.user = user;
             state.token = token;
+        },
+        
+        setToken(_state, token){
+            localStorage.setItem('token', token);
         }
     },
 
@@ -39,6 +44,7 @@ export default new Vuex.Store({
                 }
             );
             if(response.data){
+                this.localStorage.setItem("token", response.data.token);
                 commit("setAccount", response.data);
             }
             return response;
@@ -55,12 +61,48 @@ export default new Vuex.Store({
                 '/api/login',
                 data
             );
+
             if (res.data) {
+                localStorage.setItem("token", res.data.token);
+
                 commit("setAccount", res.data);
             }
             return res;
             
         },
+
+        async loadMe({ commit }){
+            console.log(this.state);
+            let token = this.state.token;
+            if( ! token){
+                token = localStorage.getItem("token");
+                commit(
+                    'setAccount',
+                    { 
+                        token: token,
+                        user: null
+                    }
+                );
+            }
+        
+
+            console.log(`token: ${token}`);
+            const res = await axios.get(
+                '/api/me',
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+            if (res.status == 200) {
+                let account = {
+                    token: token,
+                    user: res.data
+                };
+                commit("setAccount", account);
+                return account;
+            }
+            return null;
+        }
 
 
     }
