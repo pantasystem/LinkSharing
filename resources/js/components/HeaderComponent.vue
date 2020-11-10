@@ -5,7 +5,6 @@
                 
                 
 
-            <b-navbar-toggle target="navbarSupportedContent" />
             <b-collapse id="navbarSupportedContent" is-nav>
                 <b-navbar-nav class="mr-auto">
                 </b-navbar-nav>
@@ -24,8 +23,14 @@
                             ログアウト
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
+
                 </b-navbar-nav>
+                
+                
             </b-collapse>
+            <button class="btn btn-primary ml-auto mr-1">投稿</button>
+            <b-navbar-toggle target="navbarSupportedContent" />
+
         </div>
                 
     </b-navbar>
