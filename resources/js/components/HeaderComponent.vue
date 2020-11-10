@@ -1,48 +1,27 @@
 <template>
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <router-link class="navbar-brand" to="/">
-                    Linkboard
-                </router-link>
+    <b-navbar type="light" toggleable="md" class="shadow-sm">
+        <div class="container">
+            <b-navbar-brand to="/">Linkboard</b-navbar-brand>
+                
                 
 
-                <!--トグル-->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <b-navbar-toggle target="navbarSupportedContent" />
+            <b-collapse id="navbarSupportedContent" is-nav>
+                <b-navbar-nav class="mr-auto">
+                </b-navbar-nav>
+                <b-navbar-nav class="ml-auto">
+                    <b-nav-item to="/login" v-if="!isLoggedIn">ログイン</b-nav-item>
+                    <b-nav-item to="/register" v-if="!isLoggedIn">登録</b-nav-item>
+                    <b-nav-item to="/notifications" v-if="isLoggedIn">
+                        <i class="fas fa-bell pull-left" height="100%"></i><span class="nav-link d-md-none d-inline icon-title">通知</span>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        <li class="nav-item" v-if="!isLoggedIn">
-                            <router-link class="nav-link" to="/login">ログイン</router-link>
-                        </li>
-
-                        <li class="nav-item" v-if="!isLoggedIn">
-                            <router-link class="nav-link" to="/register">登録</router-link>
-                        </li>
-
-                        <li class="nav-item">
-                            
-                            
-
-                            <a class="nav-link" v-if="isLoggedIn">
-                                <i class="fas fa-bell pull-left" height="100%"></i><span class="nav-link d-md-none d-inline icon-title">通知</span>
-
-                            </a>
-                        </li>
-                           
-                      
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                    </b-nav-item>
+                </b-navbar-nav>
+            </b-collapse>
+        </div>
+                
+    </b-navbar>
+    
 </template>
 
 <script>
