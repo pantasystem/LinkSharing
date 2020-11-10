@@ -1,24 +1,24 @@
 <template>
-    <a :href="summary.url" target="_blank" class="row">
-        <div class="summary col-4">
-            <img class="img-fluid" :href="summary.image"/>
+    <div class="row media position-relative">
+        <div class="summary col-2">
+            <img class="img-fluid" src="https://icooon-mono.com/i/icon_10968/icon_109680.svg" />
         </div>
 
-        <div class="col-8">
+        <div class="col-10 media-body">
 
-            <div class="single-line">
+            <h5 class="single-line">
                 {{ summary.title }}
-            </div>
+            </h5>
             <div class="single-line" v-if="summary.description">
                 {{ summary.description }}
             </div>
-            <div class="single-line">
+            <a class="url stretched-link" :href="summary.url">
                 {{ summary.url }}
 
-            </div>
+            </a>
         </div>
             
-    </a>
+    </div>
 </template>
 <script>
 export default {
@@ -54,7 +54,7 @@ export default {
 
 .url {
     text-overflow: ellipsis;
-    height: 1em;
+    display: block;
     overflow: hidden;
     white-space: nowrap;
 }
