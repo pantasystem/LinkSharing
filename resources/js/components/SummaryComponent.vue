@@ -1,21 +1,23 @@
 <template>
     <a :href="summary.url" target="_blank" class="row">
-        <div class="summary col-2">
+        <div class="summary col-4">
             <img class="img-fluid" :href="summary.image"/>
-        <div class="col-10">
+        </div>
 
-            <p class="title">
+        <div class="col-8">
+
+            <div class="single-line">
                 {{ summary.title }}
-            </p>
-            <p v-if="summary.description">
+            </div>
+            <div class="single-line" v-if="summary.description">
                 {{ summary.description }}
-            </p>
-            <a class="url text-primary" :href="summary.url">
+            </div>
+            <div class="single-line">
                 {{ summary.url }}
-            </a>
+
+            </div>
         </div>
             
-        </div>
     </a>
 </template>
 <script>
@@ -33,25 +35,24 @@ export default {
     display: flex;
 }
 
-.summary > .summary_thumbnail{
+.summary_thumbnail{
     width: 58px;
     height: 58px;
     margin-right: 8px;
     margin-bottom: 16px;
 }
-.summary > .summary_content{
+.summary_content{
     flex: 1;
 }
 
-.summary > .title{
+
+.single-line{
     text-overflow: ellipsis;
-    height: 1em;
     overflow: hidden;
     white-space: nowrap;
-
 }
 
-.summary > .url {
+.url {
     text-overflow: ellipsis;
     height: 1em;
     overflow: hidden;

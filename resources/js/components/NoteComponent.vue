@@ -19,7 +19,8 @@
                 <p>
                     {{ note.text }}
                 </p>
-                        
+
+                <summary-component :summary="note.summary"/>        
                         
             </div>
             <footer class="nav-note">
@@ -31,7 +32,12 @@
 
 </template>
 <script>
+import SummaryComponent from './SummaryComponent.vue';
+
 export default {
+    components: {
+        'summary-component': SummaryComponent
+    },
     props: {
         note: {
             type: Object,
