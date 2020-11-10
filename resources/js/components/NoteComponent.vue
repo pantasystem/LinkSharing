@@ -1,11 +1,14 @@
 <template>
-    
-    <article class="note-article p-2 .container">
-        <router-link class="avatar_icon" :to="{ name: 'users', params: { userId: note.author.id}}">
-            <img  :src="note.author.avatar_url">
+<div class="contaienr">
+    <article class="note-article row">
+        
+        <router-link class="avatar_icon col-2" :to="{ name: 'users', params: { userId: note.author.id}}" v-if="true">
+            <img class="img-fluid" src="https://image.flaticon.com/icons/png/512/63/63699.png" />
             
         </router-link>
-        <div class="content .container">
+        
+        
+        <div class="content col-10">
             <header>
             <router-link class="user_name" :to="{ name: 'users', params: { userId: note.author.id}}">
                 {{ note.author.user_name }}
@@ -13,7 +16,7 @@
 
             </header>
             <div class="main-content">
-                <p class="col-md-12">
+                <p>
                     {{ note.text }}
                 </p>
                         
@@ -24,6 +27,8 @@
 
         </div>
     </article>
+</div>        
+
 </template>
 <script>
 export default {
@@ -36,9 +41,12 @@ export default {
 }
 </script>
 <style scoped>
+/*
 .note-article{
     display: flex;
 }
+*/
+/*
 .avatar_icon{
     width: 58px;
     height: 58px;
@@ -47,9 +55,11 @@ export default {
     margin-right: 8px;
     margin-bottom: 16px;
     background: gray;
-}
+}*/
+/*
 .content{
     flex: 1;
 }
+*/
 
 </style>
