@@ -8,6 +8,10 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use App\Http\Requests\CreateUserRequest;
 
 class RegisterController extends Controller
 {
@@ -22,7 +26,7 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    //use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -53,6 +57,7 @@ class RegisterController extends Controller
             'user_name' => ['required', 'alpha_dash','alpha_num', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            //'device_name' => ['required', 'max:255']
         ]);
     }
 
@@ -68,7 +73,21 @@ class RegisterController extends Controller
             'user_name' => $data['user_name'],
             'email' => $data['email'],
 
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['password'])
+            
         ]);
+    }
+
+    public function register(CreateUserRequest $request)
+    {
+
+        
+
+        $res = DB::transaction(function() use ($request){
+            $user = $this->create($request->all());
+            $token = $user->createToken($request->input('device_name'));
+            return json_encode(['token' => $token, 'user' => $user]);
+        });
+        return response($res);
     }
 }

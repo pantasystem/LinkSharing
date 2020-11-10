@@ -96,7 +96,7 @@ class Summary extends Model
             $attrs['title'] = $ogTitle[0];
         }
 
-        if(isset($attrs['title'])){
+        if(!isset($attrs['title'])){
             $attrs['title'] = $dom->getElementsByTagName('title')->item(0)->textContent;
         }
 

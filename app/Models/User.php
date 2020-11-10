@@ -8,10 +8,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Note;
 use App\Models\FollowingUser;
+use App\Models\Comment;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    use HasApiTokens;
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     /**
@@ -101,4 +104,13 @@ class User extends Authenticatable
         return $this->withCount(['followers', 'followings', 'notes', 'favoritedNotes']);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'author_id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'subscriber_id');
+    }
 }

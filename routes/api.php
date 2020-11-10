@@ -8,6 +8,12 @@ use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
+use App\Models\User;
+use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +26,12 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Route::middleware('auth:web')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
-Route::middleware('auth:web')->group(function() {
+Route::middleware('auth:sanctum')->group(function() {
 Route::get('me', [HomeController::class, 'me']);
 
     Route::post('notes', [NotesController::class, 'create']);
@@ -33,16 +39,26 @@ Route::get('me', [HomeController::class, 'me']);
 
     Route::delete('notes/{noteId}', [NotesController::class, 'delete']);
 
-    Route::put('notes/{noteId}/favorites', [FavoritesController::class, 'favorite']);
+    Route::post('notes/{noteId}/favorites', [FavoritesController::class, 'favorite']);
     Route::delete('notes/{noteId}/favorites', [FavoritesController::class, 'unfavorite']);
     Route::get('notes/{noteId}/favorites/my-favorite', [FavoritesController::class, 'isFavorited']);
 
     Route::put('users/{userId}', [UsersController::class, 'follow']);
     Route::delete('users/{userId}', [UsersController::class, 'unfollow']);
 
+    Route::post('notes/{noteId}/comments', [CommentController::class, 'replyToNote']);
+    // Route::post('notes/{noteId}/comments/{commentId}', [CommentController::class, 'replyToComment']);
+    Route::delete('notes/{noteId}/comments/{commentId}', [CommentController::class, 'delete']);
+
+    Route::get('notifications', [NotificationController::class, 'notifications']);
+
+    Route::put('notifications/{notificationId}', [ NotificationController::class ,'read']);
+
+    Route::get('notifications/{notificationId}', [NotificationController::class, 'find']);
+
+
 
 });
-Auth::routes();
 
 
 
@@ -67,6 +83,48 @@ Route::get('tags/{name?}', [TagsController::class, 'search']);
 Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
 
 Route::get('notes/{noteId}/favorites', [FavoritesController::class, 'favorites']);
+
+
+Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote']);
+//Route::get('notes/{noteId}/comments/{commentId}/all', [CommentController::class, 'findAllByNoteAndCommentId']);
+
+Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
+
+Route::get('csrf', [HomeController::class, 'csrfToken']);
+
+Route::post('register', [RegisterController::class, 'register']);
+
+Route::post('login', [LoginController::class, 'login']);
+/*
+Route::post('login', function (Request $request) {
+    //return "Hoge";
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+        'device_name' => 'required',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    $token = $user->createToken($request->device_name)->plainTextToken;
+
+    return [ "token" => $token ];
+    //return "hoge";
+});
+*/
+
+
+
+
+
+
+
 
 
 

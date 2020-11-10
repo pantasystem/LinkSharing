@@ -9,43 +9,18 @@ use App\Models\Note;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Summary;
+use App\Services\NoteService;
 
 class NotesController extends Controller
 {
 
 
 
-    function create(CreateNoteRequest $request)
+    function create(NoteService $noteService, CreateNoteRequest $request)
     {
         $user = Auth::user();
 
-        $url = $request->only('url');
-        
-        $summary = Summary::where('url', '=', $url)->first();
-        if(isset($summary)){
-            $summary = new Summary($url);
-            $summary->save();
-        }
-
-        $note = new Note;
-        $note->text = $request->only('text');
-        $note->associate($user);
-        $note->associate($summary);
-
-        $createdNote = $note->save();
-
-        $reqTags = $request->only('tags');
-
-        foreach($reqTags as $reqTag){
-            $tag = Tag::firstOrCreate([
-                'name' => $reqTag
-            ]);
-
-            $tag->notes()->attach($createdNote);
-        }
-
-
-        return Note::with(['author', 'tags', 'summary'])->findOrFail($createdNote->id);
+        return $noteService->create($user, $request);
         
     }
 
@@ -67,7 +42,10 @@ class NotesController extends Controller
     {
         $user = Auth::user();
 
-        return $user->timeline()->with(['author', 'tags', 'summary'])->simplePaginate(30);
+        return $user->timeline()->with(['author', 'tags', 'summary'])->isFavorite($user)->orderBy("id", "desc")->simplePaginate(30);
+        /*return $user->timeline()->with(['author', 'tags', 'summary', 'favoritedUsers as my_favorite' => function($query)use($user){
+            $query->where('user_id', '=', $user->id);
+        }])->get();*/
     }
 
     function get($noteId)
@@ -75,6 +53,17 @@ class NotesController extends Controller
         return Note::withFavoriteCount()->with(['author', 'tags','summary'])->findOrFail($noteId);
     }
 
+    public function searchByTag(Request $request){
+        $builder = Note::with(['author', 'tags', 'summary']);
+
+        $conditions = $request->input('conditions');
+
+        foreach($conditions as $orConditions){
+            $builder = $builder->whereIn('name', $orConditions);
+        }
+
+        return $builder->simplePaginate(30);
+    }
 
 
 }

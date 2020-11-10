@@ -16,7 +16,7 @@ class TagsController extends Controller
     {
         
         return Tag::where('name', 'like', "%{$request->name}%")
-            ->orderBy('name', 'asc')->paginate(30);
+            ->orderBy('name', 'asc')->simplePaginate(30);
         
     }
 }

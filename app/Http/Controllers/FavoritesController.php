@@ -5,16 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Note;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Favorite;
+use App\Services\NotificationService;
 
 class FavoritesController extends Controller
 {
     
-    function favorite($noteId)
+    function favorite(NotificationService $service, $noteId)
     {
         $user = Auth::user();
 
-        $user->favoritedNotes()->attach($noteId);
+        $note = Note::findOrFail($noteId);
+
+        $created = Favorite::create([
+            'note_id' => $note ->id,
+            'user_id' => $user->id
+        ]);
+
+        return $created;
+
+        //$service->create($user, $created);
+
     }
 
     function unfavorite($noteId)
@@ -22,6 +33,8 @@ class FavoritesController extends Controller
         $user = Auth::user();
 
         $user->favoritedNotes()->detach($noteId);
+
+        return [ 'user_id' => $user->id, 'note_id' => $noteId ];
     }
 
     function isFavorited($noteId)

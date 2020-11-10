@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\SummaryLoader;
 use App\Models\Hoge;
 use App\Models\Summary;
+use App\Facades\Notification;
+use App\Services\NotificationService;
 
 class HomeController extends Controller
 {
@@ -23,7 +25,10 @@ class HomeController extends Controller
     }
 
     public function test(){
-        return "Hello world";
+        //$service->setMessage("set by HomeController");
+        //$service = app()->make("HogeService");
+        //return $service->message();
+
     }
 
     public function me(){
@@ -46,5 +51,8 @@ class HomeController extends Controller
     }
 
     
+    public function csrfToken(){
+        return csrf_token();
+    }
 
 }
