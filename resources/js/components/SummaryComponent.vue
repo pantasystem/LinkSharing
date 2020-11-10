@@ -1,16 +1,20 @@
 <template>
-    <a :href="note.summary.url" target="_blank">
-        <div class="summary">
-            <img :href="note.summary.image"/>
+    <a :href="summary.url" target="_blank" class="row">
+        <div class="summary col-2">
+            <img class="img-fluid" :href="summary.image"/>
+        <div class="col-10">
+
             <p class="title">
-                {{ note.summary.title }}
+                {{ summary.title }}
             </p>
-            <p v-if="note.summary.description">
-                {{ note.summary.description }}
+            <p v-if="summary.description">
+                {{ summary.description }}
             </p>
             <a class="url text-primary" :href="summary.url">
                 {{ summary.url }}
             </a>
+        </div>
+            
         </div>
     </a>
 </template>
