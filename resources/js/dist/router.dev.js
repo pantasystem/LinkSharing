@@ -15,6 +15,8 @@ var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
 
 var _HomePage = _interopRequireDefault(require("./pages/HomePage.vue"));
 
+var _UserPage = _interopRequireDefault(require("./pages/UserPage.vue"));
+
 var _store = _interopRequireDefault(require("./store"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -42,6 +44,10 @@ var _default = new _vueRouter["default"]({
     path: '/register',
     name: 'register',
     component: _RegisterPage["default"]
+  }, {
+    path: '/users/:userId',
+    name: 'user_detail',
+    component: _UserPage["default"]
   }]
 });
 

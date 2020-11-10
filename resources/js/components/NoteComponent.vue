@@ -1,5 +1,5 @@
 <template>
-<div class="contaienr">
+<div class="contaienr pb-2">
     <article class="note-article row">
         
         <router-link class="avatar_icon col-2" :to="{ name: 'users', params: { userId: note.author.id}}" v-if="true">
@@ -10,7 +10,7 @@
         
         <div class="content col-10">
             <header>
-            <router-link class="user_name" :to="{ name: 'users', params: { userId: note.author.id}}">
+            <router-link class="user_name" :to="{ name: 'user_detail', params: { userId: note.author.id}}">
                 {{ note.author.user_name }}
             </router-link>   
 
@@ -41,6 +41,7 @@ export default {
 }
 </script>
 <style scoped>
+
 /*
 .note-article{
     display: flex;

@@ -3,6 +3,7 @@ import Vue from 'vue';
 import LoginPage from './pages/LoginPage.vue';
 import RegisterPage from './pages/RegisterPage.vue';
 import HomePage from './pages/HomePage.vue';
+import UserPage from './pages/UserPage.vue';
 import store from './store';
 
 Vue.use(VueRouter);
@@ -33,6 +34,11 @@ export default new VueRouter({
             name: 'register',
             component: RegisterPage
         },
+        {
+            path: '/users/:userId',
+            name: 'user_detail',
+            component: UserPage
+        }
 
     ]
 });
