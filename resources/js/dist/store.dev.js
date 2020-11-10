@@ -155,6 +155,13 @@ var _default = new _vuex["default"].Store({
           }
         }
       }, null, this);
+    },
+    logout: function logout(_ref5) {
+      var commit = _ref5.commit;
+      commit('setAccount', {
+        token: null,
+        user: null
+      });
     }
   }
 });

@@ -102,6 +102,16 @@ export default new Vuex.Store({
                 return account;
             }
             return null;
+        },
+
+        logout({ commit }){
+            commit(
+                'setAccount',
+                {
+                    token: null,
+                    user: null
+                }
+            );
         }
 
 
