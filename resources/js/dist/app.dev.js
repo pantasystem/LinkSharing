@@ -6,11 +6,17 @@ var _router = _interopRequireDefault(require("./router.js"));
 
 var _vuex = _interopRequireDefault(require("vuex"));
 
+var _bootstrapVue = require("bootstrap-vue");
+
 var _store = _interopRequireDefault(require("./store"));
 
 var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
 
 var _HeaderComponent = _interopRequireDefault(require("./components/HeaderComponent.vue"));
+
+require("bootstrap/dist/css/bootstrap.css");
+
+require("bootstrap-vue/dist/bootstrap-vue.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -22,6 +28,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 require('./bootstrap');
 
 _vue["default"].use(_vuex["default"]);
+
+_vue["default"].use(_bootstrapVue.BootstrapVue);
+
+_vue["default"].use(_bootstrapVue.IconsPlugin);
 
 window.Vue = _vue["default"];
 /**

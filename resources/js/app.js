@@ -8,12 +8,17 @@ require('./bootstrap');
 import Vue from 'vue';
 import router from './router.js';
 import Vuex from 'vuex';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 Vue.use(Vuex);
 
 import store from './store';
 import RegisterPage from './pages/RegisterPage.vue';
 import HeaderComponent from './components/HeaderComponent.vue';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
 window.Vue = Vue;
 
 
