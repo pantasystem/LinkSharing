@@ -1,6 +1,6 @@
 <template>
     
-    <div class="row">
+    <div class="row mt-1 mb-1">
         <router-link 
             v-for="tag in tags" :key="tag.name"
             :to="{ name: 'search_by_tag', params: { name: tag.name } }" 
