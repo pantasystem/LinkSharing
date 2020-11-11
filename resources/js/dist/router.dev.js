@@ -17,6 +17,8 @@ var _HomePage = _interopRequireDefault(require("./pages/HomePage.vue"));
 
 var _UserPage = _interopRequireDefault(require("./pages/UserPage.vue"));
 
+var _TagsNotePage = _interopRequireDefault(require("./pages/TagsNotePage.vue"));
+
 var _store = _interopRequireDefault(require("./store"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -48,6 +50,10 @@ var _default = new _vueRouter["default"]({
     path: '/users/:userId',
     name: 'user_detail',
     component: _UserPage["default"]
+  }, {
+    path: '/notes/search-by-tag/:name',
+    name: 'search_by_tag',
+    component: _TagsNotePage["default"]
   }]
 });
 

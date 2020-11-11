@@ -4,6 +4,8 @@ import LoginPage from './pages/LoginPage.vue';
 import RegisterPage from './pages/RegisterPage.vue';
 import HomePage from './pages/HomePage.vue';
 import UserPage from './pages/UserPage.vue';
+import TagNotePage from './pages/TagsNotePage.vue';
+
 import store from './store';
 
 Vue.use(VueRouter);
@@ -38,6 +40,11 @@ export default new VueRouter({
             path: '/users/:userId',
             name: 'user_detail',
             component: UserPage
+        },
+        {
+            path: '/notes/search-by-tag/:name',
+            name: 'search_by_tag',
+            component: TagNotePage
         }
 
     ]
