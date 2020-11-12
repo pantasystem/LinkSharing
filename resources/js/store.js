@@ -11,6 +11,10 @@ export default new Vuex.Store({
     state:{
         user: null,
         token: localStorage.getItem("token"),
+        timeline: {
+            notes: [],
+            isLoading: false
+        }
         
     },
     getters:{
@@ -25,7 +29,15 @@ export default new Vuex.Store({
         
         setToken(_state, token){
             localStorage.setItem('token', token);
+        },
+        pushNotes(state, notes){
+            state.timeline.notes.push(notes);
+
+        },
+        addNotesAtTheFirst(state, notes){
+            state.timeline.notes.splice(0, 0, notes);
         }
+        
     },
 
     actions: {

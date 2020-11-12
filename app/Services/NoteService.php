@@ -29,7 +29,7 @@ class NoteService
 
 
         $createdNote = null;
-        \DB::transaction(function () use($user, $reqTags, $request, $summary){
+        return \DB::transaction(function () use($user, $reqTags, $request, $summary){
             $createdNote = $user->notes()->create([
                 'text' => $request->input('text'),
                 'summary_id' => $summary->id

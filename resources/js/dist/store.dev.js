@@ -27,7 +27,11 @@ var _default = new _vuex["default"].Store({
   namespaced: true,
   state: {
     user: null,
-    token: localStorage.getItem("token")
+    token: localStorage.getItem("token"),
+    timeline: {
+      notes: [],
+      isLoading: false
+    }
   },
   getters: {},
   mutations: {
@@ -39,6 +43,12 @@ var _default = new _vuex["default"].Store({
     },
     setToken: function setToken(_state, token) {
       localStorage.setItem('token', token);
+    },
+    pushNotes: function pushNotes(state, notes) {
+      state.timeline.notes.push(notes);
+    },
+    addNotesAtTheFirst: function addNotesAtTheFirst(state, notes) {
+      state.timeline.notes.splice(0, 0, notes);
     }
   },
   actions: {
