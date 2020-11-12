@@ -13,7 +13,8 @@ export default new Vuex.Store({
         token: localStorage.getItem("token"),
         timeline: {
             notes: [],
-            isLoading: false
+            isLoading: false,
+            currentPageNumber: 0
         }
         
     },
@@ -31,11 +32,28 @@ export default new Vuex.Store({
             localStorage.setItem('token', token);
         },
         pushNotes(state, notes){
-            state.timeline.notes.push(notes);
+            if(Array.isArray(notes)){
+                state.timeline.notes.push(...notes);
+            }else{
+                state.timeline.notes.push(notes);
+            }
 
         },
         addNotesAtTheFirst(state, notes){
-            state.timeline.notes.splice(0, 0, notes);
+            if(Array.isArray(notes)){
+                state.timeline.notes.unshift(...notes);
+
+            }else{
+                state.timeline.notes.unshift(notes);
+            }
+        },
+
+        nextPage(state, page){
+            if(Array.isArray(page.data) && page.data.length){
+                state.timeline.notes.push(...page.data);
+            }
+            state.timeline.isLoading = false;
+            state.timeline.currentPageNumber = page.current_page;
         }
         
     },
@@ -84,7 +102,6 @@ export default new Vuex.Store({
         },
 
         async loadMe({ commit }){
-            console.log(this.state);
             let token = this.state.token;
             if( ! token){
                 token = localStorage.getItem("token");
@@ -98,7 +115,6 @@ export default new Vuex.Store({
             }
         
 
-            console.log(`token: ${token}`);
             const res = await axios.get(
                 '/api/me',
                 {
@@ -127,16 +143,50 @@ export default new Vuex.Store({
         },
 
         async createNote({ commit }, note){
-            return await axios.post(
+            let res = await axios.post(
                 'api/notes',
                 note,
                 {
                     headers: { Authorization: `Bearer ${this.state.token}` }
 
                 }
-            )
+            );
+
+            let createdNote = res.data;
+            commit('addNotesAtTheFirst', createdNote);
+            return res;
+        },
+
+        loadNext({commit, state}){
+            if(state.timeline.isLoading){
+                return;
+            }
+            state.timeline.isLoading = true;
+
+            axios.get(
+                '/api/notes',
+                {
+                    headers: { Authorization: `Bearer ${state.token}`},
+                    params: { page: state.timeline.currentPageNumber + 1 }
+                }
+            ).then((res)=>{
+                
+                commit('nextPage', res.data);
+            }).catch((e)=>{
+                console.log(e);
+                commit('nextPage', null);
+            });
+
+
+        },
+
+        initTimeline(context){
+            context.state.timeline.notes = [];
+            context.state.timeline.isLoading = false;
+            context.state.timeline.currentPageNumber = 0;
+            context.dispatch('loadNext');
         }
 
-
+      
     }
 });

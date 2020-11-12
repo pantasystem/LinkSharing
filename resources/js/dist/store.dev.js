@@ -21,6 +21,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 _vue["default"].use(_vuex["default"]);
 
 var _default = new _vuex["default"].Store({
@@ -30,7 +38,8 @@ var _default = new _vuex["default"].Store({
     token: localStorage.getItem("token"),
     timeline: {
       notes: [],
-      isLoading: false
+      isLoading: false,
+      currentPageNumber: 0
     }
   },
   getters: {},
@@ -45,10 +54,32 @@ var _default = new _vuex["default"].Store({
       localStorage.setItem('token', token);
     },
     pushNotes: function pushNotes(state, notes) {
-      state.timeline.notes.push(notes);
+      if (Array.isArray(notes)) {
+        var _state$timeline$notes;
+
+        (_state$timeline$notes = state.timeline.notes).push.apply(_state$timeline$notes, _toConsumableArray(notes));
+      } else {
+        state.timeline.notes.push(notes);
+      }
     },
     addNotesAtTheFirst: function addNotesAtTheFirst(state, notes) {
-      state.timeline.notes.splice(0, 0, notes);
+      if (Array.isArray(notes)) {
+        var _state$timeline$notes2;
+
+        (_state$timeline$notes2 = state.timeline.notes).unshift.apply(_state$timeline$notes2, _toConsumableArray(notes));
+      } else {
+        state.timeline.notes.unshift(notes);
+      }
+    },
+    nextPage: function nextPage(state, page) {
+      if (Array.isArray(page.data) && page.data.length) {
+        var _state$timeline$notes3;
+
+        (_state$timeline$notes3 = state.timeline.notes).push.apply(_state$timeline$notes3, _toConsumableArray(page.data));
+      }
+
+      state.timeline.isLoading = false;
+      state.timeline.currentPageNumber = page.current_page;
     }
   },
   actions: {
@@ -122,7 +153,6 @@ var _default = new _vuex["default"].Store({
           switch (_context3.prev = _context3.next) {
             case 0:
               commit = _ref4.commit;
-              console.log(this.state);
               token = this.state.token;
 
               if (!token) {
@@ -133,19 +163,18 @@ var _default = new _vuex["default"].Store({
                 });
               }
 
-              console.log("token: ".concat(token));
-              _context3.next = 7;
+              _context3.next = 5;
               return regeneratorRuntime.awrap(_axios["default"].get('/api/me', {
                 headers: {
                   Authorization: "Bearer ".concat(token)
                 }
               }));
 
-            case 7:
+            case 5:
               res = _context3.sent;
 
               if (!(res.status == 200)) {
-                _context3.next = 12;
+                _context3.next = 10;
                 break;
               }
 
@@ -156,10 +185,10 @@ var _default = new _vuex["default"].Store({
               commit("setAccount", account);
               return _context3.abrupt("return", account);
 
-            case 12:
+            case 10:
               return _context3.abrupt("return", null);
 
-            case 13:
+            case 11:
             case "end":
               return _context3.stop();
           }
@@ -174,7 +203,7 @@ var _default = new _vuex["default"].Store({
       });
     },
     createNote: function createNote(_ref6, note) {
-      var commit;
+      var commit, res, createdNote;
       return regeneratorRuntime.async(function createNote$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
@@ -188,14 +217,47 @@ var _default = new _vuex["default"].Store({
               }));
 
             case 3:
-              return _context4.abrupt("return", _context4.sent);
+              res = _context4.sent;
+              createdNote = res.data;
+              commit('addNotesAtTheFirst', createdNote);
+              return _context4.abrupt("return", res);
 
-            case 4:
+            case 7:
             case "end":
               return _context4.stop();
           }
         }
       }, null, this);
+    },
+    loadNext: function loadNext(_ref7) {
+      var commit = _ref7.commit,
+          state = _ref7.state;
+
+      if (state.timeline.isLoading) {
+        return;
+      }
+
+      state.timeline.isLoading = true;
+
+      _axios["default"].get('/api/notes', {
+        headers: {
+          Authorization: "Bearer ".concat(state.token)
+        },
+        params: {
+          page: state.timeline.currentPageNumber + 1
+        }
+      }).then(function (res) {
+        commit('nextPage', res.data);
+      })["catch"](function (e) {
+        console.log(e);
+        commit('nextPage', null);
+      });
+    },
+    initTimeline: function initTimeline(context) {
+      context.state.timeline.notes = [];
+      context.state.timeline.isLoading = false;
+      context.state.timeline.currentPageNumber = 0;
+      context.dispatch('loadNext');
     }
   }
 });
