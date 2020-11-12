@@ -35,8 +35,8 @@
         </div>
                 
     </b-navbar>
-    <b-modal id="note-creator" title="投稿">
-        <note-create-form />
+    <b-modal id="note-creator" title="投稿" @ok="okListener">
+        <note-create-form ref="notecreator" @submit="submit"/>
     </b-modal>
 </div>    
 </template>
@@ -61,7 +61,24 @@ export default {
         logout(){
             this.$store.dispatch("logout");
             this.$router.push("/login");
+        },
+        okListener(e){
+            console.log("作成しようとしています");
+            this.tryCreate();
+            e.preventDefault();
+        },
+        tryCreate(){
+            this.$refs.notecreator.create()
+            
+        },
+        submit(note){
+            console.log(`作成されたnote: ${JSON.stringify(note)}`);
+            this.$store.dispatch('create', note);
+            this.$nextTick(() => {
+                this.$bvModal.hide('note-creator')
+            });
         }
+
     }
 }
 </script>

@@ -62,7 +62,19 @@ export default {
             );
         },
         submitListener(){
-            this.$emit('submit');
+            this.create();
+        },
+        create(){
+            let note = {
+                url: this.url,
+                text: this.text,
+                tags: this.tags.map((tag)=>
+                    tag.name
+                )
+            };
+            console.log(`NoteCreateFormComponent: submit ${JSON.stringify(note)}`);
+
+            this.$emit('submit', note);
         }
     }
 }
