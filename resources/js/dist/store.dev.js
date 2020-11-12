@@ -162,6 +162,30 @@ var _default = new _vuex["default"].Store({
         token: null,
         user: null
       });
+    },
+    createNote: function createNote(_ref6, note) {
+      var commit;
+      return regeneratorRuntime.async(function createNote$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              commit = _ref6.commit;
+              _context4.next = 3;
+              return regeneratorRuntime.awrap(_axios["default"].post('api/notes', note, {
+                headers: {
+                  Authorization: "Bearer ".concat(this.state.token)
+                }
+              }));
+
+            case 3:
+              return _context4.abrupt("return", _context4.sent);
+
+            case 4:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, null, this);
     }
   }
 });

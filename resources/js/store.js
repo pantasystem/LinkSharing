@@ -112,6 +112,17 @@ export default new Vuex.Store({
                     user: null
                 }
             );
+        },
+
+        async createNote({ commit }, note){
+            return await axios.post(
+                'api/notes',
+                note,
+                {
+                    headers: { Authorization: `Bearer ${this.state.token}` }
+
+                }
+            )
         }
 
 

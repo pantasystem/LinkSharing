@@ -73,7 +73,7 @@ export default {
         },
         submit(note){
             console.log(`作成されたnote: ${JSON.stringify(note)}`);
-            this.$store.dispatch('create', note);
+            
             this.$nextTick(() => {
                 this.$bvModal.hide('note-creator')
             });

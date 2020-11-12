@@ -42,7 +42,7 @@ export default {
             url: '',
             text: '',
             tag: '',
-            tags: []
+            tags: [],
         }
     },
     methods: {
@@ -72,9 +72,15 @@ export default {
                     tag.name
                 )
             };
-            console.log(`NoteCreateFormComponent: submit ${JSON.stringify(note)}`);
+            this.$store.dispatch('createNote', note)
+                .then((res)=>{
+                    console.log(`作成成功:${res.data}`);
+                    this.$emit('submit', res.data);
+                })
+                .catch((e)=>{
+                    console.log(e);
+                })
 
-            this.$emit('submit', note);
         }
     }
 }
