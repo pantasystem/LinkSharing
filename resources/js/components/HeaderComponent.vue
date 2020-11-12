@@ -1,4 +1,5 @@
 <template>
+<div>
     <b-navbar type="light" toggleable="md" class="shadow-sm">
         <div class="container">
             <b-navbar-brand to="/">Linkboard</b-navbar-brand>
@@ -28,18 +29,25 @@
                 
                 
             </b-collapse>
-            <button class="btn btn-primary ml-auto mr-1">投稿</button>
+            <b-button class="ml-auto mr-1" variant="primary" v-b-modal.note-creator>投稿</b-button>
             <b-navbar-toggle target="navbarSupportedContent" />
 
         </div>
                 
     </b-navbar>
-    
+    <b-modal id="note-creator" title="投稿">
+        <note-create-form />
+    </b-modal>
+</div>    
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import NoteCreateFormComponent from './NoteCreateFormComponent.vue';
 export default {
+    components: {
+        'note-create-form': NoteCreateFormComponent
+    },
     computed: {
         ...mapState([
             'user',
