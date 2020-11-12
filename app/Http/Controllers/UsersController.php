@@ -50,7 +50,7 @@ class UsersController extends Controller
 
     function notes($userId)
     {
-        return User::findOrFail($userId)->notes()->simplePaginate(30);
+        return User::findOrFail($userId)->notes()->with(['author', 'tags', 'summary'])->simplePaginate(30);
     }
 
     function followerCountsRanking()

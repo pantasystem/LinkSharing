@@ -1,11 +1,11 @@
 <template>
+<div>
     <b-navbar type="light" toggleable="md" class="shadow-sm">
         <div class="container">
             <b-navbar-brand to="/">Linkboard</b-navbar-brand>
                 
                 
 
-            <b-navbar-toggle target="navbarSupportedContent" />
             <b-collapse id="navbarSupportedContent" is-nav>
                 <b-navbar-nav class="mr-auto">
                 </b-navbar-nav>
@@ -24,17 +24,30 @@
                             ログアウト
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
+
                 </b-navbar-nav>
+                
+                
             </b-collapse>
+            <b-button class="ml-auto mr-1" variant="primary" v-b-modal.note-creator>投稿</b-button>
+            <b-navbar-toggle target="navbarSupportedContent" />
+
         </div>
                 
     </b-navbar>
-    
+    <b-modal id="note-creator" title="投稿" @ok="okListener">
+        <note-create-form ref="notecreator" @submit="submit"/>
+    </b-modal>
+</div>    
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import NoteCreateFormComponent from './NoteCreateFormComponent.vue';
 export default {
+    components: {
+        'note-create-form': NoteCreateFormComponent
+    },
     computed: {
         ...mapState([
             'user',
@@ -48,7 +61,24 @@ export default {
         logout(){
             this.$store.dispatch("logout");
             this.$router.push("/login");
+        },
+        okListener(e){
+            console.log("作成しようとしています");
+            this.tryCreate();
+            e.preventDefault();
+        },
+        tryCreate(){
+            this.$refs.notecreator.create()
+            
+        },
+        submit(note){
+            console.log(`作成されたnote: ${JSON.stringify(note)}`);
+            
+            this.$nextTick(() => {
+                this.$bvModal.hide('note-creator')
+            });
         }
+
     }
 }
 </script>

@@ -42,10 +42,27 @@ class NotesController extends Controller
     {
         $user = Auth::user();
 
-        return $user->timeline()->with(['author', 'tags', 'summary'])->isFavorite($user)->orderBy("id", "desc")->simplePaginate(30);
-        /*return $user->timeline()->with(['author', 'tags', 'summary', 'favoritedUsers as my_favorite' => function($query)use($user){
-            $query->where('user_id', '=', $user->id);
-        }])->get();*/
+        
+
+        $columns = [
+            'notes.*',
+            'is_favorited' => function($builder) use($user){
+                $builder->selectRaw('count(*)')
+                    ->from('users')
+                    ->join('favorites', 'users.id', '=','favorites.user_id')
+                    ->where('favorites.user_id', '=', $user->id)
+                    ->whereRaw('favorites.note_id = notes.id');
+            },
+            'favorite_count' => function($builder){
+                $builder->selectRaw('count(*)')
+                    ->from('favorites')
+                    ->whereRaw('favorites.note_id = notes.id');
+            }
+        ];
+
+        $followingsNotesQuery = $user->timeline()->select($columns);
+        return $userQuery = $user->notes()->select($columns)->union($followingsNotesQuery)->with(['summary', 'author', 'tags'])->orderBy('id', 'desc')->simplePaginate(30);
+        
     }
 
     function get($noteId)

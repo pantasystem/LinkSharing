@@ -25,24 +25,36 @@ class NoteService
             $summary->save();
         }
 
-        $createdNote = $user->notes()->create([
-            'text' => $request->input('text'),
-            'summary_id' => $summary->id
-        ]);
+        $reqTags = $request->input('tags');
 
 
-        $reqTags = $request->only('tags');
-
-        foreach($reqTags as $reqTag){
-            $tag = Tag::firstOrCreate([
-                'name' => $reqTag
+        $createdNote = null;
+        return \DB::transaction(function () use($user, $reqTags, $request, $summary){
+            $createdNote = $user->notes()->create([
+                'text' => $request->input('text'),
+                'summary_id' => $summary->id
             ]);
+    
+    
+    
+            foreach($reqTags as $reqTag){
+                $trimedTag = trim($reqTag);
+                if(!empty($trimedTag)){
+                    $tag = Tag::where('name', '=', $reqTag)->first();
+                    if(!$tag){
+                        $tag = Tag::create(['name' => $reqTag]);
+                    }
+        
+                    $tag->notes()->attach($createdNote);
+                }
+                
+            }
+            return Note::with(['author', 'tags', 'summary'])->findOrFail($createdNote->id);
+        });
+        
 
-            $tag->notes()->attach($createdNote);
-        }
 
-
-        return Note::with(['author', 'tags', 'summary'])->findOrFail($createdNote->id);
+        
         
     }
 

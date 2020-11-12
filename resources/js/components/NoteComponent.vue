@@ -24,6 +24,9 @@
                         
             </div>
             <footer class="nav-note">
+                <tags-component 
+                    :tags="note.tags"
+                />
             </footer>
 
         </div>
@@ -33,10 +36,12 @@
 </template>
 <script>
 import SummaryComponent from './SummaryComponent.vue';
+import TagsComponent from './TagsComponent.vue';
 
 export default {
     components: {
-        'summary-component': SummaryComponent
+        'summary-component': SummaryComponent,
+        'tags-component': TagsComponent
     },
     props: {
         note: {
