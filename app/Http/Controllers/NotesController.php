@@ -52,6 +52,11 @@ class NotesController extends Controller
                     ->join('favorites', 'users.id', '=','favorites.user_id')
                     ->where('favorites.user_id', '=', $user->id)
                     ->whereRaw('favorites.note_id = notes.id');
+            },
+            'favorite_count' => function($builder){
+                $builder->selectRaw('count(*)')
+                    ->from('favorites')
+                    ->whereRaw('favorites.note_id = notes.id');
             }
         ];
 
