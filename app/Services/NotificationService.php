@@ -27,7 +27,8 @@ class NotificationService
             $notification->type = 'comment';
 
         }else if($model instanceof Favorite){
-            $notification->subscribe($model->note()->author()->get());
+            $note = $model->note()->first();
+            $notification->subscribe($note->author()->first());
             $notification->favorite()->associate($model);
             $notification->type = 'favorite';
         }else if($model instanceof FollowingUser){
@@ -38,11 +39,9 @@ class NotificationService
             return null;
         }
 
-        if($notification->saveOrFail()){
-            return $notification;
-        }
+        $notification->save();
+        return Notification::findOrFail($notification->id);
 
-        return null;
 
 
     }

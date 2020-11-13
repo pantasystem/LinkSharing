@@ -8,8 +8,10 @@ use App\Models\User;
 use App\Models\Note;
 use App\Notificable;
 use App\Models\Notification;
+use Illuminate\Database\Eloquent\Model;
 
-class Favorite extends Pivot
+
+class Favorite extends Model
 {
     protected $table = 'favorites';
     

@@ -17,13 +17,18 @@ class FavoritesController extends Controller
 
         $note = Note::findOrFail($noteId);
 
-        $created = Favorite::create([
-            'note_id' => $note ->id,
-            'user_id' => $user->id
-        ]);
-
-        return $created;
-
+        return \DB::transaction(function () use($service, $note, $user){
+            $created = Favorite::create([
+                'note_id' => $note ->id,
+                'user_id' => $user->id
+            ]);
+    
+    
+            $service->create($user, $created);
+            return Favorite::findOrFail($created->id);
+        });
+        
+        
         //$service->create($user, $created);
 
     }
