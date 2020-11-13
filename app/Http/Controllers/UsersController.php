@@ -100,14 +100,14 @@ class UsersController extends Controller
             
         }
 
-        return $query->simplePaginate();
+        return $query->orderBy('following_users.id', 'desc')->simplePaginate();
 
         
     }
 
     function followings($userId)
     {
-        return User::findOrFail($userId)->followings()->simplePaginate(30);
+        return User::findOrFail($userId)->followings()->orderBy('following_users.id', 'desc')->simplePaginate(30);
     }
 
 }
