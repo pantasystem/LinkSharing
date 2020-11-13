@@ -25,7 +25,7 @@ class UsersController extends Controller
         \DB::transaction(function () use($me, $user, $notificationService){
             $followingUser = FollowingUser::create([
                 'following_user_id' => $user->id,
-                'user_id' => $user->id
+                'user_id' => $me->id
             ]);
 
             $notificationService->create($me, $followingUser);
@@ -42,7 +42,12 @@ class UsersController extends Controller
 
         $user = User::findOrFail($userId);
 
-        $me->unfollow($user);
+        //$me->unfollow($user);
+        \DB::transaction(function () use($user, $me){
+            FollowingUser::where('following_user_id', '=', $user->id)
+            ->where('user_id', '=', $me->id)->delete();
+        });        
+        
 
         return response()->json(null, 204);
     }
@@ -73,7 +78,7 @@ class UsersController extends Controller
             'users.*',
         ];
         
-        
+        $user = User::findOrFail($userId);
         $query = $user->followers()->select($columns);
 
         if(auth('sanctum')->check()){
