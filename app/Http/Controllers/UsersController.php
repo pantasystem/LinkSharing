@@ -100,7 +100,9 @@ class UsersController extends Controller
             
         }
 
-        return $query->orderBy('following_users.id', 'desc')->simplePaginate();
+        return $query
+            ->withCount(['followings', 'followers', 'notes', 'favoritedNotes'])
+            ->orderBy('following_users.id', 'desc')->simplePaginate();
 
         
     }
@@ -128,7 +130,12 @@ class UsersController extends Controller
             
         }
 
-        return User::findOrFail($userId)->followings()->select($columns)->orderBy('following_users.id', 'desc')->simplePaginate(30);
+        return User::findOrFail($userId)
+            ->followings()
+            ->select($columns)
+            ->withCount(['followings', 'followers', 'notes', 'favoritedNotes'])
+            ->orderBy('following_users.id', 'desc')
+            ->simplePaginate(30);
     }
 
 }

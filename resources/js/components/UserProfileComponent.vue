@@ -10,7 +10,7 @@
                     </div>
                     <div class="row">
                         <router-link :to="{ name: 'followings', params: { userId: user.id } }">{{ user.following_count}} フォロー</router-link>
-                        <router-link :to="{ name: 'followers', params: { userId: user.id } }">{{ user.followers_count }} ヒョロワー</router-link>
+                        <router-link :to="{ name: 'followers', params: { userId: user.id } }">{{ user.follower_count }} ヒョロワー</router-link>
                     </div>
 
                     <div v-if="user.is_following"> 
