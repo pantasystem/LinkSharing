@@ -19,6 +19,10 @@ var _UserPage = _interopRequireDefault(require("./pages/UserPage.vue"));
 
 var _TagsNotePage = _interopRequireDefault(require("./pages/TagsNotePage.vue"));
 
+var _FollowingsPage = _interopRequireDefault(require("./pages/FollowingsPage.vue"));
+
+var _FollowersPage = _interopRequireDefault(require("./pages/FollowersPage.vue"));
+
 var _store = _interopRequireDefault(require("./store"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -51,13 +55,15 @@ var _default = new _vueRouter["default"]({
     name: 'user_detail',
     component: _UserPage["default"],
     children: [{
-      path: '/followers',
-      name: 'followers'
+      path: 'followers',
+      name: 'followers',
+      component: _FollowersPage["default"]
     }, {
-      path: '/followings',
-      name: 'followings'
+      path: 'followings',
+      name: 'followings',
+      component: _FollowingsPage["default"]
     }, {
-      path: '/notes',
+      path: 'notes',
       name: 'user_notes'
     }]
   }, {

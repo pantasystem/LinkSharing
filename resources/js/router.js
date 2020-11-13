@@ -5,6 +5,8 @@ import RegisterPage from './pages/RegisterPage.vue';
 import HomePage from './pages/HomePage.vue';
 import UserPage from './pages/UserPage.vue';
 import TagNotePage from './pages/TagsNotePage.vue';
+import FollowingsPage from './pages/FollowingsPage.vue';
+import FollowersPage from './pages/FollowersPage.vue';
 
 import store from './store';
 
@@ -42,15 +44,17 @@ export default new VueRouter({
             component: UserPage,
             children: [
                 {
-                    path: '/followers',
-                    name: 'followers'
+                    path: 'followers',
+                    name: 'followers',
+                    component: FollowersPage
                 },
                 {
-                    path: '/followings',
-                    name: 'followings'
+                    path: 'followings',
+                    name: 'followings',
+                    component: FollowingsPage
                 },
                 {
-                    path: '/notes',
+                    path: 'notes',
                     name: 'user_notes',
 
                 }
