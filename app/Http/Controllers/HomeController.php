@@ -32,7 +32,7 @@ class HomeController extends Controller
     }
 
     public function me(){
-        return User::withCountRelationModels()->find(Auth::user()->id);
+        return User::withCountModels()->find(Auth::user()->id);
     }
 
     public function loadSummary()

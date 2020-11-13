@@ -54,7 +54,7 @@ class UsersController extends Controller
 
     function get($userId)
     {
-        return User::withCountRelationModels()->findOrFail($userId);
+        return User::withCountModels()->findOrFail($userId);
     }
 
     function notes($userId)
@@ -64,7 +64,7 @@ class UsersController extends Controller
 
     function followerCountsRanking()
     {
-        return User::withCountRelationModels()->orderBy('followers_count', 'desc')->simplePaginate(30);
+        return User::withCountModels()->orderBy('followers_count', 'desc')->simplePaginate(30);
     }
 
     function favoriteNotes($userId)
