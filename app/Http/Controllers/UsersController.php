@@ -107,7 +107,28 @@ class UsersController extends Controller
 
     function followings($userId)
     {
-        return User::findOrFail($userId)->followings()->orderBy('following_users.id', 'desc')->simplePaginate(30);
+        $me = auth('sanctum')->user();
+
+        $columns = ['users.*'];
+        if($me){
+            $columns['is_following'] = function($query) use ($me){
+                $query->selectRaw('count(*)')
+                    ->from('following_users')
+                    ->where('following_users.user_id', '=', $me->id)    
+                    ->whereRaw('following_users.following_user_id = users.id');
+            };
+            
+            $columns['is_follower'] = function($query) use ($me){
+                $query->selectRaw('count(*)')
+                    ->from('following_users')
+                    ->where('following_users.following_user_id', '=', $me->id)
+                    ->whereRaw('following_users.user_id = users.id');
+            };
+
+            
+        }
+
+        return User::findOrFail($userId)->followings()->select($columns)->orderBy('following_users.id', 'desc')->simplePaginate(30);
     }
 
 }
