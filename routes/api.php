@@ -60,35 +60,39 @@ Route::get('me', [HomeController::class, 'me']);
 
 });
 
+Route::middleware('guest')->group(function(){
+
+    Route::get('users/{userId}/followers', [UsersController::class, 'followers']);
+
+    Route::get('users/{userId}/followings', [UsersController::class, 'followings']);
+
+    Route::get('notes/{noteId}', [NotesController::class, 'get']);
+
+    Route::get('users/followers-count-ranking', [UsersController::class, 'followerCountsRanking']);
 
 
-Route::get('notes/{noteId}', [NotesController::class, 'get']);
-
-Route::get('users/followers-count-ranking', [UsersController::class, 'followerCountsRanking']);
+    Route::get('users/{userId}', [UsersController::class, 'get']);
 
 
-Route::get('users/{userId}', [UsersController::class, 'get']);
+    Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
+
+    Route::get('users/{userId}/favorites', [UsersController::class, 'favoriteNotes']);
 
 
-Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
+    Route::get('tags/{name?}', [TagsController::class, 'search']);
 
-Route::get('users/{userId}/favorites', [UsersController::class, 'favoriteNotes']);
+    Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
 
-Route::get('users/{userId}/followers', [UsersController::class, 'followers']);
-
-Route::get('users/{userId}/followings', [UsersController::class, 'followings']);
-
-Route::get('tags/{name?}', [TagsController::class, 'search']);
-
-Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
-
-Route::get('notes/{noteId}/favorites', [FavoritesController::class, 'favorites']);
+    Route::get('notes/{noteId}/favorites', [FavoritesController::class, 'favorites']);
 
 
-Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote']);
-//Route::get('notes/{noteId}/comments/{commentId}/all', [CommentController::class, 'findAllByNoteAndCommentId']);
+    Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote']);
+    //Route::get('notes/{noteId}/comments/{commentId}/all', [CommentController::class, 'findAllByNoteAndCommentId']);
 
-Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
+    Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
+
+
+});
 
 Route::get('csrf', [HomeController::class, 'csrfToken']);
 

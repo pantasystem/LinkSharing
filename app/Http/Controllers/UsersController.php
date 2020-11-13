@@ -12,11 +12,8 @@ use App\Models\FollowingUser;
 
 class UsersController extends Controller
 {
+   
     
-    function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
    
 
     function follow(NotificationService $notificationService, $userId)
@@ -25,12 +22,15 @@ class UsersController extends Controller
         $me = Auth::user();
        
         $user = User::findOrFail($userId);
-        
-        $followingUser = FollowingUser::create([
-            'following_user_id' => $user->id,
-            'user_id' => $user->id
-        ]);
+        \DB::transaction(function () use($me, $user, $notificationService){
+            $followingUser = FollowingUser::create([
+                'following_user_id' => $user->id,
+                'user_id' => $user->id
+            ]);
 
+            $notificationService->create($me, $followingUser);
+        });
+        
         return response()->json(null, 204);
 
         
@@ -67,14 +67,18 @@ class UsersController extends Controller
         return User::findOrFail($userId)->favoritedNotes()->with('author')->simplePaginate(30);
     }
 
-    function followers($userId)
+    function followers(Request $request, $userId)
     {
         $columns = [
             'users.*',
         ];
-            
-        if(Auth::check() && Auth::user()->id != $userId){
-            $user = Auth::user();
+        
+        
+        $query = $user->followers()->select($columns);
+
+        if(auth('sanctum')->check()){
+            $user = auth('sanctum')->user();
+            $columns = [];
             $columns['is_following'] = function($query) use ($user){
                 $query->selectRaw('count(*)')
                     ->from('following_users')
@@ -87,15 +91,13 @@ class UsersController extends Controller
                     ->where('following_users.following_user_id', '=', $user->id)
                     ->whereRaw('following_users.user_id = users.id');
             };
+            $query->select($columns);
             
         }
 
+        return $query->simplePaginate();
+
         
-        return User::where('id', '=', $userId)
-            ->select($columns)->firstOrFail();
-
-
-        return User::findOrFail($userId)->followers()->select($columns)->simplePaginate(30);
     }
 
     function followings($userId)
