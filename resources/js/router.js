@@ -42,13 +42,17 @@ export default new VueRouter({
             component: UserPage,
             children: [
                 {
-                    path: 'followers'
+                    path: '/followers',
+                    name: 'followers'
                 },
                 {
-                    path: 'followings'
+                    path: '/followings',
+                    name: 'followings'
                 },
                 {
-                    path: 'notes'
+                    path: '/notes',
+                    name: 'user_notes',
+
                 }
             ]
         },

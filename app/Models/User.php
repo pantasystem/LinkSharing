@@ -47,6 +47,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_following' => 'boolean',
+        'is_follower' => 'boolean'
     ];
 
     function followings(){

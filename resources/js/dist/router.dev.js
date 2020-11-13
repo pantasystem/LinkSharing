@@ -51,11 +51,14 @@ var _default = new _vueRouter["default"]({
     name: 'user_detail',
     component: _UserPage["default"],
     children: [{
-      path: 'followers'
+      path: '/followers',
+      name: 'followers'
     }, {
-      path: 'followings'
+      path: '/followings',
+      name: 'followings'
     }, {
-      path: 'notes'
+      path: '/notes',
+      name: 'user_notes'
     }]
   }, {
     path: '/notes/search-by-tag/:name',
