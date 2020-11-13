@@ -1,7 +1,7 @@
 <template>
     <div class="row media position-relative">
         <div class="summary col-2">
-            <img class="img-fluid" src="https://icooon-mono.com/i/icon_10968/icon_109680.svg" />
+            <img class="img-fluid" :src="summary.image" v-on:error="imgLoadError" />
         </div>
 
         <div class="col-10 media-body">
@@ -26,6 +26,12 @@ export default {
         summary: {
             type: Object,
             required: true
+        }
+    },
+    methods: {
+        imgLoadError(element){
+            element.target.src = "ic_link.svg";
+
         }
     }
 }

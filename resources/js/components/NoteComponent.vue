@@ -3,7 +3,11 @@
     <article class="note-article row">
         
         <router-link class="avatar_icon col-2" :to="{ name: 'user_detail', params: { userId: note.author.id}}" v-if="true">
-            <img class="img-fluid" src="https://image.flaticon.com/icons/png/512/63/63699.png" />
+            <img 
+                class="img-fluid" 
+                :src="note.author.avatar_icon ? note.author.avatar_icon : 'ic_avatar.png'" 
+                v-on:error="loadAvatarIcon" 
+            />
             
         </router-link>
         
@@ -49,6 +53,11 @@ export default {
         note: {
             type: Object,
             required: true
+        }
+    },
+    methods: {
+        loadAvatarIcon(e){
+            e.target.src = "ic_avatar.png";
         }
     }
 }
