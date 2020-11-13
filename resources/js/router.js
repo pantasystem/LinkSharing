@@ -39,7 +39,18 @@ export default new VueRouter({
         {
             path: '/users/:userId',
             name: 'user_detail',
-            component: UserPage
+            component: UserPage,
+            children: [
+                {
+                    path: 'followers'
+                },
+                {
+                    path: 'followings'
+                },
+                {
+                    path: 'notes'
+                }
+            ]
         },
         {
             path: '/notes/search-by-tag/:name',
