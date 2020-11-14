@@ -1,0 +1,103 @@
+<template>
+    <div class="card">
+        <div class="card-body">
+            <div class="container">
+                <div>
+                    <div class="wrapper col-8 mx-auto mb-2 mt-2">
+                        <img 
+                            class="img img-fluid" 
+                            :src="user.avatar_icon ? user.avatar_icon : 'ic_avatar.png'" 
+                            v-on:error="loadAvatarIcon" >
+
+                    </div>
+                    <h3 class="text-center"> {{ user.user_name }}</h3>
+                    <div v-if="user.is_follower">
+                        フォローされています。
+                    </div>
+                    <div class="row">
+                        <router-link class="col-md-4" :to="{ name: 'user_notes', params: { userId: user.id} }">
+                            <div class="main-text">{{ user.notes_count }}</div> 
+                            <div class="sub-text">投稿</div>
+                        </router-link>
+                        <router-link class="col-md-4" :to="{ name: 'followings', params: { userId: user.id } }">
+                            <div class="main-text">{{ user.followings_count}}</div> 
+                            <div class="sub-text">フォロー</div>
+                        </router-link>
+                        <router-link class="col-md-4" :to="{ name: 'followers', params: { userId: user.id } }">
+                            <div class="main-text">{{ user.followers_count }}</div> 
+                            <div class="sub-text">ヒョロワー</div>
+                        </router-link>
+                    </div>
+                    <div v-if="!isMine">
+                        <div v-if="user.is_following"> 
+                            <b-button block variant="primary" :disable="isUpdate">フォロー</b-button>
+                        </div>
+                        <div v-else>
+                            <b-button block variant="outline-primary">フォロー解除</b-button>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    props: {
+        user: {
+            type: Object,
+            required: true
+        },
+        isMine: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
+    },
+    data(){
+        return {
+            isUpdate: false
+        };
+    },
+    methods: {
+        loadAvatarIcon(e){
+            e.target.src = "ic_avatar.png";
+        }
+    }
+}
+</script>
+<style scoped>
+.wrapper{
+    overflow: hidden;    
+}
+
+.wrapper::before{
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+    overflow: hidden;
+
+}
+
+.img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    object-fit: contain;
+}
+
+.sub-text{
+    font-size: 12px;
+    color:gray;
+    text-align: center;
+}
+.main-text{
+    font-size: 1.5em;
+    color: rgb(19, 19, 19);
+    text-align: center;
+}
+</style>

@@ -10,7 +10,7 @@ use App\Models\Notification;
 use App\Notificable;
 
 
-class FollowingUser extends Pivot
+class FollowingUser extends Model
 {
 
     protected $table = 'following_users';

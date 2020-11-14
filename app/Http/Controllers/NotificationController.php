@@ -14,7 +14,7 @@ class NotificationController extends Controller
     public function notifications()
     {
         $user = Auth::user();
-        return $user->notifications()->with(['publisher', 'subscriber', 'comment', 'favorite', 'follow'])->simplePaginate();
+        return $user->notifications()->with(['publisher', 'subscriber', 'comment', 'favorite', 'follow'])->orderBy('id', 'desc')->simplePaginate();
     }
 
     public function read($notificationId)

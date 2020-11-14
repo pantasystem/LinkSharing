@@ -47,6 +47,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_following' => 'boolean',
+        'is_follower' => 'boolean'
     ];
 
     function followings(){
@@ -100,7 +102,7 @@ class User extends Authenticatable
         return $this->followings()->detach($user);
     }
 
-    function scopeWithCountRelationModels($query){
+    function scopeWithCountModels($query){
         return $this->withCount(['followers', 'followings', 'notes', 'favoritedNotes']);
     }
 
@@ -113,4 +115,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notification::class, 'subscriber_id');
     }
+
+    
 }

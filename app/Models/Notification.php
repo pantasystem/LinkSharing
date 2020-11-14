@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Note;
 use App\Models\Favorite;
-use App\Models\Follow;
+use App\Models\FollowingUser;
 
 class Notification extends Model
 {
@@ -38,7 +38,7 @@ class Notification extends Model
 
     public function publish(User $user)
     {
-        $this->subscriber()->associate($user);
+        $this->publisher()->associate($user);
         return $this;
     }
 
@@ -53,7 +53,7 @@ class Notification extends Model
     }
 
     public function follow(){
-        return $this->belongsTo(Follow::class, 'follow_id');
+        return $this->belongsTo(FollowingUser::class, 'follow_id');
     }
     
 }

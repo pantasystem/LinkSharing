@@ -1,10 +1,8 @@
 <template>
     <div class="row media position-relative">
-        <div class="summary col-2">
-            <img class="img-fluid" src="https://icooon-mono.com/i/icon_10968/icon_109680.svg" />
-        </div>
+        
 
-        <div class="col-10 media-body">
+        <div class="col-12 media-body">
 
             <h5 class="single-line">
                 {{ summary.title }}
@@ -12,10 +10,13 @@
             <div class="single-line" v-if="summary.description">
                 {{ summary.description }}
             </div>
-            <a class="url stretched-link" :href="summary.url">
+            <a class="url stretched-link" :href="summary.url" target="_blank">
                 {{ summary.url }}
 
             </a>
+            <div class="wrapper col-11">
+                <img  class="content img-fluid" :src="summary.image" v-on:error="imgLoadError" />
+            </div>
         </div>
             
     </div>
@@ -27,20 +28,37 @@ export default {
             type: Object,
             required: true
         }
+    },
+    methods: {
+        imgLoadError(element){
+            element.target.src = "ic_link.svg";
+
+        }
     }
 }
 </script>
 <style scoped>
-.summary{
-    display: flex;
+.wrapper {
+    overflow: hidden;
+
 }
 
-.summary_thumbnail{
-    width: 58px;
-    height: 58px;
-    margin-right: 8px;
-    margin-bottom: 16px;
+.wrapper:before {
+    content:"";
+    display: block;
+    padding-top: 52.5%; /* 高さを幅の75%に固定 */
+    overflow: hidden;
+
 }
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    object-fit: contain;
+}
+
 .summary_content{
     flex: 1;
 }

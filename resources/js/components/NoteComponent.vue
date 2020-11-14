@@ -2,8 +2,12 @@
 <div class="contaienr pb-2">
     <article class="note-article row">
         
-        <router-link class="avatar_icon col-2" :to="{ name: 'users', params: { userId: note.author.id}}" v-if="true">
-            <img class="img-fluid" src="https://image.flaticon.com/icons/png/512/63/63699.png" />
+        <router-link class="avatar_icon col-2" :to="{ name: 'user_detail', params: { userId: note.author.id}}" v-if="true">
+            <img 
+                class="img-fluid" 
+                :src="note.author.avatar_icon ? note.author.avatar_icon : 'ic_avatar.png'" 
+                v-on:error="loadAvatarIcon" 
+            />
             
         </router-link>
         
@@ -11,7 +15,9 @@
         <div class="content col-10">
             <header>
             <router-link class="user_name" :to="{ name: 'user_detail', params: { userId: note.author.id}}">
-                {{ note.author.user_name }}
+                <h4>
+                    {{ note.author.user_name }}
+                </h4>
             </router-link>   
 
             </header>
@@ -23,7 +29,7 @@
                 <summary-component :summary="note.summary"/>        
                         
             </div>
-            <footer class="nav-note">
+            <footer class="nav-note col-12">
                 <tags-component 
                     :tags="note.tags"
                 />
@@ -47,6 +53,11 @@ export default {
         note: {
             type: Object,
             required: true
+        }
+    },
+    methods: {
+        loadAvatarIcon(e){
+            e.target.src = "ic_avatar.png";
         }
     }
 }

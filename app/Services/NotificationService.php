@@ -7,6 +7,7 @@ use App\Models\Notification;
 use App\Models\Comment;
 use App\Models\Favorite;
 use App\Models\FollowingUser;
+use App\Models\User;
 
 
 class NotificationService
@@ -23,24 +24,24 @@ class NotificationService
             $to = $model->commentable()->author()->get();
             $notification->subscribe($to);
             $notification->comment()->associate($model);
+            $notification->type = 'comment';
 
         }else if($model instanceof Favorite){
-            $notification->publish($model->user()->get());
-            $notification->subscribe($model->note()->author()->get());
+            $note = $model->note()->first();
+            $notification->subscribe($note->author()->first());
             $notification->favorite()->associate($model);
+            $notification->type = 'favorite';
         }else if($model instanceof FollowingUser){
-            $notification->publish($model->user);
             $notification->subscribe($model->followingUser);
             $notification->follow($model);
+            $notification->type = 'follow';
         }else{
             return null;
         }
 
-        $notification = $notification->saveOrFail();
+        $notification->save();
+        return Notification::findOrFail($notification->id);
 
-        // 将来的にはPush通知関連のQueueへのPush操作も実装する
-
-        return $notification;
 
 
     }

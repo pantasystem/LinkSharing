@@ -8,17 +8,22 @@
                     <span v-if="isLoading">読み込み中</span>
                 </button>
             </div>
+            <div class="col-md-4 d-none d-lg-block">
+                <user-profile :user="user" :isMine="true" />
+            </div>
         </div>
     </div>
 </template>
 <script>
 import axios from 'axios';
 import TimelineComponent from '../components/TimelineComponent.vue';
+import UserProfileComponent from '../components/UserProfileComponent.vue';
 import { mapState, mapActions } from 'vuex';
 
 export default {
     components: {
-        'timeline-component': TimelineComponent
+        'timeline-component': TimelineComponent,
+        'user-profile': UserProfileComponent,
     },
     data() {
         return {
@@ -26,6 +31,9 @@ export default {
         }
     },
     computed: {
+        ...mapState([
+            'user'
+        ]),
        
         timeline(){
             return this.$store.state.timeline;
