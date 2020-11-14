@@ -43,7 +43,7 @@ Route::get('me', [HomeController::class, 'me']);
     Route::delete('notes/{noteId}/favorites', [FavoritesController::class, 'unfavorite']);
     Route::get('notes/{noteId}/favorites/my-favorite', [FavoritesController::class, 'isFavorited']);
 
-    Route::put('users/{userId}', [UsersController::class, 'follow']);
+    Route::post('users/{userId}', [UsersController::class, 'follow']);
     Route::delete('users/{userId}', [UsersController::class, 'unfollow']);
 
     Route::post('notes/{noteId}/comments', [CommentController::class, 'replyToNote']);

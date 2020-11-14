@@ -187,18 +187,18 @@ export default new Vuex.Store({
             context.dispatch('loadNext');
         },
 
-        async follow({ context }, user){
-            const res = await axios.put(
+        async follow(context, user){
+            const res = await axios.post(
                 `/api/users/${user.id}`,
                 {
-                    headers: { Authorization: `Bearer ${context.state.token}` },
+                    headers: { Authorization: `Bearer ${context.state.token}`}
                 }
             );
             context.dispatch('initTimeline');
             return res.data;
         },
 
-        async unfollow({ context }, user){
+        async unfollow(context, user){
             const res = await axios.delete(
                 `/api/users/${user.id}`,
                 {

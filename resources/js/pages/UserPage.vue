@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <user-profile :user="user" :isMine="isMe"  v-if="user" />
+                <user-profile :user="user" :isMine="isMe"  v-if="user" v-on:follow="follow" v-on:unfollow="unfollow" />
             </div>
             <div class="col-md-8">
                 <router-view></router-view>
@@ -47,7 +47,7 @@ export default {
             axios.get(
                 `/api/users/${this.userId}`,
                 {
-                    headers: getHeader(),
+                    headers: this.getHeader(),
                     
                 }
             ).then((res)=>{
