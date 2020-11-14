@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         loadAvatarIcon(e){
-            e.target.src = "ic_avatar.png";
+            e.target.src = "/ic_avatar.png";
         }
     }
 }

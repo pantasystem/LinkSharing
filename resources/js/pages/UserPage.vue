@@ -1,8 +1,12 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <user-profile class="col-md-4" :user="user" :isMine="isMe" v-if="user" />
-            <router-view class="col-md-8"></router-view>
+            <div class="col-md-4">
+                <user-profile :user="user" :isMine="isMe"  v-if="user" />
+            </div>
+            <div class="col-md-8">
+                <router-view></router-view>
+            </div>
         </div>
     </div>
 </template>
