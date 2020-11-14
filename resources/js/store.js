@@ -190,6 +190,7 @@ export default new Vuex.Store({
         async follow(context, user){
             const res = await axios.post(
                 `/api/users/${user.id}`,
+                null,
                 {
                     headers: { Authorization: `Bearer ${context.state.token}`}
                 }

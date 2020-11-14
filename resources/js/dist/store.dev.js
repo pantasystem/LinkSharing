@@ -266,7 +266,7 @@ var _default = new _vuex["default"].Store({
           switch (_context5.prev = _context5.next) {
             case 0:
               _context5.next = 2;
-              return regeneratorRuntime.awrap(_axios["default"].post("/api/users/".concat(user.id), {
+              return regeneratorRuntime.awrap(_axios["default"].post("/api/users/".concat(user.id), null, {
                 headers: {
                   Authorization: "Bearer ".concat(context.state.token)
                 }
