@@ -38,10 +38,8 @@ export default {
     computed: {
         isMe(){
             let me = this.$store.state.user;
-            if(!me){
-                console.log("私はいない");
-            }
-            return this.user.id == this.$store.state.user.id;
+            
+            return me && this.user.id == this.$store.state.user.id;
         }
     },
     methods: {
