@@ -47,16 +47,20 @@ export default new VueRouter({
                 {
                     path: 'followers',
                     name: 'followers',
-                    component: FollowersPage
+                    component: FollowersPage,
+                    props: true
                 },
                 {
                     path: 'followings',
                     name: 'followings',
-                    component: FollowingsPage
+                    component: FollowingsPage,
+                    props: true
+
                 },
                 {
                     path: 'notes',
                     name: 'user_notes',
+                    props: true
 
                 }
             ]
