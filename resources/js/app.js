@@ -50,8 +50,5 @@ const app = new Vue({
     el: '#app',
     store: store,
     router: router,
-    mounted(){
-        this.store.initTimeline();
-    }
 });
 

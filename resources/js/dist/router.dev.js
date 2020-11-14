@@ -54,6 +54,7 @@ var _default = new _vueRouter["default"]({
     path: '/users/:userId',
     name: 'user_detail',
     component: _UserPage["default"],
+    props: true,
     children: [{
       path: 'followers',
       name: 'followers',

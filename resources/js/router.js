@@ -42,6 +42,7 @@ export default new VueRouter({
             path: '/users/:userId',
             name: 'user_detail',
             component: UserPage,
+            props: true,
             children: [
                 {
                     path: 'followers',

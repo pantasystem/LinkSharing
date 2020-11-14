@@ -63,8 +63,5 @@ _vue["default"].component('app-component', require('./pages/App.vue')["default"]
 var app = new _vue["default"]({
   el: '#app',
   store: _store["default"],
-  router: _router["default"],
-  mounted: function mounted() {
-    this.store.initTimeline();
-  }
+  router: _router["default"]
 });

@@ -18,6 +18,8 @@ export default {
                     this.$router.push("/login");
                 }
             });
+        this.$store.dispatch("initTimeline");
+        
     }
 }
 </script>

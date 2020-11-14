@@ -42,16 +42,7 @@ export default {
             return this.$store.state.timeline.isLoading;
         }
     },
-    mounted(){
-        //this.loadInitTimeline();
-        this.$store.dispatch('initTimeline');
-    },
-    created(){
-
-    },
-    destroyed(){
-
-    },
+    
     methods: {
         loadInitTimeline(){
             this.$store.dispatch('initTimeline');

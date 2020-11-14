@@ -1,8 +1,59 @@
 <template>
-    
+    <div class="container">
+        <div class="row justify-content-center">
+            <user-profile class="col-md-4" :user="user" :isMine="isMe" v-if="user" />
+            <router-view class="col-md-8"></router-view>
+        </div>
+    </div>
 </template>
 <script>
+import UserProfileComponent from './../components/UserProfileComponent';
+import axios from 'axios';
+
 export default {
+    components : {
+        'user-profile': UserProfileComponent
+    },
+    props: {
+        userId: {
+            required: true,
+
+        }
+    },
     
+    data(){
+        return {
+            user: null
+        }
+    },
+
+    mounted(){
+        this.loadUser();
+    },
+
+    computed: {
+        isMe(){
+            let me = this.$store.state.user;
+            if(!me){
+                console.log("私はいない");
+            }
+            return this.user.id == this.$store.state.user.id;
+        }
+    },
+    methods: {
+        loadUser(){
+            axios.get(
+                `/api/users/${this.userId}`,
+                {
+                    headers: { Authorization: `Bearer ${this.$store.state.token }` },
+                    
+                }
+            ).then((res)=>{
+                this.user = res.data;
+            }).catch((e)=>{
+                console.log(e);
+            });
+        }
+    }
 }
 </script>
