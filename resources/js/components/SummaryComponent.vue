@@ -10,7 +10,7 @@
             <div class="single-line" v-if="summary.description">
                 {{ summary.description }}
             </div>
-            <a class="url stretched-link" :href="summary.url">
+            <a class="url stretched-link" :href="summary.url" target="_blank">
                 {{ summary.url }}
 
             </a>
