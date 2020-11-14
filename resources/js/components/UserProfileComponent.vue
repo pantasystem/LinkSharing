@@ -11,7 +11,7 @@
 
                     </div>
                     <h3 class="text-center"> {{ user.user_name }}</h3>
-                    <div v-if="user.is_follower">
+                    <div v-if="user.is_follower" class="mx-auto">
                         フォローされています。
                     </div>
                     <div class="row">
@@ -28,26 +28,8 @@
                             <div class="sub-text">ヒョロワー</div>
                         </router-link>
                     </div>
-                    <div v-if="!isMine" class="mt-2">
-                        <div v-if="user.is_following"> 
-                            
-                            <b-button 
-                                block variant="outline-primary"
-                                :disable="isUpdate"
-                                @click="unfollow"
-                                >
-                                フォロー解除
-                            </b-button>
-                        </div>
-                        <div v-else>
-                            <b-button 
-                                block variant="primary" 
-                                :disable="isUpdate"
-                                @click="follow"
-                                >
-                                フォロー
-                            </b-button>
-                        </div>
+                    <div v-if="isShowFollowButton" class="mt-2" >
+                        <follow-button v-on:follow="follow" v-on:unfollow="unfollow" :user="user" />
                     </div>
                 </div>
                 
@@ -57,6 +39,8 @@
     </div>
 </template>
 <script>
+import FollowButton from './FollowButtonComponent';
+
 export default {
     props: {
         user: {
@@ -69,11 +53,15 @@ export default {
             default: false
         }
     },
-    data(){
-        return {
-            isUpdate: false
-        };
+    components: {
+        'follow-button': FollowButton
     },
+    computed: {
+        isShowFollowButton(){
+            return !this.isMine && this.$store.state.user;
+        }
+    },
+    
     methods: {
         loadAvatarIcon(e){
             e.target.src = "/ic_avatar.png";

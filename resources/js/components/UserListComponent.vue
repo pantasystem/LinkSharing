@@ -5,12 +5,23 @@
         </div>
         <div class="card-body">
             <div v-for="user in users" :key="user.id">
-                {{ user.user_name }}
+                <slot>
+                    <div class="row">
+                        <div class="col-8">
+                            <h4>{{ user.user_name }}</h4>
+                        </div>
+                        <div class="col-4" v-if="me && user && me.id != user.id">
+                            <follow-button v-on:follow="follow" v-on:unfollow="unfollow" :user="user" />
+                        </div>
+                    </div>
+                </slot>
             </div>
         </div>
     </div>
 </template>
 <script>
+import FollowButton from './FollowButtonComponent';
+import { mapState } from 'vuex';
 export default {
     props: {
         title: {
@@ -21,12 +32,20 @@ export default {
             required: true
         }
     },
+    components: {
+        'follow-button': FollowButton
+    },
     data(){
         return {
             currentPage: 0,
             isLoading: false,
             users: []
 
+        }
+    },
+    computed: {
+        me(){
+            return this.$store.state.user;
         }
     },
     methods: {
@@ -47,8 +66,13 @@ export default {
         },
         follow(user){
             this.$store.dispatch('follow', user)
-                .then((user)=>{
-                    
+                .then((res)=>{
+                    this.users = this.users.map((u)=>{
+                        if(res.id == u.id){
+                            return res;
+                        }
+                        return u;
+                    })
                 })
                 .catch((e)=>{
                     console.log(e);
@@ -56,8 +80,14 @@ export default {
         },
         unfollow(user){
             this.$store.dispatch('unfollow', user)
-                .then((user)=>{
-
+                .then((res)=>{
+                    console.log(res);
+                    this.users = this.users.map((u)=>{
+                        if(res.id == u.id){
+                            return res;
+                        }
+                        return u;
+                    });
                 })
                 .catch((e)=>{
                     console.log(e);
@@ -66,6 +96,7 @@ export default {
     },
     mounted(){
         this.loadNext();
-    }
+    },
+
 }
 </script>
