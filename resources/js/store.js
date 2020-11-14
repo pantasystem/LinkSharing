@@ -185,6 +185,28 @@ export default new Vuex.Store({
             context.state.timeline.isLoading = false;
             context.state.timeline.currentPageNumber = 0;
             context.dispatch('loadNext');
+        },
+
+        async follow({ context }, user){
+            const res = await axios.put(
+                `/api/users/${user.id}`,
+                {
+                    headers: { Authorization: `Bearer ${context.state.token}` },
+                }
+            );
+            context.dispatch('initTimeline');
+            return res.data;
+        },
+
+        async unfollow({ context }, user){
+            const res = await axios.delete(
+                `/api/users/${user.id}`,
+                {
+                    headers: { Authorization: `Bearer ${context.state.token}`}
+                }
+            );
+            context.dispatch('initTimeline');
+            return res.data;
         }
 
       

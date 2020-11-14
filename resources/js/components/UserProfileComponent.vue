@@ -28,12 +28,24 @@
                             <div class="sub-text">ヒョロワー</div>
                         </router-link>
                     </div>
-                    <div v-if="!isMine">
+                    <div v-if="!isMine" class="mt-2">
                         <div v-if="user.is_following"> 
-                            <b-button block variant="primary" :disable="isUpdate">フォロー</b-button>
+                            <b-button 
+                                block variant="primary" 
+                                :disable="isUpdate"
+                                v-on:click="follow"
+                                >
+                                フォロー
+                            </b-button>
                         </div>
                         <div v-else>
-                            <b-button block variant="outline-primary">フォロー解除</b-button>
+                            <b-button 
+                                block variant="outline-primary"
+                                :disable="isUpdate"
+                                v-on:click="unfollow"
+                                >
+                                フォロー解除
+                            </b-button>
                         </div>
                     </div>
                 </div>
@@ -64,6 +76,12 @@ export default {
     methods: {
         loadAvatarIcon(e){
             e.target.src = "/ic_avatar.png";
+        },
+        follow(){
+            this.$emit('follow');
+        },
+        unfollow(){
+            this.$emit('unfollow');
         }
     }
 }

@@ -47,7 +47,7 @@ export default {
             axios.get(
                 `/api/users/${this.userId}`,
                 {
-                    headers: { Authorization: `Bearer ${this.$store.state.token }` },
+                    headers: getHeader(),
                     
                 }
             ).then((res)=>{
@@ -55,6 +55,27 @@ export default {
             }).catch((e)=>{
                 console.log(e);
             });
+        },
+        follow(){
+            this.$store.dispatch('follow', this.user)
+                .then((user)=>{
+                    this.user = user;
+                })
+                .catch((e)=>{
+                    console.log(e);
+                });
+        },
+        unfollow(){
+            this.$store.dispatch('unfollow', this.user)
+                .then((user)=>{
+                    this.user = user;
+                })
+                .catch((e)=>{
+                    console.log(e);
+                });
+        },
+        getHeader(){
+            return { Authorization: `Bearer ${this.$store.state.token }` };
         }
     }
 }

@@ -31,7 +31,8 @@ class UsersController extends Controller
             $notificationService->create($me, $followingUser);
         });
         
-        return response()->json(null, 204);
+        return $this->get($userId);
+
 
         
     }
@@ -42,19 +43,35 @@ class UsersController extends Controller
 
         $user = User::findOrFail($userId);
 
-        //$me->unfollow($user);
+        $me->unfollow($user);
         \DB::transaction(function () use($user, $me){
             FollowingUser::where('following_user_id', '=', $user->id)
             ->where('user_id', '=', $me->id)->delete();
         });        
         
 
-        return response()->json(null, 204);
+        return $this->get($userId);
     }
 
-    function get($userId)
+    public function get($userId)
     {
-        return User::withCountModels()->findOrFail($userId);
+        $columns = ['users.*'];
+        if(auth('sanctum')->check()){
+            $me = auth('sanctum')->user();
+            $columns['is_following'] = function($query) use ($me){
+                $query->selectRaw('count(*)')
+                    ->from('following_users')
+                    ->where('user_id', '=', $me->id)
+                    ->whereRaw('users.id = following_users.following_user_id');
+            };
+            $columns['is_follower'] = function($query) use ($me){
+                $query->selectRaw('count(*)')
+                    ->from('following_users')
+                    ->where('following_user_id', $me->id)
+                    ->whereRaw('users.id = following_users.user_id');
+            };
+        }
+        return User::select($columns)->withCount(['favoritedNotes', 'followings', 'followers'])->findOrFail($userId);
     }
 
     function notes($userId)

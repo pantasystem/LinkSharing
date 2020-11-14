@@ -258,6 +258,58 @@ var _default = new _vuex["default"].Store({
       context.state.timeline.isLoading = false;
       context.state.timeline.currentPageNumber = 0;
       context.dispatch('loadNext');
+    },
+    follow: function follow(_ref8, user) {
+      var context, res;
+      return regeneratorRuntime.async(function follow$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              context = _ref8.context;
+              _context5.next = 3;
+              return regeneratorRuntime.awrap(_axios["default"].put("/api/users/".concat(user.id), {
+                headers: {
+                  Authorization: "Bearer ".concat(context.state.token)
+                }
+              }));
+
+            case 3:
+              res = _context5.sent;
+              context.dispatch('initTimeline');
+              return _context5.abrupt("return", res.data);
+
+            case 6:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      });
+    },
+    unfollow: function unfollow(_ref9, user) {
+      var context, res;
+      return regeneratorRuntime.async(function unfollow$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              context = _ref9.context;
+              _context6.next = 3;
+              return regeneratorRuntime.awrap(_axios["default"]["delete"]("/api/users/".concat(user.id), {
+                headers: {
+                  Authorization: "Bearer ".concat(context.state.token)
+                }
+              }));
+
+            case 3:
+              res = _context6.sent;
+              context.dispatch('initTimeline');
+              return _context6.abrupt("return", res.data);
+
+            case 6:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      });
     }
   }
 });
