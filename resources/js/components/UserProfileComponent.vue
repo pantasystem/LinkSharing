@@ -3,8 +3,14 @@
         <div class="card-body">
             <div class="container">
                 <div>
-                    <img class="img-fluid" :src="user.user_name">
-                    <h3> {{ user.user_name }}</h3>
+                    <div class="wrapper col-8 mx-auto">
+                        <img 
+                            class="img img-fluid" 
+                            :src="user.avatar_icon ? user.avatar_icon : 'ic_avatar.png'" 
+                            v-on:error="loadAvatarIcon" >
+
+                    </div>
+                    <h3 class="text-center"> {{ user.user_name }}</h3>
                     <div v-if="user.is_follower">
                         フォローされています。
                     </div>
@@ -44,6 +50,33 @@ export default {
         return {
             isUpdate: false
         };
+    },
+    methods: {
+        loadAvatarIcon(e){
+            e.target.src = "ic_avatar.png";
+        }
     }
 }
 </script>
+<style scoped>
+.wrapper{
+    overflow: hidden;    
+}
+
+.wrapper::before{
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+    overflow: hidden;
+
+}
+
+.img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    object-fit: contain;
+}
+</style>
