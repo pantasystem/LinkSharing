@@ -9,8 +9,8 @@
                         フォローされています。
                     </div>
                     <div class="row">
-                        <router-link :to="{ name: 'followings', params: { userId: user.id } }">{{ user.followings_count}} フォロー</router-link>
-                        <router-link :to="{ name: 'followers', params: { userId: user.id } }">{{ user.followers_count }} ヒョロワー</router-link>
+                        <router-link class="col-6" :to="{ name: 'followings', params: { userId: user.id } }">{{ user.followings_count}} フォロー</router-link>
+                        <router-link class="col-6" :to="{ name: 'followers', params: { userId: user.id } }">{{ user.followers_count }} ヒョロワー</router-link>
                     </div>
                     <div v-if="!isMine">
                         <div v-if="user.is_following"> 

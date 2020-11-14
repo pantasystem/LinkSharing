@@ -15,9 +15,9 @@
         <div class="content col-10">
             <header>
             <router-link class="user_name" :to="{ name: 'user_detail', params: { userId: note.author.id}}">
-                <h5>
+                <h4>
                     {{ note.author.user_name }}
-                </h5>
+                </h4>
             </router-link>   
 
             </header>
@@ -29,7 +29,7 @@
                 <summary-component :summary="note.summary"/>        
                         
             </div>
-            <footer class="nav-note">
+            <footer class="nav-note col-12">
                 <tags-component 
                     :tags="note.tags"
                 />

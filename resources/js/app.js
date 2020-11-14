@@ -49,6 +49,9 @@ Vue.component('app-component', require('./pages/App.vue').default);
 const app = new Vue({
     el: '#app',
     store: store,
-    router: router
+    router: router,
+    mounted(){
+        this.store.initTimeline();
+    }
 });
 
