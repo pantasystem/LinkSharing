@@ -14,14 +14,34 @@ class NotificationController extends Controller
     public function notifications()
     {
         $user = Auth::user();
-        return $user->notifications()->with(['publisher', 'subscriber', 'comment', 'favorite', 'follow'])->orderBy('id', 'desc')->simplePaginate();
+        return $user->notifications()->with(
+            [
+                'publisher', 
+                'subscriber', 
+                'comment', 
+                'favorite.note',
+                'favorite.note.summary', 
+                'favorite.note.tags', 
+                'follow'
+            ]
+        )->orderBy('id', 'desc')->simplePaginate();
     }
 
     public function read($notificationId)
     {
         $user = Auth::user();
         $notification = $user->notifications()
-            ->with(['publisher', 'subscriber', 'comment', 'favorite', 'follow'])->findOrFail($notificationId);
+        ->with(
+            [
+                'publisher', 
+                'subscriber', 
+                'comment', 
+                'favorite.note',
+                'favorite.note.summary', 
+                'favorite.note.tags', 
+                'follow'
+            ]
+        )->findOrFail($notificationId);
         $notification->is_read = true;
         return $notification->save();
     }
@@ -30,7 +50,17 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         return $user->notifications()
-            ->with(['publisher', 'subscriber', 'comment', 'favorite', 'follow'])->findOrFail($notificationId);
+        ->with(
+            [
+                'publisher', 
+                'subscriber', 
+                'comment', 
+                'favorite.note',
+                'favorite.note.summary', 
+                'favorite.note.tags', 
+                'follow'
+            ]
+        )->findOrFail($notificationId);
     }
 
 }

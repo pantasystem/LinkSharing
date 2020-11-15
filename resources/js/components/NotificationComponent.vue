@@ -13,7 +13,9 @@
         <div>
             <div v-if="notification.favorite">
                 <slot name="favorite" :favorite="notification.favorite">
-
+                    <div>
+                        
+                    </div>
                 </slot>
             </div>
             <div v-else-if="notification.comment">
