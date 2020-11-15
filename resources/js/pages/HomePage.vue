@@ -3,10 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <timeline-component id="timeline-view" :notes="timeline.notes" :title="title" />
-                <button class="btn btn-link btn-lg btn-block" @click="loadNext" v-bind:disabled="isLoading">
-                    <span v-if="!isLoading">読み込む</span>
-                    <span v-if="isLoading">読み込み中</span>
-                </button>
+                <load-button :isLoading="isLoading" v-on:load="loadNext"/>
             </div>
             <div class="col-md-4 d-none d-lg-block">
                 <user-profile :user="user" :isMine="true" />
@@ -18,12 +15,15 @@
 import axios from 'axios';
 import TimelineComponent from '../components/TimelineComponent.vue';
 import UserProfileComponent from '../components/UserProfileComponent.vue';
+import LoadButton from '../components/LoadButtonComponent.vue';
+
 import { mapState, mapActions } from 'vuex';
 
 export default {
     components: {
         'timeline-component': TimelineComponent,
         'user-profile': UserProfileComponent,
+        'load-button': LoadButton,
     },
     data() {
         return {

@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="card">
         <div class="card-header" v-if="title">
             {{ title }}
@@ -24,10 +25,13 @@
             </div>
         </div>
     </div>
+    <load-button :isLoading="isLoading" v-on:load="loadNext" />
+</div>
 </template>
 <script>
 import FollowButton from './FollowButtonComponent';
 import AvatarIcon from './AvatarIconComponent';
+import LoadButton from './LoadButtonComponent';
 
 
 import { mapState } from 'vuex';
@@ -43,7 +47,8 @@ export default {
     },
     components: {
         'follow-button': FollowButton,
-        'avatar-icon': AvatarIcon
+        'avatar-icon': AvatarIcon,
+        'load-button': LoadButton,
     },
     data(){
         return {
@@ -67,6 +72,7 @@ export default {
             this.load(this.currentPage + 1)
                 .then((res)=>{
                     this.users.push(...res.data.data);
+                    this.currentPage = res.data.current_page;
                     this.isLoading = false;
                 })
                 .catch((e)=>{
