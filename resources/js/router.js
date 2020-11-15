@@ -5,8 +5,9 @@ import RegisterPage from './pages/RegisterPage.vue';
 import HomePage from './pages/HomePage.vue';
 import UserPage from './pages/UserPage.vue';
 import TagNotePage from './pages/TagsNotePage.vue';
-import FollowingsPage from './pages/FollowingsPage.vue';
-import FollowersPage from './pages/FollowersPage.vue';
+import FollowingsPage from './pages/users/FollowingsPage.vue';
+import FollowersPage from './pages/users/FollowersPage.vue';
+import UserNotesPage from './pages/users/UserNotesPage.vue';
 
 import store from './store';
 
@@ -60,7 +61,8 @@ export default new VueRouter({
                 {
                     path: 'notes',
                     name: 'user_notes',
-                    props: true
+                    props: true,
+                    component: UserNotesPage
 
                 }
             ]

@@ -4,7 +4,7 @@
 <script>
 import axios from 'axios';
 
-import UserListComponent from '../components/UserListComponent';
+import UserListComponent from '../../components/UserListComponent';
 
 export default {
     components: {

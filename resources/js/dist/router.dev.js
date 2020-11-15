@@ -19,9 +19,11 @@ var _UserPage = _interopRequireDefault(require("./pages/UserPage.vue"));
 
 var _TagsNotePage = _interopRequireDefault(require("./pages/TagsNotePage.vue"));
 
-var _FollowingsPage = _interopRequireDefault(require("./pages/FollowingsPage.vue"));
+var _FollowingsPage = _interopRequireDefault(require("./pages/users/FollowingsPage.vue"));
 
-var _FollowersPage = _interopRequireDefault(require("./pages/FollowersPage.vue"));
+var _FollowersPage = _interopRequireDefault(require("./pages/users/FollowersPage.vue"));
+
+var _UserNotesPage = _interopRequireDefault(require("./pages/users/UserNotesPage.vue"));
 
 var _store = _interopRequireDefault(require("./store"));
 
@@ -68,7 +70,8 @@ var _default = new _vueRouter["default"]({
     }, {
       path: 'notes',
       name: 'user_notes',
-      props: true
+      props: true,
+      component: _UserNotesPage["default"]
     }]
   }, {
     path: '/notes/search-by-tag/:name',
