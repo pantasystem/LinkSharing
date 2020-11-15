@@ -7,7 +7,10 @@
             <div v-for="user in users" :key="user.id">
                 <slot>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-2 wrapper">
+                            <avatar-icon :avatar_icon="user.avatar_icon" />
+                        </div>
+                        <div class="col-6">
                             <h4>{{ user.user_name }}</h4>
                         </div>
                         <div class="col-4" v-if="me && user && me.id != user.id">
@@ -21,6 +24,9 @@
 </template>
 <script>
 import FollowButton from './FollowButtonComponent';
+import AvatarIcon from './AvatarIconComponent';
+
+
 import { mapState } from 'vuex';
 export default {
     props: {
@@ -33,7 +39,8 @@ export default {
         }
     },
     components: {
-        'follow-button': FollowButton
+        'follow-button': FollowButton,
+        'avatar-icon': AvatarIcon
     },
     data(){
         return {
