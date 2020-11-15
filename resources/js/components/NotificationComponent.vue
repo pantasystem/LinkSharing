@@ -8,6 +8,23 @@
                 {{ notiifcation.publisher.user_name }}
             </router-link>
         </div>
+        <div class="row">
+        </div>
+        <div>
+            <div v-if="notification.favorite">
+                <slot name="favorite" :favorite="notification.favorite">
+
+                </slot>
+            </div>
+            <div v-else-if="notification.comment">
+                <slot name="comment" :comment="notification.favorite">
+                </slot>
+            </div>
+            <div v-else>
+                <slot name="follow" :user="notification.publisher">
+                </slot>
+            </div>
+        </div>
 
     </div>
 </template>
