@@ -71,7 +71,7 @@ class UsersController extends Controller
                     ->whereRaw('users.id = following_users.user_id');
             };
         }
-        return User::select($columns)->withCount(['favoritedNotes', 'followings', 'followers'])->findOrFail($userId);
+        return User::select($columns)->withCount(['favoritedNotes', 'followings', 'followers', 'notes'])->findOrFail($userId);
     }
 
     function notes($userId)
