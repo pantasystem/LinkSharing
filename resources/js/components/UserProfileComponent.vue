@@ -3,11 +3,10 @@
         <div class="card-body">
             <div class="container">
                 <div>
-                    <div class="wrapper col-8 mx-auto mb-2 mt-2">
-                        <img 
-                            class="img img-fluid" 
-                            :src="user.avatar_icon ? user.avatar_icon : 'ic_avatar.png'" 
-                            v-on:error="loadAvatarIcon" >
+                    <div class="col-8 mx-auto mb-2 mt-2">
+                        <avatar-icon 
+                            :avatar_icon="user.avatar_icon"
+                        />
 
                     </div>
                     <h3 class="text-center"> {{ user.user_name }}</h3>
@@ -40,6 +39,7 @@
 </template>
 <script>
 import FollowButton from './FollowButtonComponent';
+import AvatarIcon from './AvatarIconComponent';
 
 export default {
     props: {
@@ -54,7 +54,8 @@ export default {
         }
     },
     components: {
-        'follow-button': FollowButton
+        'follow-button': FollowButton,
+        'avatar-icon': AvatarIcon
     },
     computed: {
         isShowFollowButton(){
