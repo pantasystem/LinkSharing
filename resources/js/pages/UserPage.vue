@@ -34,6 +34,10 @@ export default {
     mounted(){
         this.loadUser();
     },
+    beforeRouteUpdate(to, from, next){
+        this.loadUser(to.params.userId);
+        next();
+    },
 
     computed: {
         isMe(){
@@ -43,9 +47,9 @@ export default {
         }
     },
     methods: {
-        loadUser(){
+        loadUser(userId = this.userId){
             axios.get(
-                `/api/users/${this.userId}`,
+                `/api/users/${userId}`,
                 {
                     headers: this.getHeader(),
                     
