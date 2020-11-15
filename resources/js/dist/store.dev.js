@@ -39,7 +39,7 @@ var _default = new _vuex["default"].Store({
     timeline: {
       notes: [],
       isLoading: false,
-      currentPageNumber: 0
+      currentPage: 0
     }
   },
   getters: {},
@@ -79,7 +79,7 @@ var _default = new _vuex["default"].Store({
       }
 
       state.timeline.isLoading = false;
-      state.timeline.currentPageNumber = page.current_page;
+      state.timeline.currentPage = page.current_page;
     }
   },
   actions: {
@@ -244,7 +244,7 @@ var _default = new _vuex["default"].Store({
           Authorization: "Bearer ".concat(state.token)
         },
         params: {
-          page: state.timeline.currentPageNumber + 1
+          page: state.timeline.currentPage + 1
         }
       }).then(function (res) {
         commit('nextPage', res.data);
@@ -256,7 +256,7 @@ var _default = new _vuex["default"].Store({
     initTimeline: function initTimeline(context) {
       context.state.timeline.notes = [];
       context.state.timeline.isLoading = false;
-      context.state.timeline.currentPageNumber = 0;
+      context.state.timeline.currentPage = 0;
       context.dispatch('loadNext');
     },
     follow: function follow(context, user) {

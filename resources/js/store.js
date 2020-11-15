@@ -14,7 +14,7 @@ export default new Vuex.Store({
         timeline: {
             notes: [],
             isLoading: false,
-            currentPageNumber: 0
+            currentPage: 0
         }
         
     },
@@ -53,7 +53,7 @@ export default new Vuex.Store({
                 state.timeline.notes.push(...page.data);
             }
             state.timeline.isLoading = false;
-            state.timeline.currentPageNumber = page.current_page;
+            state.timeline.currentPage = page.current_page;
         }
         
     },
@@ -167,7 +167,7 @@ export default new Vuex.Store({
                 '/api/notes',
                 {
                     headers: { Authorization: `Bearer ${state.token}`},
-                    params: { page: state.timeline.currentPageNumber + 1 }
+                    params: { page: state.timeline.currentPage + 1 }
                 }
             ).then((res)=>{
                 
@@ -183,7 +183,7 @@ export default new Vuex.Store({
         initTimeline(context){
             context.state.timeline.notes = [];
             context.state.timeline.isLoading = false;
-            context.state.timeline.currentPageNumber = 0;
+            context.state.timeline.currentPage = 0;
             context.dispatch('loadNext');
         },
 

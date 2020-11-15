@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <timeline-component id="timeline-view" :notes="timeline.notes" :title="title" />
+                <notes-component id="timeline-view" :notes="timeline.notes" :title="title" />
                 <load-button :isLoading="isLoading" v-on:load="loadNext"/>
             </div>
             <div class="col-md-4 d-none d-lg-block">
@@ -13,7 +13,7 @@
 </template>
 <script>
 import axios from 'axios';
-import TimelineComponent from '../components/TimelineComponent.vue';
+import NotesComponent from '../components/NotesComponent.vue';
 import UserProfileComponent from '../components/UserProfileComponent.vue';
 import LoadButton from '../components/LoadButtonComponent.vue';
 
@@ -21,7 +21,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
     components: {
-        'timeline-component': TimelineComponent,
+        'notes-component': NotesComponent,
         'user-profile': UserProfileComponent,
         'load-button': LoadButton,
     },

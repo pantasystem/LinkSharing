@@ -68,6 +68,7 @@ export default {
             if(this.isLoading){
                 return;
             }
+            this.isLoading = true;
             
             this.load(this.currentPage + 1)
                 .then((res)=>{
