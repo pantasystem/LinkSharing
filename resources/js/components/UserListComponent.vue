@@ -12,7 +12,7 @@
                             <avatar-icon :avatar_icon="user.avatar_icon" />
                         </div>
                         <div class="col-7">
-                            <router-link :to="{ name: 'user_detail', params: { userId: user.id }}">
+                            <router-link :to="{ name: 'user_notes', params: { userId: user.id }}">
 
                                 <h4>{{ user.user_name }}</h4>
                             </router-link>

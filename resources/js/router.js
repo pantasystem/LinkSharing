@@ -41,7 +41,6 @@ export default new VueRouter({
         },
         {
             path: '/users/:userId',
-            name: 'user_detail',
             component: UserPage,
             props: true,
             children: [
@@ -59,7 +58,7 @@ export default new VueRouter({
 
                 },
                 {
-                    path: 'notes',
+                    path: '',
                     name: 'user_notes',
                     props: true,
                     component: UserNotesPage

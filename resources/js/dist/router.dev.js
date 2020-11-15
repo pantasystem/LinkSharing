@@ -54,7 +54,6 @@ var _default = new _vueRouter["default"]({
     component: _RegisterPage["default"]
   }, {
     path: '/users/:userId',
-    name: 'user_detail',
     component: _UserPage["default"],
     props: true,
     children: [{
@@ -68,7 +67,7 @@ var _default = new _vueRouter["default"]({
       component: _FollowingsPage["default"],
       props: true
     }, {
-      path: 'notes',
+      path: '',
       name: 'user_notes',
       props: true,
       component: _UserNotesPage["default"]

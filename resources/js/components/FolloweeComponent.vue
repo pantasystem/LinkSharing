@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
 
-            <router-link :to="{ name: 'user_detail', params: { userId: user.id } }" class="col-2">
+            <router-link :to="{ name: 'user_notes', params: { userId: user.id } }" class="col-2">
                 <img :src="user.avatar_icon" :alt="user.user_name" class="img-fluid">
             </router-link>
 

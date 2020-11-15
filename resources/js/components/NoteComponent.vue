@@ -2,7 +2,7 @@
 <div class="contaienr pb-2">
     <article class="note-article row">
         
-        <router-link class="col-2" :to="{ name: 'user_detail', params: { userId: note.author.id}}" v-if="true">
+        <router-link class="col-2" :to="{ name: 'user_notes', params: { userId: note.author.id}}" v-if="true">
             <avatar-icon
                 :avatar_icon="note.author.avatar_icon"
             />
@@ -12,7 +12,7 @@
         
         <div class="content col-10">
             <header>
-            <router-link class="user_name" :to="{ name: 'user_detail', params: { userId: note.author.id}}">
+            <router-link class="user_name" :to="{ name: 'user_notes', params: { userId: note.author.id}}">
                 <h4>
                     {{ note.author.user_name }}
                 </h4>
