@@ -17,30 +17,7 @@ class NotificationController extends Controller
 
         $me = auth('sanctum')->user();
                     
-        return $user->notifications()->with(
-            [
-                'publisher' => function($query) use ($me){
-                    $query->select(
-                        [
-                            'users.*'
-                        ]
-                    )->isFollowing(function($query) use ($me){
-                        $query->whereRaw('following_users.following_user_id = users.id')
-                            ->where('following_users.user_id', '=', $me->id);
-                    })->isFollower(function($query) use ($me){
-                        $query->whereRaw('following_users.user_id = users.id')
-                            ->where('following_users.following_user_id', '=', $me->id);
-                    });
-                }, 
-                'comment', 
-                'favorite.note',
-                'favorite.note.summary', 
-                'favorite.note.tags', 
-                'follow',
-                
-                
-            ]
-        )->orderBy('id', 'desc')->simplePaginate();
+        return $user->notifications()->withDetail($me)->orderBy('id', 'desc')->simplePaginate();
 
     }
 
@@ -48,17 +25,7 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         $notification = $user->notifications()
-        ->with(
-            [
-                'publisher', 
-                'subscriber', 
-                'comment', 
-                'favorite.note',
-                'favorite.note.summary', 
-                'favorite.note.tags', 
-                'follow',
-            ]
-        )->findOrFail($notificationId);
+        ->withDetail($user)->findOrFail($notificationId);
         $notification->is_read = true;
         return $notification->save();
     }
@@ -67,17 +34,7 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         return $user->notifications()
-        ->with(
-            [
-                'publisher', 
-                'subscriber', 
-                'comment', 
-                'favorite.note',
-                'favorite.note.summary', 
-                'favorite.note.tags', 
-                'follow'
-            ]
-        )->findOrFail($notificationId);
+        ->withDetail($user)->findOrFail($notificationId);
     }
 
 }
