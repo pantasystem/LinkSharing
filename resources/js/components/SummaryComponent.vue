@@ -14,7 +14,7 @@
                 {{ summary.url }}
 
             </a>
-            <div class="wrapper col-11">
+            <div class="wrapper col-11" v-if="summary.image">
                 <img  class="content img-fluid" :src="summary.image" v-on:error="imgLoadError" />
             </div>
         </div>

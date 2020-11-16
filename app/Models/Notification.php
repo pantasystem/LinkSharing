@@ -55,5 +55,32 @@ class Notification extends Model
     public function follow(){
         return $this->belongsTo(FollowingUser::class, 'follow_id');
     }
+
+    public function scopeWithDetail($query, $me)
+    {
+        return $query->with(
+            [
+                'publisher' => function($query) use ($me){
+                    $query->select(['users.*']);
+                    if($me){
+                        $query->isFollowing(function($query) use ($me){
+                            $query->whereRaw('following_users.following_user_id = users.id')
+                                ->where('following_users.user_id', '=', $me->id);
+                        })->isFollower(function($query) use ($me){
+                            $query->whereRaw('following_users.user_id = users.id')
+                                ->where('following_users.following_user_id', '=', $me->id);
+                        });
+                    }
+                    
+                }, 
+                'comment', 
+                'favorite.note',
+                'favorite.note.summary', 
+                'favorite.note.tags', 
+                'follow',
+                
+                
+            ]);
+    }
     
 }

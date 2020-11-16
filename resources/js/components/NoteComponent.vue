@@ -2,11 +2,9 @@
 <div class="contaienr pb-2">
     <article class="note-article row">
         
-        <router-link class="avatar_icon col-2" :to="{ name: 'user_detail', params: { userId: note.author.id}}" v-if="true">
-            <img 
-                class="img-fluid" 
-                :src="note.author.avatar_icon ? note.author.avatar_icon : 'ic_avatar.png'" 
-                v-on:error="loadAvatarIcon" 
+        <router-link class="col-2" :to="{ name: 'user_notes', params: { userId: note.author.id}}" v-if="true">
+            <avatar-icon
+                :avatar_icon="note.author.avatar_icon"
             />
             
         </router-link>
@@ -14,7 +12,7 @@
         
         <div class="content col-10">
             <header>
-            <router-link class="user_name" :to="{ name: 'user_detail', params: { userId: note.author.id}}">
+            <router-link class="user_name" :to="{ name: 'user_notes', params: { userId: note.author.id}}">
                 <h4>
                     {{ note.author.user_name }}
                 </h4>
@@ -43,11 +41,13 @@
 <script>
 import SummaryComponent from './SummaryComponent.vue';
 import TagsComponent from './TagsComponent.vue';
+import AvatarIcon from './AvatarIconComponent';
 
 export default {
     components: {
         'summary-component': SummaryComponent,
-        'tags-component': TagsComponent
+        'tags-component': TagsComponent,
+        'avatar-icon': AvatarIcon
     },
     props: {
         note: {

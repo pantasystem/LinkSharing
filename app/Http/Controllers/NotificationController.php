@@ -14,14 +14,18 @@ class NotificationController extends Controller
     public function notifications()
     {
         $user = Auth::user();
-        return $user->notifications()->with(['publisher', 'subscriber', 'comment', 'favorite', 'follow'])->orderBy('id', 'desc')->simplePaginate();
+
+        $me = auth('sanctum')->user();
+                    
+        return $user->notifications()->withDetail($me)->orderBy('id', 'desc')->simplePaginate();
+
     }
 
     public function read($notificationId)
     {
         $user = Auth::user();
         $notification = $user->notifications()
-            ->with(['publisher', 'subscriber', 'comment', 'favorite', 'follow'])->findOrFail($notificationId);
+        ->withDetail($user)->findOrFail($notificationId);
         $notification->is_read = true;
         return $notification->save();
     }
@@ -30,7 +34,7 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         return $user->notifications()
-            ->with(['publisher', 'subscriber', 'comment', 'favorite', 'follow'])->findOrFail($notificationId);
+        ->withDetail($user)->findOrFail($notificationId);
     }
 
 }

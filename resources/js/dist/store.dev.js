@@ -39,7 +39,7 @@ var _default = new _vuex["default"].Store({
     timeline: {
       notes: [],
       isLoading: false,
-      currentPageNumber: 0
+      currentPage: 0
     }
   },
   getters: {},
@@ -79,7 +79,7 @@ var _default = new _vuex["default"].Store({
       }
 
       state.timeline.isLoading = false;
-      state.timeline.currentPageNumber = page.current_page;
+      state.timeline.currentPage = page.current_page;
     }
   },
   actions: {
@@ -244,7 +244,7 @@ var _default = new _vuex["default"].Store({
           Authorization: "Bearer ".concat(state.token)
         },
         params: {
-          page: state.timeline.currentPageNumber + 1
+          page: state.timeline.currentPage + 1
         }
       }).then(function (res) {
         commit('nextPage', res.data);
@@ -256,8 +256,58 @@ var _default = new _vuex["default"].Store({
     initTimeline: function initTimeline(context) {
       context.state.timeline.notes = [];
       context.state.timeline.isLoading = false;
-      context.state.timeline.currentPageNumber = 0;
+      context.state.timeline.currentPage = 0;
       context.dispatch('loadNext');
+    },
+    follow: function follow(context, user) {
+      var res;
+      return regeneratorRuntime.async(function follow$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return regeneratorRuntime.awrap(_axios["default"].post("/api/users/".concat(user.id), null, {
+                headers: {
+                  Authorization: "Bearer ".concat(context.state.token)
+                }
+              }));
+
+            case 2:
+              res = _context5.sent;
+              context.dispatch('initTimeline');
+              return _context5.abrupt("return", res.data);
+
+            case 5:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      });
+    },
+    unfollow: function unfollow(context, user) {
+      var res;
+      return regeneratorRuntime.async(function unfollow$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return regeneratorRuntime.awrap(_axios["default"]["delete"]("/api/users/".concat(user.id), {
+                headers: {
+                  Authorization: "Bearer ".concat(context.state.token)
+                }
+              }));
+
+            case 2:
+              res = _context6.sent;
+              context.dispatch('initTimeline');
+              return _context6.abrupt("return", res.data);
+
+            case 5:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      });
     }
   }
 });

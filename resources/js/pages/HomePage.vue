@@ -2,11 +2,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <timeline-component id="timeline-view" :notes="timeline.notes" :title="title" />
-                <button class="btn btn-link btn-lg btn-block" @click="loadNext" v-bind:disabled="isLoading">
-                    <span v-if="!isLoading">読み込む</span>
-                    <span v-if="isLoading">読み込み中</span>
-                </button>
+                <notes-component 
+                    id="timeline-view" 
+                    :notes="timeline.notes" 
+                    :title="title" 
+                    v-on:loadNext="loadNext"
+                    :isLoading="isLoading" />
             </div>
             <div class="col-md-4 d-none d-lg-block">
                 <user-profile :user="user" :isMine="true" />
@@ -16,14 +17,17 @@
 </template>
 <script>
 import axios from 'axios';
-import TimelineComponent from '../components/TimelineComponent.vue';
+import NotesComponent from '../components/NotesComponent.vue';
 import UserProfileComponent from '../components/UserProfileComponent.vue';
+import LoadButton from '../components/LoadButtonComponent.vue';
+
 import { mapState, mapActions } from 'vuex';
 
 export default {
     components: {
-        'timeline-component': TimelineComponent,
+        'notes-component': NotesComponent,
         'user-profile': UserProfileComponent,
+        'load-button': LoadButton,
     },
     data() {
         return {
@@ -42,16 +46,7 @@ export default {
             return this.$store.state.timeline.isLoading;
         }
     },
-    mounted(){
-        //this.loadInitTimeline();
-        this.$store.dispatch('initTimeline');
-    },
-    created(){
-
-    },
-    destroyed(){
-
-    },
+    
     methods: {
         loadInitTimeline(){
             this.$store.dispatch('initTimeline');

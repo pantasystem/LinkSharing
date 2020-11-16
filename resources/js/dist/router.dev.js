@@ -19,9 +19,11 @@ var _UserPage = _interopRequireDefault(require("./pages/UserPage.vue"));
 
 var _TagsNotePage = _interopRequireDefault(require("./pages/TagsNotePage.vue"));
 
-var _FollowingsPage = _interopRequireDefault(require("./pages/FollowingsPage.vue"));
+var _FollowingsPage = _interopRequireDefault(require("./pages/users/FollowingsPage.vue"));
 
-var _FollowersPage = _interopRequireDefault(require("./pages/FollowersPage.vue"));
+var _FollowersPage = _interopRequireDefault(require("./pages/users/FollowersPage.vue"));
+
+var _UserNotesPage = _interopRequireDefault(require("./pages/users/UserNotesPage.vue"));
 
 var _store = _interopRequireDefault(require("./store"));
 
@@ -52,19 +54,23 @@ var _default = new _vueRouter["default"]({
     component: _RegisterPage["default"]
   }, {
     path: '/users/:userId',
-    name: 'user_detail',
     component: _UserPage["default"],
+    props: true,
     children: [{
       path: 'followers',
       name: 'followers',
-      component: _FollowersPage["default"]
+      component: _FollowersPage["default"],
+      props: true
     }, {
       path: 'followings',
       name: 'followings',
-      component: _FollowingsPage["default"]
+      component: _FollowingsPage["default"],
+      props: true
     }, {
-      path: 'notes',
-      name: 'user_notes'
+      path: '',
+      name: 'user_notes',
+      props: true,
+      component: _UserNotesPage["default"]
     }]
   }, {
     path: '/notes/search-by-tag/:name',
