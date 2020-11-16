@@ -14,7 +14,7 @@
             <div v-if="notification.favorite">
                 <slot name="favorite" :favorite="notification.favorite">
                     <div>
-                        
+
                     </div>
                 </slot>
             </div>
@@ -32,6 +32,7 @@
 </template>
 <script>
 import AvatarIcon from './AvatarIconComponent';
+import NoteComponent from './NoteComponent';
 
 export default {
     props: {
