@@ -106,6 +106,68 @@ class User extends Authenticatable
         return $this->withCount(['followers', 'followings', 'notes', 'favoritedNotes']);
     }
 
+   /* public function scopeIsFollowing($query, User $me){
+        return $query->addSelect(['is_following' => function($query) use ($me){
+            $query->selectRaw('count(*)')
+                ->from('following_users')
+                ->where('following_users.user_id', '=' , $me->id)
+                ->whereRaw('following_users.following_user_id = users.id');
+                
+        }]);
+    }*/
+
+    /*public function scopeIsFollower($query, User $me){
+        return $query->addSelect(['is_follower' => function($query) use ($me){
+            $query->selectRaw('count(*)')
+                ->from('following_users')
+                ->whereRaw('following_users.user_id = users.id')
+                ->where('following_users.following_user_id', '=', $me->id);
+        }]);
+    }*/
+
+    /*public function scopeIsFollowee($query, String $type, User $me, $equalFollowingUserId){
+        return $query->addSelect([$type => function($query) use ($me, $equalFollowingUserId){
+            $query->selectRaw('count(*)')
+                ->from('following_users');
+                if($equalFollowingUserId){
+                    $query->where('following_users.following_user_id', '=', $me->id)
+                        ->whereRaw('following_users.user_id = users.id');
+                }else{
+                    $query->where('following_users.user_id', '=', $me->id)
+                        ->whereRaw('following_users.following_user_id = users.id');
+                }
+        }]);
+    }*/
+
+    /*public function scopeIsFollowing($query, Closure $condition){
+        return $query->addSelect([$type => function($query) use ($me, $equalFollowingUserId){
+            $query->selectRaw('count(*)')
+                ->from('following_users');
+                if($equalFollowingUserId){
+                    $query->where('following_users.following_user_id', '=', $me->id)
+                        ->whereRaw('following_users.user_id = users.id');
+                }else{
+                    $query->where('following_users.user_id', '=', $me->id)
+                        ->whereRaw('following_users.following_user_id = users.id');
+                }
+        }]);
+    } */ 
+
+    public function scopeIsFollower($query, \Closure $conditionQueryBuilder){
+        return $query->addSelect(['is_follower' => function($query) use ($conditionQueryBuilder){
+            $query = $query->selectRaw("count(*)")->from('following_users');
+            $conditionQueryBuilder($query);
+            
+        }]);
+    }
+
+    public function scopeIsFollowing($query, \Closure $conditionQueryBuilder){
+        return $query->addSelect(['is_following' => function($query) use ($conditionQueryBuilder){
+            $query = $query->selectRaw("count(*)")->from('following_users');
+            $conditionQueryBuilder($query);
+        }]);
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class, 'author_id');
