@@ -13,17 +13,17 @@
         <div>
             <div v-if="notification.favorite">
                 <slot name="favorite" :favorite="notification.favorite">
-                    <div>
-
-                    </div>
+                    <note-component :note="notification.note" />
                 </slot>
             </div>
             <div v-else-if="notification.comment">
                 <slot name="comment" :comment="notification.favorite">
+                    
                 </slot>
             </div>
             <div v-else>
                 <slot name="follow" :user="notification.publisher">
+                    <followee-component :user="notification.publisher" :me="user" />
                 </slot>
             </div>
         </div>
@@ -33,6 +33,9 @@
 <script>
 import AvatarIcon from './AvatarIconComponent';
 import NoteComponent from './NoteComponent';
+import FolloweeComponent from './FolloweeComponent';
+import NoteComponent from './NoteComponent.vue';
+import { mapState } from 'vuex';
 
 export default {
     props: {
@@ -42,7 +45,12 @@ export default {
         }
     },
     components: {
-        'avatar-icon': AvatarIcon
+        'avatar-icon': AvatarIcon,
+        'followee-component': FolloweeComponent,
+        'note-component': NoteComponent
+    },
+    computed: {
+        ...mapState(['user'])
     }
 }
 </script>
