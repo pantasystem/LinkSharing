@@ -1,29 +1,46 @@
 <template>
-    <div class="container">
-        <div class="row">
+    <div class="row mt-2 mb-2">
+        <div class="col-2 wrapper">
+            <avatar-icon :avatar_icon="user.avatar_icon" />
+        </div>
+        <div class="col-9 container row">
+            <div class="col-md-7">
+                <router-link :to="{ name: 'user_notes', params: { userId: user.id }}">
 
-            <router-link :to="{ name: 'user_notes', params: { userId: user.id } }" class="col-2">
-                <img :src="user.avatar_icon" :alt="user.user_name" class="img-fluid">
-            </router-link>
-
-            <div class="col-7 flex-column p-1">
-                <h5> {{ user.user_name }}</h5>
-                
+                    <h4>{{ user.user_name }}</h4>
+                </router-link>
             </div>
-            <div class="col-2">
-                <b-button v-if="user.is_following === true" variant="outline-primary">フォロー中</b-button>
-                <b-button v-else-if="user.is_following === false" variant="primary">フォロー</b-button>
+            <div class="col-md-5" v-if="me && user && me.id != user.id">
+                <follow-button v-on:follow="follow" v-on:unfollow="unfollow" :user="user" />
             </div>
         </div>
     </div>
 </template>
 <script>
+import AvatarIcon from './AvatarIconComponent';
+import FollowButton from './FollowButtonComponent';
+
 export default {
-    
+
     props: {
         user: {
             type: Object,
             required: true
+        },
+        me: {
+            type: Object
+        }
+    },
+    components: {
+        'avatar-icon': AvatarIcon,
+        'follow-button': FollowButton
+    },
+    methods: {
+        follow(user){
+            this.$emit('follow', user);
+        },
+        unfollow(user){
+            this.$emit('unfollow', user);
         }
     }
 }
