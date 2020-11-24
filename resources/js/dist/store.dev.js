@@ -168,6 +168,11 @@ var notification = {
       var commit = _ref7.commit,
           state = _ref7.state,
           rootState = _ref7.rootState;
+
+      if (state.isLoading) {
+        return;
+      }
+
       commit('setLoading', true);
       var token = rootState.token;
 

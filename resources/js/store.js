@@ -117,6 +117,9 @@ const notification = {
     },
     actions: {
         loadNext({commit, state, rootState}){
+            if(state.isLoading){
+                return;
+            }
             commit('setLoading', true);
             let token = rootState.token;
             axios.get(
