@@ -49,11 +49,11 @@ export default {
     
     methods: {
         loadInitTimeline(){
-            this.$store.dispatch('initTimeline');
+            this.$store.dispatch('timeline/initTimeline');
         },
 
         loadNext(){
-            this.$store.dispatch('loadNext');
+            this.$store.dispatch('timeline/loadNext');
 
         },
         infiniteListener(){

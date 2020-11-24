@@ -9,8 +9,10 @@
 </template>
 <script>
 export default {
+
     created(){
         console.log("created");
+        console.log(`timeline${JSON.stringify(this.$store.state)}`);
         this.$store.dispatch("loadMe")
             .catch((e)=>{
                 console.log(`アカウントの読み込みに失敗: ${e}`);
@@ -18,7 +20,9 @@ export default {
                     this.$router.push("/login");
                 }
             });
-        this.$store.dispatch("initTimeline");
+        console.log(this.$store);
+        this.$store.dispatch('timeline/initTimeline');
+        
         
     }
 }
