@@ -7,20 +7,34 @@
         <div class="card-body">
             <notification-component v-for="notification in notifications" :key="notification.id"/>
         </div>
+        
+
     </div>
+    <load-button :isLoading="isLoading" @load="loadNext"/>
 </div>
 </template>
 <script>
-import NotificationComponent from './NotificationComponent';
 import NotificationComponent from './NotificationComponent.vue';
+import LoadButtonComponent from './LoadButtonComponent.vue';
+
 export default {
     props: {
         notifications: {
             type: Array
+        },
+        isLoading: {
+            type: Boolean,
+            default: false
         }
     },
     components: {
-        'notification-compoennt' : NotificationComponent
+        'notification-compoennt' : NotificationComponent,
+        'load-button' : LoadButtonComponent
+    },
+    methods: {
+        loadNext(){
+            this.$emit('loadNext');
+        }
     }
 }
 </script>

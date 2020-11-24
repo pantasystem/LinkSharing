@@ -34,7 +34,6 @@
 import AvatarIcon from './AvatarIconComponent';
 import NoteComponent from './NoteComponent';
 import FolloweeComponent from './FolloweeComponent';
-import NoteComponent from './NoteComponent.vue';
 import { mapState } from 'vuex';
 
 export default {

@@ -168,6 +168,7 @@ var notification = {
       var commit = _ref7.commit,
           state = _ref7.state,
           rootState = _ref7.rootState;
+      console.log("notification#loadNext");
 
       if (state.isLoading) {
         return;

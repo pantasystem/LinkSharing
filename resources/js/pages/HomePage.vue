@@ -11,6 +11,7 @@
             </div>
             <div class="col-md-4 d-none d-lg-block">
                 <user-profile :user="user" :isMine="true" />
+                <notifications-component :isLoading="notification.isLoading" @loadNext="loadNextNotifications" />
             </div>
         </div>
     </div>
@@ -20,6 +21,7 @@ import axios from 'axios';
 import NotesComponent from '../components/NotesComponent.vue';
 import UserProfileComponent from '../components/UserProfileComponent.vue';
 import LoadButton from '../components/LoadButtonComponent.vue';
+import NotificationsComponent from '../components/NotificationsComponent.vue';
 
 import { mapState, mapActions } from 'vuex';
 
@@ -28,6 +30,7 @@ export default {
         'notes-component': NotesComponent,
         'user-profile': UserProfileComponent,
         'load-button': LoadButton,
+        'notifications-component': NotificationsComponent
     },
     data() {
         return {
@@ -44,6 +47,9 @@ export default {
         },
         isLoading(){
             return this.$store.state.timeline.isLoading;
+        },
+        notification(){
+            return this.$store.state.notification;
         }
     },
     
@@ -59,6 +65,10 @@ export default {
         infiniteListener(){
             console.log(`読み込みを開始します nextPage:${this.nextPage}`);
             this.loadNext();
+        },
+        loadNextNotifications(){
+            console.log("通知を読み込もうとしている");
+            this.$store.dispatch('notification/loadNext');
         }
     }
 

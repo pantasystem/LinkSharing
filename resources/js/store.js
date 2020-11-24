@@ -117,6 +117,7 @@ const notification = {
     },
     actions: {
         loadNext({commit, state, rootState}){
+            console.log("notification#loadNext");
             if(state.isLoading){
                 return;
             }
