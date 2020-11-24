@@ -11,14 +11,16 @@
                         <div class="col-2 wrapper">
                             <avatar-icon :avatar_icon="user.avatar_icon" />
                         </div>
-                        <div class="col-7">
-                            <router-link :to="{ name: 'user_notes', params: { userId: user.id }}">
+                        <div class="col-9 container row">
+                            <div class="col-md-7">
+                                <router-link :to="{ name: 'user_notes', params: { userId: user.id }}">
 
-                                <h4>{{ user.user_name }}</h4>
-                            </router-link>
-                        </div>
-                        <div class="col-3" v-if="me && user && me.id != user.id">
-                            <follow-button v-on:follow="follow" v-on:unfollow="unfollow" :user="user" />
+                                    <h4>{{ user.user_name }}</h4>
+                                </router-link>
+                            </div>
+                            <div class="col-md-5" v-if="me && user && me.id != user.id">
+                                <follow-button v-on:follow="follow" v-on:unfollow="unfollow" :user="user" />
+                            </div>
                         </div>
                     </div>
                 </slot>
