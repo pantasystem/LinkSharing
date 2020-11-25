@@ -68,6 +68,7 @@ export default {
         },
         loadNextNotifications(){
             console.log("通知を読み込もうとしている");
+            console.log(this.$store);
             this.$store.dispatch('notification/loadNext');
         }
     }

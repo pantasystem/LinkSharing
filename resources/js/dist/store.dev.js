@@ -135,6 +135,7 @@ var timeline = {
   }
 };
 var notification = {
+  namespaced: true,
   state: function state() {
     return {
       notifications: [],

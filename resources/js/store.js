@@ -94,6 +94,7 @@ const timeline = {
 };
 
 const notification = {
+    namespaced: true,
     state(){
         return {
             notifications: [],
