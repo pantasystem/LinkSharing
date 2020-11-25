@@ -144,31 +144,27 @@ var notification = {
     };
   },
   mutations: {
-    pushNotifications: function pushNotifications(_ref3, notifications) {
+    pushNotifications: function pushNotifications(state, notifications) {
       var _state$notifications;
-
-      var state = _ref3.state;
 
       (_state$notifications = state.notifications).push.apply(_state$notifications, _toConsumableArray(notifications));
     },
-    setNotifications: function setNotifications(_ref4, notifications) {
-      var state = _ref4.state;
+    setNotifications: function setNotifications(state, notifications) {
       state.notifications = notifications;
     },
-    setLoading: function setLoading(_ref5, isLoading) {
-      var state = _ref5.state;
+    setLoading: function setLoading(state, isLoading) {
+      console.log("読み込み状態を変更しようとしている");
       state.isLoading = isLoading;
     },
-    setCurrentPage: function setCurrentPage(_ref6, page) {
-      var state = _ref6.state;
+    setCurrentPage: function setCurrentPage(state, page) {
       state.currentPage = page;
     }
   },
   actions: {
-    loadNext: function loadNext(_ref7) {
-      var commit = _ref7.commit,
-          state = _ref7.state,
-          rootState = _ref7.rootState;
+    loadNext: function loadNext(_ref3) {
+      var commit = _ref3.commit,
+          state = _ref3.state,
+          rootState = _ref3.rootState;
       console.log("notification#loadNext");
 
       if (state.isLoading) {
@@ -193,8 +189,8 @@ var notification = {
         console.log(e);
       });
     },
-    init: function init(_ref8) {
-      var commit = _ref8.commit;
+    init: function init(_ref4) {
+      var commit = _ref4.commit;
       commit('setLoading', false);
       commit('setNotifications', []);
       commit('setCurrentPage', 0);
@@ -213,9 +209,9 @@ var _default = new _vuex["default"].Store({
     token: localStorage.getItem("token")
   },
   mutations: {
-    setAccount: function setAccount(state, _ref9) {
-      var token = _ref9.token,
-          user = _ref9.user;
+    setAccount: function setAccount(state, _ref5) {
+      var token = _ref5.token,
+          user = _ref5.user;
       state.user = user;
       state.token = token;
     },
@@ -224,19 +220,19 @@ var _default = new _vuex["default"].Store({
     }
   },
   getters: {
-    token: function token(_ref10) {
-      var state = _ref10.state;
+    token: function token(_ref6) {
+      var state = _ref6.state;
       return state.token;
     }
   },
   actions: {
-    register: function register(_ref11, req) {
+    register: function register(_ref7, req) {
       var commit, response;
       return regeneratorRuntime.async(function register$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref11.commit;
+              commit = _ref7.commit;
               _context2.next = 3;
               return regeneratorRuntime.awrap(_axios["default"].post('/api/register', {
                 email: req.email,
@@ -263,13 +259,13 @@ var _default = new _vuex["default"].Store({
         }
       }, null, this);
     },
-    login: function login(_ref12, req) {
+    login: function login(_ref8, req) {
       var commit, data, res;
       return regeneratorRuntime.async(function login$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref12.commit;
+              commit = _ref8.commit;
               data = _objectSpread({}, req, {
                 device_name: 'Web Client'
               });
@@ -293,13 +289,13 @@ var _default = new _vuex["default"].Store({
         }
       });
     },
-    loadMe: function loadMe(_ref13) {
+    loadMe: function loadMe(_ref9) {
       var commit, token, res, account;
       return regeneratorRuntime.async(function loadMe$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
-              commit = _ref13.commit;
+              commit = _ref9.commit;
               token = this.state.token;
 
               if (!token) {
@@ -342,8 +338,8 @@ var _default = new _vuex["default"].Store({
         }
       }, null, this);
     },
-    logout: function logout(_ref14) {
-      var commit = _ref14.commit;
+    logout: function logout(_ref10) {
+      var commit = _ref10.commit;
       commit('setAccount', {
         token: null,
         user: null

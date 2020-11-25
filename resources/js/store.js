@@ -103,16 +103,17 @@ const notification = {
         }
     },
     mutations: {
-        pushNotifications({state}, notifications){
+        pushNotifications(state, notifications){
             state.notifications.push(...notifications);
         },
-        setNotifications({state}, notifications){
+        setNotifications(state, notifications){
             state.notifications = notifications;
         },
-        setLoading({state}, isLoading){
+        setLoading(state, isLoading){
+            console.log("読み込み状態を変更しようとしている");
             state.isLoading = isLoading;
         },
-        setCurrentPage({state}, page){
+        setCurrentPage(state, page){
             state.currentPage = page;
         }
     },
