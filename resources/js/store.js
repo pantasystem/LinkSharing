@@ -110,7 +110,6 @@ const notification = {
             state.notifications = notifications;
         },
         setLoading(state, isLoading){
-            console.log("読み込み状態を変更しようとしている");
             state.isLoading = isLoading;
         },
         setCurrentPage(state, page){

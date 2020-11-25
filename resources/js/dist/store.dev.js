@@ -153,7 +153,6 @@ var notification = {
       state.notifications = notifications;
     },
     setLoading: function setLoading(state, isLoading) {
-      console.log("読み込み状態を変更しようとしている");
       state.isLoading = isLoading;
     },
     setCurrentPage: function setCurrentPage(state, page) {
