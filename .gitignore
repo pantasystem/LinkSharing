@@ -57,3 +57,4 @@ _ide_*
 # End of https://www.toptal.com/developers/gitignore/api/laravel,vagrant
 
 .DS_Store
+dist/

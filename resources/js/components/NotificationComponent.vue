@@ -5,26 +5,30 @@
                 <avatar-icon :avatar_icon="notification.publisher.avatar_icon"/>
             </router-link>
             <router-link class="col-11" :to="{ name: 'user_notes', params: {userId: notification.publisher.id}}"> 
-                {{ notiifcation.publisher.user_name }}
+                <!--{{ notiifcation.publisher.user_name }}-->
+                {{ notification.publisher.user_name }}
             </router-link>
+            
+            
         </div>
         <div class="row">
         </div>
         <div>
             <div v-if="notification.favorite">
                 <slot name="favorite" :favorite="notification.favorite">
-                    <div>
-
-                    </div>
+                    <note-component :note="notification.favorite.note" />
                 </slot>
             </div>
             <div v-else-if="notification.comment">
                 <slot name="comment" :comment="notification.favorite">
+                    
                 </slot>
             </div>
             <div v-else>
-                <slot name="follow" :user="notification.publisher">
+                <slot name="follow" :publisher="notification.publisher">
+                    <followee-component :user="notification.publisher" :me="user" />
                 </slot>
+                
             </div>
         </div>
 
@@ -33,6 +37,8 @@
 <script>
 import AvatarIcon from './AvatarIconComponent';
 import NoteComponent from './NoteComponent';
+import FolloweeComponent from './FolloweeComponent';
+import { mapState } from 'vuex';
 
 export default {
     props: {
@@ -42,7 +48,12 @@ export default {
         }
     },
     components: {
-        'avatar-icon': AvatarIcon
+        'avatar-icon': AvatarIcon,
+        'followee-component': FolloweeComponent,
+        'note-component': NoteComponent
+    },
+    computed: {
+        ...mapState(['user'])
     }
 }
 </script>

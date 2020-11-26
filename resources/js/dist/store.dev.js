@@ -31,28 +31,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 _vue["default"].use(_vuex["default"]);
 
-var _default = new _vuex["default"].Store({
+var timeline = {
   namespaced: true,
-  state: {
-    user: null,
-    token: localStorage.getItem("token"),
-    timeline: {
+  state: function state() {
+    return {
       notes: [],
       isLoading: false,
       currentPage: 0
-    }
+    };
   },
-  getters: {},
   mutations: {
-    setAccount: function setAccount(state, _ref) {
-      var token = _ref.token,
-          user = _ref.user;
-      state.user = user;
-      state.token = token;
-    },
-    setToken: function setToken(_state, token) {
-      localStorage.setItem('token', token);
-    },
     pushNotes: function pushNotes(state, notes) {
       if (Array.isArray(notes)) {
         var _state$timeline$notes;
@@ -73,24 +61,178 @@ var _default = new _vuex["default"].Store({
     },
     nextPage: function nextPage(state, page) {
       if (Array.isArray(page.data) && page.data.length) {
-        var _state$timeline$notes3;
+        var _state$notes;
 
-        (_state$timeline$notes3 = state.timeline.notes).push.apply(_state$timeline$notes3, _toConsumableArray(page.data));
+        (_state$notes = state.notes).push.apply(_state$notes, _toConsumableArray(page.data));
       }
 
-      state.timeline.isLoading = false;
-      state.timeline.currentPage = page.current_page;
+      state.isLoading = false;
+      state.currentPage = page.current_page;
     }
   },
   actions: {
-    register: function register(_ref2, req) {
-      var commit, response;
-      return regeneratorRuntime.async(function register$(_context) {
+    createNote: function createNote(_ref, note) {
+      var commit, res, createdNote;
+      return regeneratorRuntime.async(function createNote$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref2.commit;
+              commit = _ref.commit;
               _context.next = 3;
+              return regeneratorRuntime.awrap(_axios["default"].post('api/notes', note, {
+                headers: {
+                  Authorization: "Bearer ".concat(this.state.token)
+                }
+              }));
+
+            case 3:
+              res = _context.sent;
+              createdNote = res.data;
+              commit('addNotesAtTheFirst', createdNote);
+              return _context.abrupt("return", res);
+
+            case 7:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, null, this);
+    },
+    loadNext: function loadNext(_ref2) {
+      var commit = _ref2.commit,
+          state = _ref2.state,
+          rootState = _ref2.rootState;
+
+      if (state.isLoading) {
+        return;
+      }
+
+      state.isLoading = true;
+      console.log("load開始");
+      console.log(rootState.token);
+
+      _axios["default"].get('/api/notes', {
+        headers: {
+          Authorization: "Bearer ".concat(rootState.token)
+        },
+        params: {
+          page: state.currentPage + 1
+        }
+      }).then(function (res) {
+        commit('nextPage', res.data);
+      })["catch"](function (e) {
+        console.log(e);
+        commit('nextPage', null);
+      });
+    },
+    initTimeline: function initTimeline(context) {
+      console.log("initTimeline開始しました");
+      context.state.notes = [];
+      context.state.isLoading = false;
+      context.state.currentPage = 0;
+      context.dispatch('loadNext');
+    }
+  }
+};
+var notification = {
+  namespaced: true,
+  state: function state() {
+    return {
+      notifications: [],
+      isLoading: false,
+      currentPage: 0
+    };
+  },
+  mutations: {
+    pushNotifications: function pushNotifications(state, notifications) {
+      var _state$notifications;
+
+      (_state$notifications = state.notifications).push.apply(_state$notifications, _toConsumableArray(notifications));
+    },
+    setNotifications: function setNotifications(state, notifications) {
+      state.notifications = notifications;
+    },
+    setLoading: function setLoading(state, isLoading) {
+      state.isLoading = isLoading;
+    },
+    setCurrentPage: function setCurrentPage(state, page) {
+      state.currentPage = page;
+    }
+  },
+  actions: {
+    loadNext: function loadNext(_ref3) {
+      var commit = _ref3.commit,
+          state = _ref3.state,
+          rootState = _ref3.rootState;
+      console.log("notification#loadNext");
+
+      if (state.isLoading) {
+        return;
+      }
+
+      commit('setLoading', true);
+      var token = rootState.token;
+
+      _axios["default"].get('/api/notifications', {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        },
+        params: {
+          page: state.currentPage + 1
+        }
+      }).then(function (res) {
+        commit('pushNotifications', res.data.data);
+        commit('setCurrentPage', res.data.current_page);
+        commit('setLoading', false);
+      })["catch"](function (e) {
+        console.log(e);
+      });
+    },
+    init: function init(_ref4) {
+      var commit = _ref4.commit;
+      commit('setLoading', false);
+      commit('setNotifications', []);
+      commit('setCurrentPage', 0);
+    }
+  }
+};
+
+var _default = new _vuex["default"].Store({
+  namespaced: true,
+  modules: {
+    'timeline': timeline,
+    'notification': notification
+  },
+  state: {
+    user: null,
+    token: localStorage.getItem("token")
+  },
+  mutations: {
+    setAccount: function setAccount(state, _ref5) {
+      var token = _ref5.token,
+          user = _ref5.user;
+      state.user = user;
+      state.token = token;
+    },
+    setToken: function setToken(_state, token) {
+      localStorage.setItem('token', token);
+    }
+  },
+  getters: {
+    token: function token(_ref6) {
+      var state = _ref6.state;
+      return state.token;
+    }
+  },
+  actions: {
+    register: function register(_ref7, req) {
+      var commit, response;
+      return regeneratorRuntime.async(function register$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              commit = _ref7.commit;
+              _context2.next = 3;
               return regeneratorRuntime.awrap(_axios["default"].post('/api/register', {
                 email: req.email,
                 user_name: req.userName,
@@ -100,59 +242,59 @@ var _default = new _vuex["default"].Store({
               }));
 
             case 3:
-              response = _context.sent;
+              response = _context2.sent;
 
               if (response.data) {
                 this.localStorage.setItem("token", response.data.token);
                 commit("setAccount", response.data);
               }
 
-              return _context.abrupt("return", response);
+              return _context2.abrupt("return", response);
 
             case 6:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
       }, null, this);
     },
-    login: function login(_ref3, req) {
+    login: function login(_ref8, req) {
       var commit, data, res;
-      return regeneratorRuntime.async(function login$(_context2) {
+      return regeneratorRuntime.async(function login$(_context3) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref3.commit;
+              commit = _ref8.commit;
               data = _objectSpread({}, req, {
                 device_name: 'Web Client'
               });
-              _context2.next = 4;
+              _context3.next = 4;
               return regeneratorRuntime.awrap(_axios["default"].post('/api/login', data));
 
             case 4:
-              res = _context2.sent;
+              res = _context3.sent;
 
               if (res.data) {
                 localStorage.setItem("token", res.data.token);
                 commit("setAccount", res.data);
               }
 
-              return _context2.abrupt("return", res);
+              return _context3.abrupt("return", res);
 
             case 7:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
         }
       });
     },
-    loadMe: function loadMe(_ref4) {
+    loadMe: function loadMe(_ref9) {
       var commit, token, res, account;
-      return regeneratorRuntime.async(function loadMe$(_context3) {
+      return regeneratorRuntime.async(function loadMe$(_context4) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
-              commit = _ref4.commit;
+              commit = _ref9.commit;
               token = this.state.token;
 
               if (!token) {
@@ -163,7 +305,7 @@ var _default = new _vuex["default"].Store({
                 });
               }
 
-              _context3.next = 5;
+              _context4.next = 5;
               return regeneratorRuntime.awrap(_axios["default"].get('/api/me', {
                 headers: {
                   Authorization: "Bearer ".concat(token)
@@ -171,10 +313,10 @@ var _default = new _vuex["default"].Store({
               }));
 
             case 5:
-              res = _context3.sent;
+              res = _context4.sent;
 
               if (!(res.status == 200)) {
-                _context3.next = 10;
+                _context4.next = 10;
                 break;
               }
 
@@ -183,81 +325,24 @@ var _default = new _vuex["default"].Store({
                 user: res.data
               };
               commit("setAccount", account);
-              return _context3.abrupt("return", account);
+              return _context4.abrupt("return", account);
 
             case 10:
-              return _context3.abrupt("return", null);
+              return _context4.abrupt("return", null);
 
             case 11:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, null, this);
-    },
-    logout: function logout(_ref5) {
-      var commit = _ref5.commit;
-      commit('setAccount', {
-        token: null,
-        user: null
-      });
-    },
-    createNote: function createNote(_ref6, note) {
-      var commit, res, createdNote;
-      return regeneratorRuntime.async(function createNote$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              commit = _ref6.commit;
-              _context4.next = 3;
-              return regeneratorRuntime.awrap(_axios["default"].post('api/notes', note, {
-                headers: {
-                  Authorization: "Bearer ".concat(this.state.token)
-                }
-              }));
-
-            case 3:
-              res = _context4.sent;
-              createdNote = res.data;
-              commit('addNotesAtTheFirst', createdNote);
-              return _context4.abrupt("return", res);
-
-            case 7:
             case "end":
               return _context4.stop();
           }
         }
       }, null, this);
     },
-    loadNext: function loadNext(_ref7) {
-      var commit = _ref7.commit,
-          state = _ref7.state;
-
-      if (state.timeline.isLoading) {
-        return;
-      }
-
-      state.timeline.isLoading = true;
-
-      _axios["default"].get('/api/notes', {
-        headers: {
-          Authorization: "Bearer ".concat(state.token)
-        },
-        params: {
-          page: state.timeline.currentPage + 1
-        }
-      }).then(function (res) {
-        commit('nextPage', res.data);
-      })["catch"](function (e) {
-        console.log(e);
-        commit('nextPage', null);
+    logout: function logout(_ref10) {
+      var commit = _ref10.commit;
+      commit('setAccount', {
+        token: null,
+        user: null
       });
-    },
-    initTimeline: function initTimeline(context) {
-      context.state.timeline.notes = [];
-      context.state.timeline.isLoading = false;
-      context.state.timeline.currentPage = 0;
-      context.dispatch('loadNext');
     },
     follow: function follow(context, user) {
       var res;
@@ -274,7 +359,7 @@ var _default = new _vuex["default"].Store({
 
             case 2:
               res = _context5.sent;
-              context.dispatch('initTimeline');
+              context.dispatch('timeline/initTimeline');
               return _context5.abrupt("return", res.data);
 
             case 5:
@@ -299,7 +384,7 @@ var _default = new _vuex["default"].Store({
 
             case 2:
               res = _context6.sent;
-              context.dispatch('initTimeline');
+              context.dispatch('timeline/initTimeline');
               return _context6.abrupt("return", res.data);
 
             case 5:

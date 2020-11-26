@@ -13,5 +13,9 @@ var mix = require('laravel-mix');
  */
 
 
-mix.sourceMaps().js('node_modules/popper.js/dist/popper.js', 'public/js').sourceMaps();
+mix.js('node_modules/popper.js/dist/popper.js', 'public/js');
 mix.js('resources/js/app.js', 'public/js').sass('resources/sass/app.scss', 'public/css');
+mix.sourceMaps(false);
+
+if (!mix.inProduction) {
+}
