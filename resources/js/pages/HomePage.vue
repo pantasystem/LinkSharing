@@ -11,7 +11,12 @@
             </div>
             <div class="col-md-4 d-none d-lg-block">
                 <user-profile :user="user" :isMine="true" />
-                <notifications-component :isLoading="notification.isLoading" @loadNext="loadNextNotifications" />
+                <notifications-component 
+                    class="mt-2"
+                    :isLoading="notification.isLoading" 
+                    @loadNext="loadNextNotifications" 
+                    :notifications="notification.notifications" >
+                </notifications-component>
             </div>
         </div>
     </div>

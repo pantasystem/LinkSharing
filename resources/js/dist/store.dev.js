@@ -181,8 +181,8 @@ var notification = {
           page: state.currentPage + 1
         }
       }).then(function (res) {
-        commit('pushNotifications', res.data);
-        commit('setCurrentPage', res.current_page);
+        commit('pushNotifications', res.data.data);
+        commit('setCurrentPage', res.data.current_page);
         commit('setLoading', false);
       })["catch"](function (e) {
         console.log(e);

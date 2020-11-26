@@ -130,9 +130,9 @@ const notification = {
                     headers: { Authorization: `Bearer ${token}`},
                     params: { page: state.currentPage + 1 }
                 }
-            ).then((res)=>{                
-                commit('pushNotifications', res.data);
-                commit('setCurrentPage', res.current_page);
+            ).then((res)=>{  
+                commit('pushNotifications', res.data.data);
+                commit('setCurrentPage', res.data.current_page);
                 commit('setLoading', false);
             }).catch((e)=>{
                 console.log(e);

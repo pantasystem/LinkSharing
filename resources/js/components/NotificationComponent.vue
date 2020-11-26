@@ -5,15 +5,18 @@
                 <avatar-icon :avatar_icon="notification.publisher.avatar_icon"/>
             </router-link>
             <router-link class="col-11" :to="{ name: 'user_notes', params: {userId: notification.publisher.id}}"> 
-                {{ notiifcation.publisher.user_name }}
+                <!--{{ notiifcation.publisher.user_name }}-->
+                {{ notification.publisher.user_name }}
             </router-link>
+            
+            
         </div>
         <div class="row">
         </div>
         <div>
             <div v-if="notification.favorite">
                 <slot name="favorite" :favorite="notification.favorite">
-                    <note-component :note="notification.note" />
+                    <note-component :note="notification.favorite.note" />
                 </slot>
             </div>
             <div v-else-if="notification.comment">
@@ -22,9 +25,10 @@
                 </slot>
             </div>
             <div v-else>
-                <slot name="follow" :user="notification.publisher">
+                <slot name="follow" :publisher="notification.publisher">
                     <followee-component :user="notification.publisher" :me="user" />
                 </slot>
+                
             </div>
         </div>
 

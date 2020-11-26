@@ -5,7 +5,7 @@
             通知
         </div>
         <div class="card-body">
-            <notification-component v-for="notification in notifications" :key="notification.id"/>
+            <notification-component v-for="notification in notifications" :key="notification.id" :notification="notification"/>
         </div>
         
 
@@ -28,7 +28,7 @@ export default {
         }
     },
     components: {
-        'notification-compoennt' : NotificationComponent,
+        'notification-component' : NotificationComponent,
         'load-button' : LoadButtonComponent
     },
     methods: {

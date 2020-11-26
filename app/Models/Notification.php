@@ -78,6 +78,7 @@ class Notification extends Model
                 'favorite.note.summary', 
                 'favorite.note.tags', 
                 'follow',
+                'favorite.note.author'
                 
                 
             ]);
