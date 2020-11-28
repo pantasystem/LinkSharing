@@ -33,7 +33,7 @@ class NotificationService
             $notification->type = 'favorite';
         }else if($model instanceof FollowingUser){
             $notification->subscribe($model->followingUser);
-            $notification->follow($model);
+            $notification->follow()->associate($model);
             $notification->type = 'follow';
         }else{
             return null;
