@@ -72,7 +72,7 @@ export default {
                     tag.name
                 )
             };
-            this.$store.dispatch('createNote', note)
+            this.$store.dispatch('timeline/createNote', note)
                 .then((res)=>{
                     console.log(`作成成功:${res.data}`);
                     this.$emit('submit', res.data);
