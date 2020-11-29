@@ -75,9 +75,15 @@ class NotesController extends Controller
 
         $conditions = $request->input('conditions');
 
-        foreach($conditions as $orConditions){
-            $builder = $builder->whereIn('name', $orConditions);
-        }
+        $builder->whereHas('tags', function($builder) use ($conditions){
+            foreach($conditions as $orConditions){
+                if(count($conditions)){
+                    $builder = $builder->whereIn('name', $orConditions);
+                }
+            }
+        });
+
+        
 
         return $builder->simplePaginate(30);
     }

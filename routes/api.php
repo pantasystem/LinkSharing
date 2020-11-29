@@ -99,6 +99,10 @@ Route::get('csrf', [HomeController::class, 'csrfToken']);
 Route::post('register', [RegisterController::class, 'register']);
 
 Route::post('login', [LoginController::class, 'login']);
+
+Route::get('no-auth', function(){
+    return response( json_encode(['message'=> 'login']), 401);
+})->name('login');
 /*
 Route::post('login', function (Request $request) {
     //return "Hoge";

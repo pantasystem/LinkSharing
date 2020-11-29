@@ -36,18 +36,19 @@ class NoteService
             ]);
     
     
-    
-            foreach($reqTags as $reqTag){
-                $trimedTag = trim($reqTag);
-                if(!empty($trimedTag)){
-                    $tag = Tag::where('name', '=', $reqTag)->first();
-                    if(!$tag){
-                        $tag = Tag::create(['name' => $reqTag]);
+            if(isset($reqTag)){
+                foreach($reqTags as $reqTag){
+                    $trimedTag = trim($reqTag);
+                    if(!empty($trimedTag)){
+                        $tag = Tag::where('name', '=', $reqTag)->first();
+                        if(!$tag){
+                            $tag = Tag::create(['name' => $reqTag]);
+                        }
+            
+                        $tag->notes()->attach($createdNote);
                     }
-        
-                    $tag->notes()->attach($createdNote);
+                    
                 }
-                
             }
             return Note::with(['author', 'tags', 'summary'])->findOrFail($createdNote->id);
         });
