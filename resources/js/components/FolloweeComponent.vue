@@ -3,7 +3,7 @@
         <div class="col-2 wrapper">
             <avatar-icon :avatar_icon="user.avatar_icon" />
         </div>
-        <div class="col-9 container row">
+        <div class="col-10 container row">
             <div class="col-md-7">
                 <router-link :to="{ name: 'user_notes', params: { userId: user.id }}">
 
