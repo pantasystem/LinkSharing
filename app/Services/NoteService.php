@@ -36,7 +36,7 @@ class NoteService
             ]);
     
     
-            if(isset($reqTag)){
+            if(isset($reqTags)){
                 foreach($reqTags as $reqTag){
                     $trimedTag = trim($reqTag);
                     if(!empty($trimedTag)){
