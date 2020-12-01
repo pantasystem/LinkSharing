@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::middleware('auth:sanctum')->group(function() {
-Route::get('me', [HomeController::class, 'me']);
+    Route::get('me', [HomeController::class, 'me']);
 
     Route::post('notes', [NotesController::class, 'create']);
     Route::get('notes', [NotesController::class, 'timeline']);
