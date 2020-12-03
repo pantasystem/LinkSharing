@@ -15,15 +15,13 @@ var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
 
 var _HomePage = _interopRequireDefault(require("./pages/HomePage.vue"));
 
-var _UserPage = _interopRequireDefault(require("./pages/UserPage.vue"));
-
 var _TagsNotePage = _interopRequireDefault(require("./pages/TagsNotePage.vue"));
 
-var _FollowingsPage = _interopRequireDefault(require("./pages/users/FollowingsPage.vue"));
+var _Followings = _interopRequireDefault(require("./organisms/users/Followings.vue"));
 
-var _FollowersPage = _interopRequireDefault(require("./pages/users/FollowersPage.vue"));
+var _Followers = _interopRequireDefault(require("./organisms/users/Followers.vue"));
 
-var _UserNotesPage = _interopRequireDefault(require("./pages/users/UserNotesPage.vue"));
+var _UserNotes = _interopRequireDefault(require("./organisms/users/UserNotes.vue"));
 
 var _HomeTimeline = _interopRequireDefault(require("./organisms/HomeTimeline.vue"));
 
@@ -54,18 +52,18 @@ var _default = new _vueRouter["default"]({
       children: [{
         path: 'followers',
         name: 'followers',
-        component: _FollowersPage["default"],
+        component: _Followers["default"],
         props: true
       }, {
         path: 'followings',
         name: 'followings',
-        component: _FollowingsPage["default"],
+        component: _Followings["default"],
         props: true
       }, {
         path: '',
         name: 'user_notes',
         props: true,
-        component: _UserNotesPage["default"]
+        component: _UserNotes["default"]
       }]
     }, {
       path: 'notifications',

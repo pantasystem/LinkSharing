@@ -13,19 +13,14 @@
 </template>
 <script>
 import axios from 'axios';
-import NotesComponent from '../components/NotesComponent.vue';
 import UserProfileComponent from '../components/UserProfileComponent.vue';
-import LoadButton from '../components/LoadButtonComponent.vue';
-import NotificationsComponent from '../components/NotificationsComponent.vue';
 import UserNotification from '../organisms/UserNotification.vue';
 
 import { mapState, mapActions } from 'vuex';
 
 export default {
     components: {
-        'notes-component': NotesComponent,
         'user-profile': UserProfileComponent,
-        'load-button': LoadButton,
         'user-notification': UserNotification
     },
     data() {
@@ -49,25 +44,7 @@ export default {
         }
     },
     
-    methods: {
-        loadInitTimeline(){
-            this.$store.dispatch('timeline/initTimeline');
-        },
-
-        loadNext(){
-            this.$store.dispatch('timeline/loadNext');
-
-        },
-        infiniteListener(){
-            console.log(`読み込みを開始します nextPage:${this.nextPage}`);
-            this.loadNext();
-        },
-        loadNextNotifications(){
-            console.log("通知を読み込もうとしている");
-            console.log(this.$store);
-            this.$store.dispatch('notification/loadNext');
-        }
-    }
+  
 
 }
 </script>
