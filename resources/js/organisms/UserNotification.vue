@@ -9,7 +9,8 @@
 import axios from 'axios';
 import NotesComponent from '../components/NotesComponent.vue';
 import UserProfileComponent from '../components/UserProfileComponent.vue';
-import LoadButton from '../components/LoadButtonComponent.vue';
+import LoadButton from '../atoms/LoadButton.vue';
+
 import NotificationsComponent from '../components/NotificationsComponent.vue';
 
 import { mapState, mapActions } from 'vuex';

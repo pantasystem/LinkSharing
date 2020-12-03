@@ -14,7 +14,7 @@
 </template>
 <script>
 import NoteComponent from './NoteComponent.vue';
-import LoadButton from '../components/LoadButtonComponent.vue';
+import LoadButton from '../atoms/LoadButton.vue';
 
 export default {
     components: {

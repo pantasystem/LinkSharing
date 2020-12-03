@@ -18,7 +18,7 @@
 <script>
 import FollowButton from './FollowButtonComponent';
 import AvatarIcon from '../atoms/AvatarIcon';
-import LoadButton from './LoadButtonComponent';
+import LoadButton from '../atoms/LoadButton.vue';
 import FolloweeComponent from './FolloweeComponent.vue';
 
 

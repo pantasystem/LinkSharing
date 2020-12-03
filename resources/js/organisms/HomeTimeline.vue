@@ -9,7 +9,8 @@
 <script>
 import axios from 'axios';
 import NotesComponent from '../components/NotesComponent.vue';
-import LoadButton from '../components/LoadButtonComponent.vue';
+import LoadButton from '../atoms/LoadButton.vue';
+
 
 import { mapState, mapActions } from 'vuex';
 
