@@ -43,10 +43,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import NoteCreateFormComponent from './NoteCreateFormComponent.vue';
+import NoteCreateForm from './NoteCreateForm.vue';
 export default {
     components: {
-        'note-create-form': NoteCreateFormComponent
+        'note-create-form': NoteCreateForm
     },
     computed: {
         ...mapState([

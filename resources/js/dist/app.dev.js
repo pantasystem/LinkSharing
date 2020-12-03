@@ -12,7 +12,7 @@ var _store = _interopRequireDefault(require("./store"));
 
 var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
 
-var _HeaderComponent = _interopRequireDefault(require("./components/HeaderComponent.vue"));
+var _Header = _interopRequireDefault(require("./organisms/Header.vue"));
 
 require("bootstrap/dist/css/bootstrap.css");
 
@@ -50,7 +50,7 @@ _vue["default"].component('login-page', require('./pages/LoginPage.vue')["defaul
 
 _vue["default"].component('register-page', _RegisterPage["default"]["default"]);
 
-_vue["default"].component('header-component', _HeaderComponent["default"]);
+_vue["default"].component('header-component', _Header["default"]);
 
 _vue["default"].component('app-component', require('./pages/App.vue')["default"]);
 /**
