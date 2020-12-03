@@ -2,12 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <notes-component 
-                    id="timeline-view" 
-                    :notes="timeline.notes" 
-                    :title="title" 
-                    v-on:loadNext="loadNext"
-                    :isLoading="isLoading" />
+                <router-view />
             </div>
             <div class="col-md-4 d-none d-lg-block">
                 <user-profile :user="user" :isMine="true" />

@@ -8,6 +8,8 @@ import TagNotePage from './pages/TagsNotePage.vue';
 import FollowingsPage from './pages/users/FollowingsPage.vue';
 import FollowersPage from './pages/users/FollowersPage.vue';
 import UserNotesPage from './pages/users/UserNotesPage.vue';
+import HomeTimeline from './organisms/HomeTimeline.vue';
+import UserDetail from './organisms/UserDetail.vue';
 
 import store from './store';
 
@@ -20,6 +22,39 @@ export default new VueRouter({
             path: '/',
             component: HomePage,
             name: 'home',
+            children: [
+                {
+                    path: "",
+                    name: "home_timeline",
+                    component: HomeTimeline
+                },{
+                    path: 'users/:userId',
+                    component: UserDetail,
+                    props: true,
+                    children: [
+                        {
+                            path: 'followers',
+                            name: 'followers',
+                            component: FollowersPage,
+                            props: true
+                        },
+                        {
+                            path: 'followings',
+                            name: 'followings',
+                            component: FollowingsPage,
+                            props: true
+        
+                        },
+                        {
+                            path: '',
+                            name: 'user_notes',
+                            props: true,
+                            component: UserNotesPage
+        
+                        }
+                    ]
+                },
+            ],
             beforeEnter: (to, from, next)=>{
                 if(store.state.token == null){
                     next('/login');
@@ -39,33 +74,7 @@ export default new VueRouter({
             name: 'register',
             component: RegisterPage
         },
-        {
-            path: '/users/:userId',
-            component: UserPage,
-            props: true,
-            children: [
-                {
-                    path: 'followers',
-                    name: 'followers',
-                    component: FollowersPage,
-                    props: true
-                },
-                {
-                    path: 'followings',
-                    name: 'followings',
-                    component: FollowingsPage,
-                    props: true
-
-                },
-                {
-                    path: '',
-                    name: 'user_notes',
-                    props: true,
-                    component: UserNotesPage
-
-                }
-            ]
-        },
+        
         {
             path: '/notes/search-by-tag/:name',
             name: 'search_by_tag',
