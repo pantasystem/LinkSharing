@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::middleware('auth:sanctum')->group(function() {
-Route::get('me', [HomeController::class, 'me']);
+    Route::get('me', [HomeController::class, 'me']);
 
     Route::post('notes', [NotesController::class, 'create']);
     Route::get('notes', [NotesController::class, 'timeline']);
@@ -99,6 +99,10 @@ Route::get('csrf', [HomeController::class, 'csrfToken']);
 Route::post('register', [RegisterController::class, 'register']);
 
 Route::post('login', [LoginController::class, 'login']);
+
+Route::get('no-auth', function(){
+    return response( json_encode(['message'=> 'login']), 401);
+})->name('login');
 /*
 Route::post('login', function (Request $request) {
     //return "Hoge";

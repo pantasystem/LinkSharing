@@ -41,7 +41,7 @@
 <script>
 import SummaryComponent from './SummaryComponent.vue';
 import TagsComponent from './TagsComponent.vue';
-import AvatarIcon from './AvatarIconComponent';
+import AvatarIcon from '../atoms/AvatarIcon';
 
 export default {
     components: {

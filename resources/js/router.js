@@ -3,11 +3,13 @@ import Vue from 'vue';
 import LoginPage from './pages/LoginPage.vue';
 import RegisterPage from './pages/RegisterPage.vue';
 import HomePage from './pages/HomePage.vue';
-import UserPage from './pages/UserPage.vue';
 import TagNotePage from './pages/TagsNotePage.vue';
-import FollowingsPage from './pages/users/FollowingsPage.vue';
-import FollowersPage from './pages/users/FollowersPage.vue';
-import UserNotesPage from './pages/users/UserNotesPage.vue';
+import Followings from './organisms/users/Followings.vue';
+import Followers from './organisms/users/Followers.vue';
+import UserNotes from './organisms/users/UserNotes.vue';
+import HomeTimeline from './organisms/HomeTimeline.vue';
+import UserDetail from './organisms/UserDetail.vue';
+import UserNotification from './organisms/UserNotification.vue';
 
 import store from './store';
 
@@ -20,6 +22,44 @@ export default new VueRouter({
             path: '/',
             component: HomePage,
             name: 'home',
+            children: [
+                {
+                    path: "",
+                    name: "home_timeline",
+                    component: HomeTimeline
+                },{
+                    path: 'users/:userId',
+                    component: UserDetail,
+                    props: true,
+                    children: [
+                        {
+                            path: 'followers',
+                            name: 'followers',
+                            component: Followers,
+                            props: true
+                        },
+                        {
+                            path: 'followings',
+                            name: 'followings',
+                            component: Followings,
+                            props: true
+        
+                        },
+                        {
+                            path: '',
+                            name: 'user_notes',
+                            props: true,
+                            component: UserNotes
+        
+                        }
+                    ]
+                },
+                {
+                    path: 'notifications',
+                    name: 'notifications',
+                    component: UserNotification
+                }
+            ],
             beforeEnter: (to, from, next)=>{
                 if(store.state.token == null){
                     next('/login');
@@ -39,33 +79,7 @@ export default new VueRouter({
             name: 'register',
             component: RegisterPage
         },
-        {
-            path: '/users/:userId',
-            component: UserPage,
-            props: true,
-            children: [
-                {
-                    path: 'followers',
-                    name: 'followers',
-                    component: FollowersPage,
-                    props: true
-                },
-                {
-                    path: 'followings',
-                    name: 'followings',
-                    component: FollowingsPage,
-                    props: true
-
-                },
-                {
-                    path: '',
-                    name: 'user_notes',
-                    props: true,
-                    component: UserNotesPage
-
-                }
-            ]
-        },
+        
         {
             path: '/notes/search-by-tag/:name',
             name: 'search_by_tag',

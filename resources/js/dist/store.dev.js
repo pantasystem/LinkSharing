@@ -43,27 +43,27 @@ var timeline = {
   mutations: {
     pushNotes: function pushNotes(state, notes) {
       if (Array.isArray(notes)) {
-        var _state$timeline$notes;
+        var _state$notes;
 
-        (_state$timeline$notes = state.timeline.notes).push.apply(_state$timeline$notes, _toConsumableArray(notes));
+        (_state$notes = state.notes).push.apply(_state$notes, _toConsumableArray(notes));
       } else {
-        state.timeline.notes.push(notes);
+        state.notes.push(notes);
       }
     },
     addNotesAtTheFirst: function addNotesAtTheFirst(state, notes) {
       if (Array.isArray(notes)) {
-        var _state$timeline$notes2;
+        var _state$notes2;
 
-        (_state$timeline$notes2 = state.timeline.notes).unshift.apply(_state$timeline$notes2, _toConsumableArray(notes));
+        (_state$notes2 = state.notes).unshift.apply(_state$notes2, _toConsumableArray(notes));
       } else {
-        state.timeline.notes.unshift(notes);
+        state.notes.unshift(notes);
       }
     },
     nextPage: function nextPage(state, page) {
       if (Array.isArray(page.data) && page.data.length) {
-        var _state$notes;
+        var _state$notes3;
 
-        (_state$notes = state.notes).push.apply(_state$notes, _toConsumableArray(page.data));
+        (_state$notes3 = state.notes).push.apply(_state$notes3, _toConsumableArray(page.data));
       }
 
       state.isLoading = false;

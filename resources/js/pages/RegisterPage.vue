@@ -52,7 +52,8 @@
     </div>
 </template>
 <script>
-import TextFieldComponent from '../components/TextFieldComponent.vue';
+import TextFieldComponent from './../atoms/TextField';
+
 export default {
     data(){
         return {

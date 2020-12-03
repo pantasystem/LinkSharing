@@ -13,7 +13,7 @@ Vue.use(Vuex);
 
 import store from './store';
 import RegisterPage from './pages/RegisterPage.vue';
-import HeaderComponent from './components/HeaderComponent.vue';
+import Header from './organisms/Header.vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -36,7 +36,7 @@ window.Vue = Vue;
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login-page', require('./pages/LoginPage.vue').default);
 Vue.component('register-page', RegisterPage.default);
-Vue.component('header-component', HeaderComponent);
+Vue.component('header-component', Header);
 Vue.component('app-component', require('./pages/App.vue').default);
 
 /**

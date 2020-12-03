@@ -17,18 +17,18 @@ const timeline = {
     mutations: {
         pushNotes(state, notes){
             if(Array.isArray(notes)){
-                state.timeline.notes.push(...notes);
+                state.notes.push(...notes);
             }else{
-                state.timeline.notes.push(notes);
+                state.notes.push(notes);
             }
 
         },
         addNotesAtTheFirst(state, notes){
             if(Array.isArray(notes)){
-                state.timeline.notes.unshift(...notes);
+                state.notes.unshift(...notes);
 
             }else{
-                state.timeline.notes.unshift(notes);
+                state.notes.unshift(notes);
             }
         },
 

@@ -22,6 +22,8 @@ export default {
             });
         console.log(this.$store);
         this.$store.dispatch('timeline/initTimeline');
+        this.$store.dispatch('notification/init');
+        this.$store.dispatch('notification/loadNext');
         
         
     }

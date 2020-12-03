@@ -15,7 +15,8 @@
 </template>
 <script>
 import NotificationComponent from './NotificationComponent.vue';
-import LoadButtonComponent from './LoadButtonComponent.vue';
+import LoadButton from '../atoms/LoadButton.vue';
+
 
 export default {
     props: {
@@ -29,7 +30,7 @@ export default {
     },
     components: {
         'notification-component' : NotificationComponent,
-        'load-button' : LoadButtonComponent
+        'load-button' : LoadButton
     },
     methods: {
         loadNext(){

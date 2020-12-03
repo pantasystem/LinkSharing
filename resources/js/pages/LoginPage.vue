@@ -46,7 +46,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
-import TextFieldComponent from './../components/TextFieldComponent';
+import TextFieldComponent from './../atoms/TextField';
 
 export default {
     

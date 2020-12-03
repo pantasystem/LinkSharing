@@ -29,7 +29,7 @@ class NotesController extends Controller
 
         $user = Auth::user();
 
-        $note = $user->findOrFail($noteId);
+        $note = $user->notes()->findOrFail($noteId);
 
         if($note == null){
             throw new AuthenticationException("${$noteId}への削除権限がありません");
@@ -75,9 +75,15 @@ class NotesController extends Controller
 
         $conditions = $request->input('conditions');
 
-        foreach($conditions as $orConditions){
-            $builder = $builder->whereIn('name', $orConditions);
-        }
+        $builder->whereHas('tags', function($builder) use ($conditions){
+            foreach($conditions as $orConditions){
+                if(count($conditions)){
+                    $builder = $builder->whereIn('name', $orConditions);
+                }
+            }
+        });
+
+        
 
         return $builder->simplePaginate(30);
     }

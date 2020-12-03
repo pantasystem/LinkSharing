@@ -35,7 +35,7 @@
     </div>
 </template>
 <script>
-import AvatarIcon from './AvatarIconComponent';
+import AvatarIcon from '../atoms/AvatarIcon';
 import NoteComponent from './NoteComponent';
 import FolloweeComponent from './FolloweeComponent';
 import { mapState } from 'vuex';

@@ -15,15 +15,19 @@ var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage.vue"));
 
 var _HomePage = _interopRequireDefault(require("./pages/HomePage.vue"));
 
-var _UserPage = _interopRequireDefault(require("./pages/UserPage.vue"));
-
 var _TagsNotePage = _interopRequireDefault(require("./pages/TagsNotePage.vue"));
 
-var _FollowingsPage = _interopRequireDefault(require("./pages/users/FollowingsPage.vue"));
+var _Followings = _interopRequireDefault(require("./organisms/users/Followings.vue"));
 
-var _FollowersPage = _interopRequireDefault(require("./pages/users/FollowersPage.vue"));
+var _Followers = _interopRequireDefault(require("./organisms/users/Followers.vue"));
 
-var _UserNotesPage = _interopRequireDefault(require("./pages/users/UserNotesPage.vue"));
+var _UserNotes = _interopRequireDefault(require("./organisms/users/UserNotes.vue"));
+
+var _HomeTimeline = _interopRequireDefault(require("./organisms/HomeTimeline.vue"));
+
+var _UserDetail = _interopRequireDefault(require("./organisms/UserDetail.vue"));
+
+var _UserNotification = _interopRequireDefault(require("./organisms/UserNotification.vue"));
 
 var _store = _interopRequireDefault(require("./store"));
 
@@ -37,6 +41,35 @@ var _default = new _vueRouter["default"]({
     path: '/',
     component: _HomePage["default"],
     name: 'home',
+    children: [{
+      path: "",
+      name: "home_timeline",
+      component: _HomeTimeline["default"]
+    }, {
+      path: 'users/:userId',
+      component: _UserDetail["default"],
+      props: true,
+      children: [{
+        path: 'followers',
+        name: 'followers',
+        component: _Followers["default"],
+        props: true
+      }, {
+        path: 'followings',
+        name: 'followings',
+        component: _Followings["default"],
+        props: true
+      }, {
+        path: '',
+        name: 'user_notes',
+        props: true,
+        component: _UserNotes["default"]
+      }]
+    }, {
+      path: 'notifications',
+      name: 'notifications',
+      component: _UserNotification["default"]
+    }],
     beforeEnter: function beforeEnter(to, from, next) {
       if (_store["default"].state.token == null) {
         next('/login');
@@ -52,26 +85,6 @@ var _default = new _vueRouter["default"]({
     path: '/register',
     name: 'register',
     component: _RegisterPage["default"]
-  }, {
-    path: '/users/:userId',
-    component: _UserPage["default"],
-    props: true,
-    children: [{
-      path: 'followers',
-      name: 'followers',
-      component: _FollowersPage["default"],
-      props: true
-    }, {
-      path: 'followings',
-      name: 'followings',
-      component: _FollowingsPage["default"],
-      props: true
-    }, {
-      path: '',
-      name: 'user_notes',
-      props: true,
-      component: _UserNotesPage["default"]
-    }]
   }, {
     path: '/notes/search-by-tag/:name',
     name: 'search_by_tag',
