@@ -3,13 +3,13 @@ import Vue from 'vue';
 import LoginPage from './pages/LoginPage.vue';
 import RegisterPage from './pages/RegisterPage.vue';
 import HomePage from './pages/HomePage.vue';
-import TagNotePage from './pages/TagsNotePage.vue';
 import Followings from './organisms/users/Followings.vue';
 import Followers from './organisms/users/Followers.vue';
 import UserNotes from './organisms/users/UserNotes.vue';
 import HomeTimeline from './organisms/HomeTimeline.vue';
 import UserDetail from './organisms/UserDetail.vue';
 import UserNotification from './organisms/UserNotification.vue';
+import SearchNotes from './organisms/SearchNotes.vue';
 
 import store from './store';
 
@@ -58,6 +58,12 @@ export default new VueRouter({
                     path: 'notifications',
                     name: 'notifications',
                     component: UserNotification
+                },
+                {
+                    path: 'search-by-tag/:name',
+                    name: 'search_by_tag',
+                    props: true,
+                    component: SearchNotes
                 }
             ],
             beforeEnter: (to, from, next)=>{
@@ -80,11 +86,7 @@ export default new VueRouter({
             component: RegisterPage
         },
         
-        {
-            path: '/notes/search-by-tag/:name',
-            name: 'search_by_tag',
-            component: TagNotePage
-        }
+        
 
     ]
 });
