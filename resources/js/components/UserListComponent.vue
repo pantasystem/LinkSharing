@@ -19,7 +19,7 @@
 import LoadButton from '../atoms/LoadButton.vue';
 import AvatarIcon from '../atoms/AvatarIcon';
 import FolloweeComponent from './FolloweeComponent.vue';
-
+import FollowButton from'./../atoms/FollowButton';
 
 import { mapState } from 'vuex';
 export default {

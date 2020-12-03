@@ -40,6 +40,7 @@
 <script>
 import LoadButton from '../atoms/LoadButton.vue';
 import AvatarIcon from '../atoms/AvatarIcon';
+import FollowButton from '../atoms/FollowButton';
 
 export default {
     props: {
