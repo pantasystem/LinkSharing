@@ -16,6 +16,7 @@
             <b-form-checkbox
                 v-for="tag in tags" :key="tag.id" @change="deleteTag(tag.id)"
                 class="m-1"
+                :checked="true"
             >
                 {{tag.name}}
             </b-form-checkbox>
