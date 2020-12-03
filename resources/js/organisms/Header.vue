@@ -10,6 +10,11 @@
                 <b-navbar-nav class="mr-auto">
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
+                    <b-nav-form @submit.prevent.stop="search">
+                        <b-form-input placeholder="タグ検索" class="mr-sm-2" v-model="keyword"/>
+                        <b-button type="submit" variant="outline-secondary">検索</b-button>
+
+                    </b-nav-form>
                     <b-nav-item to="/login" v-if="!isLoggedIn">ログイン</b-nav-item>
                     <b-nav-item to="/register" v-if="!isLoggedIn">登録</b-nav-item>
                     <b-nav-item to="/notifications" v-if="isLoggedIn">
@@ -48,6 +53,11 @@ export default {
     components: {
         'note-create-form': NoteCreateForm
     },
+    data(){
+        return {
+            keyword: ''
+        }
+    },
     computed: {
         ...mapState([
             'user',
@@ -77,6 +87,17 @@ export default {
             this.$nextTick(() => {
                 this.$bvModal.hide('note-creator')
             });
+        },
+        search(){
+            let tagName = this.keyword;
+            this.$router.push(
+                {
+                    name: 'searchByTag',
+                    params: {
+                        'name': tagName
+                    }
+                }
+            );
         }
 
     }

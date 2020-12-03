@@ -61,7 +61,7 @@ export default new VueRouter({
                 },
                 {
                     path: 'search-by-tag/:name',
-                    name: 'search_by_tag',
+                    name: 'searchByTag',
                     props: true,
                     component: SearchNotes
                 }

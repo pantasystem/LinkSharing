@@ -71,7 +71,7 @@ var _default = new _vueRouter["default"]({
       component: _UserNotification["default"]
     }, {
       path: 'search-by-tag/:name',
-      name: 'search_by_tag',
+      name: 'searchByTag',
       props: true,
       component: _SearchNotes["default"]
     }],
