@@ -17,7 +17,7 @@
     </div>
 </template>
 <script>
-import AvatarIcon from './AvatarIconComponent';
+import AvatarIcon from '../atoms/AvatarIcon.vue';
 import FollowButton from './FollowButtonComponent';
 
 export default {

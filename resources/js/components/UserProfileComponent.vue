@@ -39,7 +39,7 @@
 </template>
 <script>
 import FollowButton from './FollowButtonComponent';
-import AvatarIcon from './AvatarIconComponent';
+import AvatarIcon from '../atoms/AvatarIcon';
 
 export default {
     props: {
