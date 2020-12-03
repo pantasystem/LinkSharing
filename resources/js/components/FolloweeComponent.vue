@@ -18,7 +18,7 @@
 </template>
 <script>
 import AvatarIcon from '../atoms/AvatarIcon.vue';
-import FollowButton from './FollowButtonComponent';
+import FollowButton from '../atoms/FollowButton.vue';
 
 export default {
 

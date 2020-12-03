@@ -38,7 +38,7 @@
     </div>
 </template>
 <script>
-import FollowButton from './FollowButtonComponent';
+import LoadButton from '../atoms/LoadButton.vue';
 import AvatarIcon from '../atoms/AvatarIcon';
 
 export default {
