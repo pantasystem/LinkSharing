@@ -10,6 +10,7 @@ import FollowersPage from './pages/users/FollowersPage.vue';
 import UserNotesPage from './pages/users/UserNotesPage.vue';
 import HomeTimeline from './organisms/HomeTimeline.vue';
 import UserDetail from './organisms/UserDetail.vue';
+import UserNotification from './organisms/UserNotification.vue';
 
 import store from './store';
 
@@ -54,6 +55,11 @@ export default new VueRouter({
                         }
                     ]
                 },
+                {
+                    path: 'notifications',
+                    name: 'notifications',
+                    component: UserNotification
+                }
             ],
             beforeEnter: (to, from, next)=>{
                 if(store.state.token == null){

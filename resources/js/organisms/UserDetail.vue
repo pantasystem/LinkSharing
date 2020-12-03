@@ -1,6 +1,9 @@
 <template>
     <div class="card">
         <div class="card-header">
+            <div v-if="user">
+                {{ user.user_name }}
+            </div>
         </div>
         <div class="card-body">
             <user-profile 

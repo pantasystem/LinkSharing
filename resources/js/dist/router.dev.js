@@ -29,6 +29,8 @@ var _HomeTimeline = _interopRequireDefault(require("./organisms/HomeTimeline.vue
 
 var _UserDetail = _interopRequireDefault(require("./organisms/UserDetail.vue"));
 
+var _UserNotification = _interopRequireDefault(require("./organisms/UserNotification.vue"));
+
 var _store = _interopRequireDefault(require("./store"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -65,6 +67,10 @@ var _default = new _vueRouter["default"]({
         props: true,
         component: _UserNotesPage["default"]
       }]
+    }, {
+      path: 'notifications',
+      name: 'notifications',
+      component: _UserNotification["default"]
     }],
     beforeEnter: function beforeEnter(to, from, next) {
       if (_store["default"].state.token == null) {
