@@ -1,5 +1,11 @@
 <template>
     <div>
+        <advanced-search-form
+            @input="input"
+            :conditions="conditions"
+            @addCondition="addCondition"
+
+        />
         <notes-view
             title="検索結果"
             :notes="notes"
@@ -12,6 +18,8 @@
 
 <script>
 import Notes from './../components/NotesComponent';
+import AdvancedSearchForm from './../molecules/AdvancedSearchForm.vue';
+
 import axios from 'axios';
 
 export default {
@@ -22,20 +30,35 @@ export default {
         }
     },
     components: {
-        'notes-view': Notes
+        'notes-view': Notes,
+        'advanced-search-form': AdvancedSearchForm
     },
 
     data(){
         return {
             notes: [],
             isLoading: false,
-            conditions: [[this.name]],
+            conditionKey: 0,
+            conditions: [{ condition: this.name, id: 0}],
             currentPage: 0
         }
     },
-   
 
     methods: {
+        getConditions(){
+            let strConditions = this.conditions;
+            let conditions = [];
+            let exp = /[\t\s\S]+/
+            for(str in strConditions){
+                let orConditions = str.split(/[\t\s\S]+/).filter((str)=>{
+                    return !str.match(exp);
+                });
+                conditions.push(orConditions);
+            }
+            console.log(JSON.parse(conditions));
+            return conditions;
+
+        },
         loadNext(){
             if(this.isLoading){
                 return;
@@ -71,6 +94,22 @@ export default {
             this.currentPage = 0;
             this.conditions = [[name]];
             this.loadNext();
+        },
+        input(event){
+            this.conditions = this.conditions.map((c)=>{
+                if(c.id == event.id){
+                    c.condition = event.text;
+                    return c;
+                }
+                return c;
+            });
+        },
+        addCondition(){
+            this.conditions.push({
+                id: this.conditionKey + 1,
+                condition: ''
+            });
+            this.conditionKey += 1;
         }
     },
     created(){
