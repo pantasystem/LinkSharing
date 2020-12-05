@@ -93,11 +93,11 @@ export default {
             this.$router.push(
                 {
                     name: 'searchByTag',
-                    props: {
-                        'search_condition': [tagName]
+                    query: {
+                        'condition': [tagName]
                     }
                 }
-            );
+            ).catch((e)=>{ console.log(e)});
         }
 
     }

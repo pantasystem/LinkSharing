@@ -23,13 +23,7 @@ import AdvancedSearchForm from './../molecules/AdvancedSearchForm.vue';
 import axios from 'axios';
 
 export default {
-    props:{
-        
-        search_condition: {
-            required: false,
-            default: null
-        }
-    },
+    
     components: {
         'notes-view': Notes,
         'advanced-search-form': AdvancedSearchForm
@@ -46,7 +40,7 @@ export default {
     },
 
     methods: {
-        getConditions(){
+        /*getConditions(){
             let srcCondition = this.conditions;
             console.log(srcCondition);
             let searchCondition = [];
@@ -63,6 +57,18 @@ export default {
             console.log(searchCondition);
             return searchCondition;
 
+        },*/
+
+        getConditions(){
+            let srcConditions = this.conditions;
+
+            console.assert(Array.isArray(srcConditions), "エラー：配列ではありません");
+
+            let searchConditions = srcConditions.map((conditionObj)=> conditionObj.condition)
+                .map((condition)=> condition.split(/\s/));
+
+            console.assert(Array.isArray(searchConditions), "できたオブジェクトはなんと配列ではありませんでした！！");
+            return searchConditions;
         },
         loadNext(){
             if(this.isLoading){
@@ -101,7 +107,7 @@ export default {
         },
         
         initByCondition(condition){
-            console.log(condition);
+            console.assert(Array.isArray(condition), "initByCondition:引数は配列を要求している");
             this.conditions = [];
             this.conditionKey += 1;
             for(let i = 0; i < condition.length; i ++){
@@ -127,33 +133,35 @@ export default {
             this.conditionKey += 1;
         },
         search(){
-            let searchCondition = this.getConditions();
+            let searchCondition = this.conditions.map((obj)=>obj.condition);
             let req = {
                 name: 'searchByTag',
-                props: {
-                    search_condition: searchCondition
+                query: {
+                    condition: searchCondition
                 }
             }
 
             console.log(req);
-            this.$router.push(req);
+            this.$router.push(req).catch((e)=>{});
             
 
         }
     },
-    created(){
-        this.initByCondition(this.search_condition);
+    /*created(){
+        console.log("created");
+        console.log(this.$router.query.condition);
+        this.initByCondition(this.$router.query.condition);
         this.loadNext();
         
-    },
+    },*/
     beforeRouteUpdate(to, from, next){
         console.log("遷移しようとしている");
         console.log(to);
-        if(to.params.search_condition){
+        if(to.query.condition){
             console.log("query + ");
             console.log(to.query);
             console.log(" + query end");
-            this.initByCondition(to.params.search_condition);
+            this.initByCondition(to.query.condition);
         }
         next();
     },
