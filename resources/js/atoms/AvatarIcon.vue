@@ -26,7 +26,6 @@ export default {
                 let hash = new jsHash("SHA-256","TEXT");
                 hash.update(this.user.user_name);
                 let data = new Identicon(hash.getHash("HEX"), 200).toString();
-                console.log(data);
                 return "data:image/png;base64," + data;
             }
         }
