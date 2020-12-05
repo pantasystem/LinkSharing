@@ -4,42 +4,9 @@ import axios from 'axios';
 import { reject } from 'lodash';
 import timeline from './store/timeline';
 import notification from './store/notification';
+import users from './store/users';
 
 Vue.use(Vuex);
-
-const users = {
-    namespaced: true,
-    state(){
-        return {
-            users: {},
-        }
-    },
-    
-    mutations: {
-        addUser(state, user){
-           state.users[user.id] = user;
-        },
-        
-        addAllUser(state, users){
-            console.assert(Array.isArray(users), "配列以外許可されていません");
-            if(Array.isArray(users)){
-                for(let i = 0; i < users.length; i ++){
-                    state.users[users[i].id] = users[i];
-                }
-            }
-
-        }
-    },
-
-    getters: {
-        get: (state)=>(id)=>{
-            let user = state.users[id];
-            console.assert(Boolean(user), "ユーザーの状態が無効です");
-
-            return user;
-        }
-    }
-}
 
 
 export default new Vuex.Store({
