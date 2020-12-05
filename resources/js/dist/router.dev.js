@@ -90,7 +90,17 @@ var _default = new _vueRouter["default"]({
     path: '/register',
     name: 'register',
     component: _RegisterPage["default"]
-  }]
+  }],
+  scrollBehavior: function scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return {
+        x: 0,
+        y: 0
+      };
+    }
+  }
 });
 
 exports["default"] = _default;
