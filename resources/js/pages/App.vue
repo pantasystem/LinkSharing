@@ -31,7 +31,7 @@ export default {
 </script>
 <style scoped>
 #main-content{
-    padding-top:4.5rem;
+    padding-top:5rem;
 }
 
 
