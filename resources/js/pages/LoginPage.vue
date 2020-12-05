@@ -80,14 +80,17 @@ export default {
                 this.$router.push("/");
             }).catch((e)=>{
                 console.log(e);
-                let errors = e.response.data.errors;
-                if(errors.password){
-                    this.errors.password = errors.password[0];
+                if(e.response.data){
+                    let errors = e.response.data.errors;
+                    if(errors.password){
+                        this.errors.password = errors.password[0];
+                    }
+                    if(errors.email){
+                        this.errors.email = errors.email[0];
+                    }
+                    console.log(this.errors);
                 }
-                if(errors.email){
-                    this.errors.email = errors.email[0];
-                }
-                console.log(this.errors);
+                
             });
         }
     }

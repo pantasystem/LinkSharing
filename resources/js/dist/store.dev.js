@@ -41,6 +41,7 @@ var _default = new _vuex["default"].Store({
     setAccount: function setAccount(state, _ref) {
       var token = _ref.token,
           user = _ref.user;
+      localStorage.setItem('token', token);
       state.user = user;
       state.token = token;
     },
@@ -168,11 +169,14 @@ var _default = new _vuex["default"].Store({
       }, null, this);
     },
     logout: function logout(_ref6) {
-      var commit = _ref6.commit;
+      var commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
       commit('setAccount', {
         token: null,
         user: null
       });
+      dispatch('timeline/init');
+      dispatch('notification/init');
     },
     follow: function follow(context, user) {
       var res;

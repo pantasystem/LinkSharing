@@ -26,6 +26,7 @@ export default new Vuex.Store({
 
     mutations: {
         setAccount(state, { token, user }){
+            localStorage.setItem('token', token);
             state.user = user;
             state.token = token;
         },
@@ -116,7 +117,7 @@ export default new Vuex.Store({
             return null;
         },
 
-        logout({ commit }){
+        logout({ commit, dispatch }){
             commit(
                 'setAccount',
                 {
@@ -124,6 +125,8 @@ export default new Vuex.Store({
                     user: null
                 }
             );
+            dispatch('timeline/init');
+            dispatch('notification/init');
         },
 
         
