@@ -1,7 +1,7 @@
 <template>
 <div>
-    <header-component />
-    <main class="py-4">
+    <header-component id="main-header"/>
+    <main  id="main-content">
         <router-view/>
     </main>
 </div>
@@ -29,3 +29,10 @@ export default {
     }
 }
 </script>
+<style scoped>
+#main-content{
+    padding-top:4.5rem;
+}
+
+
+</style>
