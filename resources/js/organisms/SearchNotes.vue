@@ -24,10 +24,7 @@ import axios from 'axios';
 
 export default {
     props:{
-        name: {
-            required: false,
-            default: ''
-        },
+        
         search_condition: {
             required: false,
             default: null
@@ -102,16 +99,13 @@ export default {
             this.currentPage = 0;
             this.loadNext();
         },
-        initByName(name){
-            this.conditionKey += 1;
-            this.conditions = [];
-            this.addCondition(name);
-            this.init();
-        },
+        
         initByCondition(condition){
+            console.log(condition);
+            this.conditions = [];
             this.conditionKey += 1;
-            for(str in this.search_condition){
-                this.addCondition(str);
+            for(let i = 0; i < condition.length; i ++){
+                this.addCondition(condition[i]);
 
             }
             this.init();
@@ -136,7 +130,7 @@ export default {
             let searchCondition = this.getConditions();
             let req = {
                 name: 'searchByTag',
-                query: {
+                props: {
                     search_condition: searchCondition
                 }
             }
@@ -148,15 +142,18 @@ export default {
         }
     },
     created(){
+        this.initByCondition(this.search_condition);
         this.loadNext();
         
     },
     beforeRouteUpdate(to, from, next){
         console.log("遷移しようとしている");
-        if(to.query.search_condition){
+        console.log(to);
+        if(to.params.search_condition){
+            console.log("query + ");
+            console.log(to.query);
+            console.log(" + query end");
             this.initByCondition(to.params.search_condition);
-        }else{
-            this.initByName(to.query.name);
         }
         next();
     },

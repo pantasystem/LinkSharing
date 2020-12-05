@@ -60,7 +60,7 @@ export default new VueRouter({
                     component: UserNotification
                 },
                 {
-                    path: 'search-by-tag/:name',
+                    path: 'search-by-tag/:search_condition',
                     name: 'searchByTag',
                     props: true,
                     component: SearchNotes
