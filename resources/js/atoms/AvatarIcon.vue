@@ -12,18 +12,19 @@ import jsHash from 'jssha';
 
 export default {
     props: {
-        avatar_icon: {
-            required: false
+        user:{
+            required: true,
+            type: Object
         }
     },
     
     computed: {
         image(){
-            if(this.avatar_icon){
-                return this.avatar_icon;
+            if(this.user.avatar_icon){
+                return this.user.avatar_icon
             }else{
                 let hash = new jsHash("SHA-256","TEXT");
-                hash.update("Panta");
+                hash.update(this.user.user_name);
                 let data = new Identicon(hash.getHash("HEX"), 200).toString();
                 console.log(data);
                 return "data:image/png;base64," + data;

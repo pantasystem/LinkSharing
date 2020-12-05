@@ -4,7 +4,7 @@
         
         <router-link class="col-2" :to="{ name: 'user_notes', params: { userId: note.author.id}}" v-if="true">
             <avatar-icon
-                :avatar_icon="note.author.avatar_icon"
+                :user="note.author"
             />
             
         </router-link>
