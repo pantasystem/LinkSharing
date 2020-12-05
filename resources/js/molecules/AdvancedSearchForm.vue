@@ -2,9 +2,7 @@
 <div>
     <div v-for="str in conditions" :key="str.id" >
         <b-form-input 
-        :v-text="str.condition"
-        :v-bind="str.condition"
-        @input="input(str.id, $event.target.value)"
+        v-model="str.condition"
         type="text"
         required
         placeholder="or条件は区切って入力">
@@ -28,10 +26,11 @@ export default {
         addCondition(){
             this.$emit('addCondition');
         },
-        input(evt, id){
+        input(id, value){
+            console.log(value);
             this.$emit('input', {
                 'id': id,
-                'condition': evt
+                'condition': value
             });
         }
     }
