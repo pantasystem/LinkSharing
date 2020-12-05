@@ -1,11 +1,11 @@
 <template>
     <div>
         <advanced-search-form
-            @input="input"
             :conditions="conditions"
             @addCondition="addCondition"
 
         />
+        <b-button @click="search">検索</b-button>
         <notes-view
             title="検索結果"
             :notes="notes"
@@ -27,6 +27,10 @@ export default {
         name: {
             required: false,
             default: ''
+        },
+        search_condition: {
+            required: false,
+            default: null
         }
     },
     components: {
@@ -46,17 +50,21 @@ export default {
 
     methods: {
         getConditions(){
-            let strConditions = this.conditions;
-            let conditions = [];
+            let srcCondition = this.conditions;
+            console.log(srcCondition);
+            let searchCondition = [];
             let exp = /[\t\s\S]+/
-            for(str in strConditions){
-                let orConditions = str.split(/[\t\s\S]+/).filter((str)=>{
-                    return !str.match(exp);
-                });
-                conditions.push(orConditions);
+            for(let i = 0; i < srcCondition.length; i ++){
+                console.log(srcCondition[i]);
+                let strCondition = srcCondition[i].condition;
+                const regex = /\s+/;
+                console.log(strCondition);
+                let orConditions = strCondition.split(regex);
+                searchCondition.push(orConditions);
             }
-            console.log(JSON.parse(conditions));
-            return conditions;
+            
+            console.log(searchCondition);
+            return searchCondition;
 
         },
         loadNext(){
@@ -68,7 +76,7 @@ export default {
             axios.post(
                 '/api/notes/search-by-tag',
                 {
-                    'conditions': this.conditions
+                    'conditions': this.getConditions()
                 },
                 {
                     headers: { Authorization: `Bearer ${this.$store.state.token}` },
@@ -88,14 +96,27 @@ export default {
                 this.isLoading = false;
             });
         },
-        init(name){
+        init(){
             this.isLoading = false;
             this.notes = [];
             this.currentPage = 0;
-            this.conditions = [[name]];
             this.loadNext();
         },
-        input(event){
+        initByName(name){
+            this.conditionKey += 1;
+            this.conditions = [];
+            this.addCondition(name);
+            this.init();
+        },
+        initByCondition(condition){
+            this.conditionKey += 1;
+            for(str in this.search_condition){
+                this.addCondition(str);
+
+            }
+            this.init();
+        },
+        /*input(event){
             this.conditions = this.conditions.map((c)=>{
                 if(c.id == event.id){
                     c.condition = event.text;
@@ -103,13 +124,27 @@ export default {
                 }
                 return c;
             });
-        },
-        addCondition(){
+        },*/
+        addCondition(str = ''){
             this.conditions.push({
                 id: this.conditionKey + 1,
-                condition: ''
+                condition: str
             });
             this.conditionKey += 1;
+        },
+        search(){
+            let searchCondition = this.getConditions();
+            let req = {
+                name: 'searchByTag',
+                query: {
+                    search_condition: searchCondition
+                }
+            }
+
+            console.log(req);
+            this.$router.push(req);
+            
+
         }
     },
     created(){
@@ -117,7 +152,12 @@ export default {
         
     },
     beforeRouteUpdate(to, from, next){
-        this.init(to.params.name);
+        console.log("遷移しようとしている");
+        if(to.query.search_condition){
+            this.initByCondition(to.params.search_condition);
+        }else{
+            this.initByName(to.query.name);
+        }
         next();
     },
 }

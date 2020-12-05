@@ -93,7 +93,7 @@ export default {
             this.$router.push(
                 {
                     name: 'searchByTag',
-                    params: {
+                    query: {
                         'name': tagName
                     }
                 }
