@@ -7,7 +7,39 @@ import notification from './store/notification';
 
 Vue.use(Vuex);
 
+const users = {
+    namespaced: true,
+    state(){
+        return {
+            users: {},
+        }
+    },
+    
+    mutations: {
+        addUser(state, user){
+           state.users[user.id] = user;
+        },
+        
+        addAllUser(state, users){
+            console.assert(Array.isArray(users), "配列以外許可されていません");
+            if(Array.isArray(users)){
+                for(let i = 0; i < users.length; i ++){
+                    state.users[users[i].id] = users[i];
+                }
+            }
 
+        }
+    },
+
+    getters: {
+        get: (state)=>(id)=>{
+            let user = state.users[id];
+            console.assert(Boolean(user), "ユーザーの状態が無効です");
+
+            return user;
+        }
+    }
+}
 
 
 export default new Vuex.Store({
@@ -15,7 +47,8 @@ export default new Vuex.Store({
 
     modules:{
         'timeline': timeline,
-        'notification': notification
+        'notification': notification,
+        'users': users
     },
     state:{
         user: null,

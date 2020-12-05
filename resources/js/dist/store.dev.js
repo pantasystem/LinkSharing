@@ -27,11 +27,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 _vue["default"].use(_vuex["default"]);
 
+var users = {
+  namespaced: true,
+  state: function state() {
+    return {
+      users: {}
+    };
+  },
+  mutations: {
+    addUser: function addUser(state, user) {
+      state.users[user.id] = user;
+    },
+    addAllUser: function addAllUser(state, users) {
+      console.assert(Array.isArray(users), "配列以外許可されていません");
+
+      if (Array.isArray(users)) {
+        for (var i = 0; i < users.length; i++) {
+          state.users[users[i].id] = users[i];
+        }
+      }
+    }
+  },
+  getters: {
+    get: function get(state) {
+      return function (id) {
+        var user = state.users[id];
+        console.assert(Boolean(user), "ユーザーの状態が無効です");
+        return user;
+      };
+    }
+  }
+};
+
 var _default = new _vuex["default"].Store({
   namespaced: true,
   modules: {
     'timeline': _timeline["default"],
-    'notification': _notification["default"]
+    'notification': _notification["default"],
+    'users': users
   },
   state: {
     user: null,

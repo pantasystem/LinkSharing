@@ -26,7 +26,7 @@
             </div>
             <div v-else>
                 <slot name="follow" :publisher="notification.publisher">
-                    <followee-component :user="notification.publisher" :me="user" />
+                    <followee-component :user="notification.publisher" :me="user" @follow="follow" @unfollow="unfollow" />
                 </slot>
                 
             </div>
@@ -38,7 +38,7 @@
 import AvatarIcon from '../atoms/AvatarIcon';
 import NoteComponent from './NoteComponent';
 import FolloweeComponent from './FolloweeComponent';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     props: {
@@ -54,6 +54,21 @@ export default {
     },
     computed: {
         ...mapState(['user'])
+    },
+    methods: {
+        follow(user){
+            this.$store.dispatch('follow', user)
+                .then((res)=>{
+                    
+                });
+        },
+        unfollow(user){
+            this.$store.dispatch('unfollow', user)
+                .then((res)=>{
+
+                });
+        }
+
     }
 }
 </script>

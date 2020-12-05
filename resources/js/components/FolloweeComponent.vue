@@ -20,7 +20,7 @@
 import AvatarIcon from '../atoms/AvatarIcon.vue';
 import FollowButton from '../atoms/FollowButton.vue';
 
-export default {
+export default {    
 
     props: {
         user: {
@@ -31,6 +31,7 @@ export default {
             type: Object
         }
     },
+    emits: ['follow', 'unfollow' ],
     components: {
         'avatar-icon': AvatarIcon,
         'follow-button': FollowButton
