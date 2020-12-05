@@ -71,6 +71,7 @@ export default {
             return searchConditions;
         },
         loadNext(){
+            console.log(this.conditions);
             if(this.isLoading){
                 return;
             }
@@ -147,6 +148,7 @@ export default {
 
         }
     },
+
     /*created(){
         console.log("created");
         console.log(this.$router.query.condition);
@@ -154,6 +156,7 @@ export default {
         this.loadNext();
         
     },*/
+    
     beforeRouteUpdate(to, from, next){
         console.log("遷移しようとしている");
         console.log(to);
