@@ -36,12 +36,12 @@ export default {
             _userId: undefined,
         }
     },
-    watch:{
+    /*watch:{
         allUsers(){
             this.changed();
         },
         
-    },
+    },*/
 
     beforeRouteUpdate(to, from, next){
         console.log(`遷移しようとしている:${to.params.userId}`);
@@ -90,7 +90,7 @@ export default {
     },
     methods: {
         getUser(){
-            return this.$store.users.users[this._userId];
+            return this.$store.state.users.users[this._userId];
         },
         loadUser(userId = this.userId){
             this._userId = userId;
@@ -118,7 +118,7 @@ export default {
         getHeader(){
             return { Authorization: `Bearer ${this.$store.state.token }` };
         },
-        changed(){
+        /*changed(){
             console.log("変更!!!!!!!");
             let u  = this.$store.state.users[this.userId];
             if(u){
@@ -127,7 +127,7 @@ export default {
 
             }
             console.log(this.user);
-        }
+        }*/
     },
     mounted(){
         this.loadUser();
