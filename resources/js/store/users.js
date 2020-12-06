@@ -1,4 +1,5 @@
 import { isNumber } from 'lodash';
+import axios from 'axios';
 import Vue from 'vue';
 
 export default {
@@ -31,9 +32,10 @@ export default {
 
     getters: {
         get: (state)=>(id)=>{
+            /*let users = {
+                ...state.users
+            };*/
             let user = state.users[id];
-            console.assert(Boolean(user), "ユーザーの状態が無効です");
-
             return user;
         },
         getByUserIds: (state)=>(userIds)=>{
@@ -47,7 +49,32 @@ export default {
         },
         token(state, getters, rootState){
             return rootState.token;
+        },
+        getAll(state){
+            return state.users;
         }
     },
-    
+    actions: {
+        fetchUser({commit, state, rootState}, userId){
+            if(state.users[userId]){
+                console.log("既に存在しています。")
+                return;
+            }
+            axios.get(
+                `/api/users/${userId}`,
+                {
+                    headers: { Authorization: `Bearer ${rootState.token }` }
+                    
+                }
+            ).then((res)=>{
+                console.log(state.users);
+                console.log('fetchedUser:' + JSON.stringify(res.data));
+                commit('user', res.data);
+                console.log(state.users);
+
+            }).catch((e)=>{
+                console.log(e);
+            });
+        }
+    }
 }
