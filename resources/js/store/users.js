@@ -32,19 +32,11 @@ export default {
 
     getters: {
         get: (state)=>(id)=>{
-            let users = {
+            /*let users = {
                 ...state.users
-            };
-            let user = users[id];
+            };*/
+            let user = state.users[id];
             return user;
-            if(user){
-                console.log('getters: get:' + user);
-                return user;
-            }else{
-                console.warn("ユーザーの状態が無効です:" + user);
-                return null;
-            }
-
         },
         getByUserIds: (state)=>(userIds)=>{
             console.assert(Array.isArray(userIds), "配列しか許可されていません");

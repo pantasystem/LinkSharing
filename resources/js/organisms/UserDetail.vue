@@ -33,7 +33,7 @@ export default {
     
     data(){
         return {
-            uId: 1,
+            uId: null,
         }
     },
     
