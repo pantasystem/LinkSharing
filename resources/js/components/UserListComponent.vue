@@ -84,6 +84,7 @@ export default {
                 });
         },
         follow(user){
+            console.log(this.$store);
             this.$store.dispatch('users/follow', user);
         },
         unfollow(user){

@@ -11,7 +11,7 @@ export default {
     
     mutations: {
         user(state, user){
-            this.$set(state.users, String(user.id), user);
+            this.$set(state.users, user.id, user);
         },
         
         users(state, users){
@@ -52,29 +52,20 @@ export default {
         }
     },
     actions: {
-        follow(user){
-            this.$store.dispatch('follow', user)
+        follow({ dispatch, commit},user){
+            dispatch('follow', user, { root: true })
                 .then((res)=>{
-                    this.users = this.users.map((u)=>{
-                        if(res.id == u.id){
-                            return res;
-                        }
-                        return u;
-                    })
+                    commit('user', res);
+                    
                 })
                 .catch((e)=>{
                     console.log(e);
                 });
         },
-        unfollow(user){
-            this.$store.dispatch('unfollow', user)
+        unfollow({ dispatch, commit}, user){
+            dispatch('unfollow', user, { root: true })
                 .then((res)=>{
-                    this.users = this.users.map((u)=>{
-                        if(res.id == u.id){
-                            return res;
-                        }
-                        return u;
-                    });
+                    commit('user', res);
                 })
                 .catch((e)=>{
                     console.log(e);
