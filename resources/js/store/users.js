@@ -1,4 +1,5 @@
 import { isNumber } from 'lodash';
+import axios from 'axios';
 import Vue from 'vue';
 
 export default {
@@ -49,5 +50,19 @@ export default {
             return rootState.token;
         }
     },
-    
+    actions: {
+        fetchUser({commit, state}, userId){
+            axios.get(
+                `/api/users/${userId}`,
+                {
+                    headers: { Authorization: `Bearer ${state.token }` }
+                    
+                }
+            ).then((res)=>{
+                commit('user', res.data);
+            }).catch((e)=>{
+                console.log(e);
+            });
+        }
+    }
 }
