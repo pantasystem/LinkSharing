@@ -64,8 +64,6 @@ export default {
     },
     getters:{
         getNotifications(state, getters, rootState, rootGetters){
-            console.log('getNotifications');
-            console.log(state.notifications);
             return state.notifications.map((notify)=>{
                 return {
                     ...notify
