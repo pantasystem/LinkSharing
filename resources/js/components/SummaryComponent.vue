@@ -22,6 +22,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
     props: {
         summary: {
@@ -31,7 +32,7 @@ export default {
     },
     methods: {
         imgLoadError(element){
-            element.target.src = "ic_link.svg";
+            element.target.src = axios.defaults.baseURL + "/ic_link.svg";
 
         }
     }

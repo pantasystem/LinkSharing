@@ -27,7 +27,7 @@ export default {
     
     data(){
         return {
-            user: null
+            _userId: undefined
         }
     },
 
@@ -43,27 +43,26 @@ export default {
         isMe(){
             let me = this.$store.state.user;
             
-            return me && this.user.id == this.$store.state.user.id;
+            return me && this._userId == this.$store.state.user.id;
+        },
+        user(){
+            
+            let users = this.$store.getters['getUserByIds']([this._userId]);
+            console.log("UserPage");
+            console.log(users);
+            return users[0];
         }
+
     },
     methods: {
         loadUser(userId = this.userId){
-            axios.get(
-                `/api/users/${userId}`,
-                {
-                    headers: this.getHeader(),
-                    
-                }
-            ).then((res)=>{
-                this.user = res.data;
-            }).catch((e)=>{
-                console.log(e);
-            });
+            this._userId = userId;
+            this.$store.dispatch('fetchUser', uesrId)
         },
         follow(){
             this.$store.dispatch('follow', this.user)
                 .then((user)=>{
-                    this.user = user;
+                    //this.user = user;
                 })
                 .catch((e)=>{
                     console.log(e);
@@ -72,7 +71,7 @@ export default {
         unfollow(){
             this.$store.dispatch('unfollow', this.user)
                 .then((user)=>{
-                    this.user = user;
+                    //this.user = user;
                 })
                 .catch((e)=>{
                     console.log(e);
