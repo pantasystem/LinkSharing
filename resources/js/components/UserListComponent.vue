@@ -51,10 +51,10 @@ export default {
             return this.$store.state.user;
         },
         users(){
-            let f = this.$store.getters['users/getByUserIds'];
+            let f = this.$store.getters['getByUserIds'];
             let users = f(this.userIds);
             console.log('computed');
-            console.log(this.$store.getters['users/getByUserIds']);
+            console.log(this.$store.getters['getByUserIds']);
             console.log(users);
             return users;
         }
@@ -69,7 +69,7 @@ export default {
             this.load(this.currentPage + 1)
                 .then((res)=>{
                     console.log(res);
-                    this.$store.commit('users/users', res.data.data);
+                    this.$store.commit('users', res.data.data);
                     let ids = res.data.data.map((user)=> user.id);
                     this.userIds.push(...ids);
                     this.currentPage = res.data.current_page;
@@ -85,17 +85,16 @@ export default {
         },
         follow(user){
             console.log(this.$store);
-            this.$store.dispatch('users/follow', user);
+            this.$store.dispatch('follow', user);
         },
         unfollow(user){
-            this.$store.dispatch('users/unfollow', user);
+            this.$store.dispatch('unfollow', user);
             
         }
     },
     mounted(){
         console.log(this.$store.users);
         console.log(this.$store);
-        console.log(this.$store.getters['users/token']);
 
         this.loadNext();
     },

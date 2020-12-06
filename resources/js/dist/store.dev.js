@@ -196,10 +196,11 @@ var _default = new _vuex["default"].Store({
 
             case 2:
               res = _context4.sent;
+              context.commit('user', res.data);
               context.dispatch('timeline/initTimeline');
               return _context4.abrupt("return", res.data);
 
-            case 5:
+            case 6:
             case "end":
               return _context4.stop();
           }
@@ -221,10 +222,11 @@ var _default = new _vuex["default"].Store({
 
             case 2:
               res = _context5.sent;
+              context.commit('user', res.data);
               context.dispatch('timeline/initTimeline');
               return _context5.abrupt("return", res.data);
 
-            case 5:
+            case 6:
             case "end":
               return _context5.stop();
           }

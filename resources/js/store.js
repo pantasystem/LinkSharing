@@ -138,6 +138,7 @@ export default new Vuex.Store({
                     headers: { Authorization: `Bearer ${context.state.token}`}
                 }
             );
+            context.commit('user', res.data);
             context.dispatch('timeline/initTimeline');
             return res.data;
         },
@@ -149,6 +150,7 @@ export default new Vuex.Store({
                     headers: { Authorization: `Bearer ${context.state.token}`}
                 }
             );
+            context.commit('user', res.data);
             context.dispatch('timeline/initTimeline');
             return res.data;
         }

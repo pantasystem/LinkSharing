@@ -2,7 +2,7 @@ import { isNumber } from 'lodash';
 import Vue from 'vue';
 
 export default {
-    namespaced: true,
+    namespaced: false,
     state(){
         return {
             users: {},
@@ -49,26 +49,5 @@ export default {
             return rootState.token;
         }
     },
-    actions: {
-        follow({ dispatch, commit},user){
-            dispatch('follow', user, { root: true })
-                .then((res)=>{
-                    commit('user', res);
-                    
-                })
-                .catch((e)=>{
-                    console.log(e);
-                });
-        },
-        unfollow({ dispatch, commit}, user){
-            dispatch('unfollow', user, { root: true })
-                .then((res)=>{
-                    commit('user', res);
-                })
-                .catch((e)=>{
-                    console.log(e);
-                })
-        }
-
-    }
+    
 }
