@@ -6,11 +6,7 @@
             </div>
         </div>
         <div class="card-body">
-            <span>
-                {{user}}
-
-            </span>
-            {{ user }}
+            
 
             <user-profile 
                 :user="user" :isMine="isMe"  v-if="user" v-on:follow="follow" v-on:unfollow="unfollow" />
@@ -64,16 +60,11 @@ export default {
             let b = {
                 ...u
             };
-            //if(this._userId)
-            console.log(b + "kensyoutyuuだぽよ");
             
             if(this._userId === undefined){
-                return "undefinedだぽよ";
+                return null;
             }else{
-                //return b[this._userId];
-                //return "hogeeeeeeeeeeee";
                 let c = b[this._userId];
-                //return "hogeeeeeeeeeeeeeeeeeee" + c + this._userId;
                 return c;
             }
         },
