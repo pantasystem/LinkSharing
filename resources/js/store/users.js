@@ -33,9 +33,14 @@ export default {
     getters: {
         get: (state)=>(id)=>{
             let user = state.users[id];
-            console.assert(Boolean(user), "ユーザーの状態が無効です");
+            if(user){
+                console.log('getters: get:' + user);
+                return user;
+            }else{
+                console.warn("ユーザーの状態が無効です:" + user);
+                return null;
+            }
 
-            return user;
         },
         getByUserIds: (state)=>(userIds)=>{
             console.assert(Array.isArray(userIds), "配列しか許可されていません");
@@ -48,18 +53,25 @@ export default {
         },
         token(state, getters, rootState){
             return rootState.token;
+        },
+        getAll(state){
+            return state.users;
         }
     },
     actions: {
-        fetchUser({commit, state}, userId){
+        fetchUser({commit, state, rootState}, userId){
             axios.get(
                 `/api/users/${userId}`,
                 {
-                    headers: { Authorization: `Bearer ${state.token }` }
+                    headers: { Authorization: `Bearer ${rootState.token }` }
                     
                 }
             ).then((res)=>{
+                console.log(state.users);
+                console.log('fetchedUser:' + JSON.stringify(res.data));
                 commit('user', res.data);
+                console.log(state.users);
+
             }).catch((e)=>{
                 console.log(e);
             });
