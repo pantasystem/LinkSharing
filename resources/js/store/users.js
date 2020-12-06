@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { isNumber } from 'lodash';
+import Vue from 'vue';
 
 export default {
     namespaced: true,
@@ -11,12 +11,10 @@ export default {
     
     mutations: {
         user(state, user){
-            this.$set(state.users, user.id, user);
+            Vue.set(state.users, user.id, user);
         },
         
         users(state, users){
-            console.log("usersが呼び出された");
-            console.log(users);
             console.assert(Array.isArray(users), "配列以外許可されていません");
             if(Array.isArray(users)){
                 let newObj = {
