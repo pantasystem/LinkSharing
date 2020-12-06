@@ -1,6 +1,6 @@
 <template>
 <div>
-    <b-navbar type="light" toggleable="md" class="shadow-sm">
+    <b-navbar id="navigation" toggleable="md" class="shadow-sm" fixed="top">
         <div class="container">
             <b-navbar-brand to="/">Linkboard</b-navbar-brand>
                 
@@ -106,5 +106,8 @@ export default {
 <style scoped>
 .icon-title{
     margin-left: 0.5em
+}
+#navigation{
+    background-color: white;
 }
 </style>

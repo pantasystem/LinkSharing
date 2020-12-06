@@ -2,7 +2,7 @@
     <notifications-component 
         :isLoading="notification.isLoading" 
         @loadNext="loadNextNotifications" 
-        :notifications="notification.notifications" >
+        :notifications="notifications" >
     </notifications-component>
 </template>
 <script>
@@ -35,6 +35,10 @@ export default {
         },
         notification(){
             return this.$store.state.notification;
+        },
+        notifications(){
+            console.log(this.$store);
+            return this.$store.getters['notification/getNotifications'];
         }
     },
     

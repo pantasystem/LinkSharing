@@ -1,7 +1,7 @@
 <template>
     <div class="row mt-2 mb-2">
         <div class="col-2 wrapper">
-            <avatar-icon :avatar_icon="user.avatar_icon" />
+            <avatar-icon :user="user" />
         </div>
         <div class="col-10 container row">
             <div class="col-md-7">
@@ -20,7 +20,7 @@
 import AvatarIcon from '../atoms/AvatarIcon.vue';
 import FollowButton from '../atoms/FollowButton.vue';
 
-export default {
+export default {    
 
     props: {
         user: {
@@ -31,6 +31,7 @@ export default {
             type: Object
         }
     },
+    emits: ['follow', 'unfollow' ],
     components: {
         'avatar-icon': AvatarIcon,
         'follow-button': FollowButton

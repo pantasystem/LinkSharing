@@ -2,20 +2,32 @@
     <div class="wrapper">
         <img 
             class="img img-fluid col-12" 
-            :src="avatar_icon ? avatar_icon : '/ic_avatar.png'" 
-            v-on:error="loadAvatarIcon" >                 
+            :src="image" 
+             >                 
     </div>
 </template>
 <script>
+import Identicon from 'identicon.js';
+import jsHash from 'jssha';
+
 export default {
     props: {
-        avatar_icon: {
-            required: false
+        user:{
+            required: true,
+            type: Object
         }
     },
-    methods: {
-        loadAvatarIcon(e){
-            e.target.src = "/ic_avatar.png";
+    
+    computed: {
+        image(){
+            if(this.user.avatar_icon){
+                return this.user.avatar_icon
+            }else{
+                let hash = new jsHash("SHA-256","TEXT");
+                hash.update(this.user.user_name);
+                let data = new Identicon(hash.getHash("HEX"), 200).toString();
+                return "data:image/png;base64," + data;
+            }
         }
     }
 }

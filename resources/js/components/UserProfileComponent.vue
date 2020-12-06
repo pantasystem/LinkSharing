@@ -5,7 +5,7 @@
                 <div>
                     <div class="col-8 mx-auto mb-2 mt-2">
                         <avatar-icon 
-                            :avatar_icon="user.avatar_icon"
+                            :user="user"
                         />
 
                     </div>

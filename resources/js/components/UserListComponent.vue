@@ -42,13 +42,21 @@ export default {
         return {
             currentPage: 0,
             isLoading: false,
-            users: []
+            userIds: []
 
         }
     },
     computed: {
         me(){
             return this.$store.state.user;
+        },
+        users(){
+            let f = this.$store.getters['getByUserIds'];
+            let users = f(this.userIds);
+            console.log('computed');
+            console.log(this.$store.getters['getByUserIds']);
+            console.log(users);
+            return users;
         }
     },
     methods: {
@@ -60,46 +68,34 @@ export default {
             
             this.load(this.currentPage + 1)
                 .then((res)=>{
-                    this.users.push(...res.data.data);
+                    console.log(res);
+                    this.$store.commit('users', res.data.data);
+                    let ids = res.data.data.map((user)=> user.id);
+                    this.userIds.push(...ids);
                     this.currentPage = res.data.current_page;
                     this.isLoading = false;
                 })
                 .catch((e)=>{
                     console.log(e);
+                })
+                .finally(()=>{
                     this.isLoading = false;
+
                 });
         },
         follow(user){
-            this.$store.dispatch('follow', user)
-                .then((res)=>{
-                    this.users = this.users.map((u)=>{
-                        if(res.id == u.id){
-                            return res;
-                        }
-                        return u;
-                    })
-                })
-                .catch((e)=>{
-                    console.log(e);
-                });
+            console.log(this.$store);
+            this.$store.dispatch('follow', user);
         },
         unfollow(user){
-            this.$store.dispatch('unfollow', user)
-                .then((res)=>{
-                    console.log(res);
-                    this.users = this.users.map((u)=>{
-                        if(res.id == u.id){
-                            return res;
-                        }
-                        return u;
-                    });
-                })
-                .catch((e)=>{
-                    console.log(e);
-                })
+            this.$store.dispatch('unfollow', user);
+            
         }
     },
     mounted(){
+        console.log(this.$store.users);
+        console.log(this.$store);
+
         this.loadNext();
     },
 

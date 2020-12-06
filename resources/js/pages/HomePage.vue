@@ -5,8 +5,9 @@
                 <router-view />
             </div>
             <div class="col-md-4 d-none d-lg-block">
-                <user-profile :user="user" :isMine="true" />
-                <user-notification class="mt-2"/>
+                <login-form v-if="!user" />
+                <user-profile v-if="user" :user="user" :isMine="true" />
+                <user-notification v-if="user" class="mt-2"/>
             </div>
         </div>
     </div>
@@ -15,13 +16,15 @@
 import axios from 'axios';
 import UserProfileComponent from '../components/UserProfileComponent.vue';
 import UserNotification from '../organisms/UserNotification.vue';
+import LoginForm from '../organisms/LoginForm';
 
 import { mapState, mapActions } from 'vuex';
 
 export default {
     components: {
         'user-profile': UserProfileComponent,
-        'user-notification': UserNotification
+        'user-notification': UserNotification,
+        'login-form': LoginForm
     },
     data() {
         return {

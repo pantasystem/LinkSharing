@@ -77,9 +77,11 @@ class NotesController extends Controller
 
         $builder->whereHas('tags', function($builder) use ($conditions){
             foreach($conditions as $orConditions){
-                if(count($conditions)){
-                    $builder = $builder->whereIn('name', $orConditions);
-                }
+                $builder->where(function($builder) use ($orConditions){
+                    foreach($orConditions as $condition){
+                        $builder->orWhere('name', 'ILIKE', $condition);
+                    }
+                });
             }
         });
 

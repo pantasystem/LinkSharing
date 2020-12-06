@@ -2,156 +2,20 @@ import Vuex from 'vuex';
 import Vue from 'vue';
 import axios from 'axios';
 import { reject } from 'lodash';
+import timeline from './store/timeline';
+import notification from './store/notification';
+import users from './store/users';
 
 Vue.use(Vuex);
 
-const timeline = {
-    namespaced: true,
-    state(){
-        return {
-            notes: [],
-            isLoading: false,
-            currentPage: 0
-        }
-    },
-    mutations: {
-        pushNotes(state, notes){
-            if(Array.isArray(notes)){
-                state.notes.push(...notes);
-            }else{
-                state.notes.push(notes);
-            }
 
-        },
-        addNotesAtTheFirst(state, notes){
-            if(Array.isArray(notes)){
-                state.notes.unshift(...notes);
-
-            }else{
-                state.notes.unshift(notes);
-            }
-        },
-
-        nextPage(state, page){
-            if(Array.isArray(page.data) && page.data.length){
-                state.notes.push(...page.data);
-            }
-            state.isLoading = false;
-            state.currentPage = page.current_page;
-        }
-
-    },
-    actions: {
-        async createNote({ commit }, note){
-            let res = await axios.post(
-                'api/notes',
-                note,
-                {
-                    headers: { Authorization: `Bearer ${this.state.token}` }
-
-                }
-            );
-
-            let createdNote = res.data;
-            commit('addNotesAtTheFirst', createdNote);
-            return res;
-        },
-
-        loadNext({commit, state, rootState}){
-            if(state.isLoading){
-                return;
-            }
-            state.isLoading = true;
-
-            console.log("load開始");
-            console.log(rootState.token);
-            axios.get(
-                '/api/notes',
-                {
-                    headers: { Authorization: `Bearer ${rootState.token}`},
-                    params: { page: state.currentPage + 1 }
-                }
-            ).then((res)=>{                
-                commit('nextPage', res.data);
-            }).catch((e)=>{
-                console.log(e);
-                commit('nextPage', null);
-            });
-
-
-        },
-
-        initTimeline(context){
-            console.log("initTimeline開始しました");
-            context.state.notes = [];
-            context.state.isLoading = false;
-            context.state.currentPage = 0;
-
-            context.dispatch('loadNext');
-        },
-
-    }
-};
-
-const notification = {
-    namespaced: true,
-    state(){
-        return {
-            notifications: [],
-            isLoading: false,
-            currentPage: 0
-        }
-    },
-    mutations: {
-        pushNotifications(state, notifications){
-            state.notifications.push(...notifications);
-        },
-        setNotifications(state, notifications){
-            state.notifications = notifications;
-        },
-        setLoading(state, isLoading){
-            state.isLoading = isLoading;
-        },
-        setCurrentPage(state, page){
-            state.currentPage = page;
-        }
-    },
-    actions: {
-        loadNext({commit, state, rootState}){
-            console.log("notification#loadNext");
-            if(state.isLoading){
-                return;
-            }
-            commit('setLoading', true);
-            let token = rootState.token;
-            axios.get(
-                '/api/notifications',
-                {
-                    headers: { Authorization: `Bearer ${token}`},
-                    params: { page: state.currentPage + 1 }
-                }
-            ).then((res)=>{  
-                commit('pushNotifications', res.data.data);
-                commit('setCurrentPage', res.data.current_page);
-                commit('setLoading', false);
-            }).catch((e)=>{
-                console.log(e);
-            });
-        },
-
-        init({commit}){
-            commit('setLoading', false);
-            commit('setNotifications', []);
-            commit('setCurrentPage', 0);
-        }
-    }
-}
 export default new Vuex.Store({
     namespaced: true,
 
     modules:{
         'timeline': timeline,
-        'notification': notification
+        'notification': notification,
+        'users': users
     },
     state:{
         user: null,
@@ -162,6 +26,7 @@ export default new Vuex.Store({
 
     mutations: {
         setAccount(state, { token, user }){
+            localStorage.setItem('token', token);
             state.user = user;
             state.token = token;
         },
@@ -252,7 +117,7 @@ export default new Vuex.Store({
             return null;
         },
 
-        logout({ commit }){
+        logout({ commit, dispatch }){
             commit(
                 'setAccount',
                 {
@@ -260,6 +125,8 @@ export default new Vuex.Store({
                     user: null
                 }
             );
+            dispatch('timeline/init');
+            dispatch('notification/init');
         },
 
         
@@ -271,6 +138,7 @@ export default new Vuex.Store({
                     headers: { Authorization: `Bearer ${context.state.token}`}
                 }
             );
+            context.commit('user', res.data);
             context.dispatch('timeline/initTimeline');
             return res.data;
         },
@@ -282,6 +150,7 @@ export default new Vuex.Store({
                     headers: { Authorization: `Bearer ${context.state.token}`}
                 }
             );
+            context.commit('user', res.data);
             context.dispatch('timeline/initTimeline');
             return res.data;
         }

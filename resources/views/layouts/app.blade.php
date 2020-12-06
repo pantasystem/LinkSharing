@@ -6,6 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="base-url" content="{{ \Config::get('app.url', 'http://localhost') }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
