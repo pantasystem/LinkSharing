@@ -53,19 +53,19 @@ export default {
         'note-component': NoteComponent
     },
     computed: {
-        ...mapState(['user'])
+        ...mapState(['user']),
     },
     methods: {
         follow(user){
             this.$store.dispatch('follow', user)
                 .then((res)=>{
-                    
+                    console.log(res);
                 });
         },
         unfollow(user){
             this.$store.dispatch('unfollow', user)
                 .then((res)=>{
-
+                    console.log(res);
                 });
         }
 

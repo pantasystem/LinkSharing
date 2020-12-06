@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Vue from 'vue';
 
 
 export default {
@@ -40,6 +41,14 @@ export default {
                 }
             ).then((res)=>{  
                 commit('pushNotifications', res.data.data);
+                let notifications  = res.data.data;
+                console.assert(Array.isArray(notifications), "配列以外許可されていません");
+                notifications = notifications.map((n)=>{
+                    commit('user', n.publisher, { root: true});
+                    Vue.delete(n.publisher, 'publisher');
+                    return n;
+                })
+                commit('pushNotifications', notifications);
                 commit('setCurrentPage', res.data.current_page);
                 commit('setLoading', false);
             }).catch((e)=>{
@@ -51,6 +60,21 @@ export default {
             commit('setLoading', false);
             commit('setNotifications', []);
             commit('setCurrentPage', 0);
+        }
+    },
+    getters:{
+        getNotifications(state, getters, rootState, rootGetters){
+            console.log('getNotifications');
+            console.log(state.notifications);
+            return state.notifications.map((notify)=>{
+                return {
+                    ...notify
+                }
+            })
+            .map((notify)=>{
+                notify.publisher = rootGetters.get(notify.publisher_id);
+                return notify;
+            })
         }
     }
 }
