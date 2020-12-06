@@ -33,15 +33,10 @@ export default {
     
     data(){
         return {
-            _userId: undefined,
+            uId: 1,
         }
     },
-    /*watch:{
-        allUsers(){
-            this.changed();
-        },
-        
-    },*/
+    
 
     beforeRouteUpdate(to, from, next){
         console.log(`遷移しようとしている:${to.params.userId}`);
@@ -56,44 +51,18 @@ export default {
             return me && this.user.id == this.$store.state.user.id;
         },
         user(){
-            let u = this.$store.state.users.users;
-            let b = {
-                ...u
-            };
-            
-            if(this._userId === undefined){
-                return null;
-            }else{
-                let c = b[this._userId];
-                return c;
-            }
+            let uId = parseInt(this.uId);
+            let u = this.$store.getters['get'](uId);
+            return u;
         },
 
-        /*user(){
-            let uId = this._userId
-            //let u = this.$store.getters['getByUserIds']([this.uId]);
-            console.log(u);
-            if(u.length){
-                console.log("user() 無効な値が返ってきた");
-                return null; 
-            }
-            let aUser = u[0];
-            console.log("user() 正常値");
-            console.log(aUser);
-            return aUser;
-        },*/
-        
-
-        allUsers(){
-            return this.$store.getters['getAll'];
-        }
     },
     methods: {
         getUser(){
-            return this.$store.state.users.users[this._userId];
+            return this.$store.state.users.users[this.uId];
         },
         loadUser(userId = this.userId){
-            this._userId = userId;
+            this.uId = userId;
             this.$store.dispatch('fetchUser', userId);
             
         },

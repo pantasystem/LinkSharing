@@ -32,7 +32,11 @@ export default {
 
     getters: {
         get: (state)=>(id)=>{
-            let user = state.users[id];
+            let users = {
+                ...state.users
+            };
+            let user = users[id];
+            return user;
             if(user){
                 console.log('getters: get:' + user);
                 return user;
@@ -60,6 +64,10 @@ export default {
     },
     actions: {
         fetchUser({commit, state, rootState}, userId){
+            if(state.users[userId]){
+                console.log("既に存在しています。")
+                return;
+            }
             axios.get(
                 `/api/users/${userId}`,
                 {
