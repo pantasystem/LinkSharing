@@ -19,26 +19,31 @@ class NotificationService
 
         $notification->publish($publisher);
 
+        $subscriber;
+
         if($model instanceof Comment){
 
             $to = $model->commentable()->author()->get();
-            $notification->subscribe($to);
+            $subscriber = $to;
             $notification->comment()->associate($model);
             $notification->type = 'comment';
 
         }else if($model instanceof Favorite){
             $note = $model->note()->first();
-            if($publisher->id === $note->author()->first()->id){
-                return null;
-            }
-            $notification->subscribe($note->author()->first());
+            
+            $subscriber = $note->author()->first();
             $notification->favorite()->associate($model);
             $notification->type = 'favorite';
         }else if($model instanceof FollowingUser){
-            $notification->subscribe($model->followingUser);
+            $subscriber = $model->followingUser;
             $notification->follow()->associate($model);
             $notification->type = 'follow';
         }else{
+            return null;
+        }
+
+        $notification->subscribe($subscriber);
+        if($subscriber->id === $publisher->id){
             return null;
         }
 
