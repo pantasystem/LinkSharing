@@ -19,6 +19,8 @@ export default {
                 let note = notes[i];
                 Vue.set(state.notes, new String(note.id), note);
             }
+            console.log('setNotes');
+            console.log(state.notes);
         },
         setNote(state, note){
             Vue.set(state.notes, new String(note.id), note);
@@ -76,7 +78,12 @@ export default {
     getters: {
         getNotesByIds:(state) => (ids)=>{
             console.assert(Array.isArray(ids), "idsは配列である必要があります。");
-            return ids.map((id)=> state.notes[new String(id)]);
+            console.log(state.notes.length);
+            console.log(state.notes);
+            let notes = ids.map((id)=> state.notes[new String(id)]);
+            console.log(typeof(notes));
+            console.assert(Array.isArray(notes), "配列ではない値が返ってきます");
+            return notes;
         },
         getNoteById:(state) => (id)=>{
             return state.notes[new String(id)];

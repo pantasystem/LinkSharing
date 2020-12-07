@@ -19,6 +19,8 @@ var _notification = _interopRequireDefault(require("./store/notification"));
 
 var _users = _interopRequireDefault(require("./store/users"));
 
+var _notes = _interopRequireDefault(require("./store/notes"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -34,7 +36,8 @@ var _default = new _vuex["default"].Store({
   modules: {
     'timeline': _timeline["default"],
     'notification': _notification["default"],
-    'users': _users["default"]
+    'users': _users["default"],
+    'notes': _notes["default"]
   },
   state: {
     user: null,
