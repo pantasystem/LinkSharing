@@ -4,7 +4,10 @@
         :notes="notes" 
         :title="title" 
         v-on:loadNext="loadNext"
-        :isLoading="isLoading" />
+        :isLoading="isLoading"
+        @favorite="favorite"
+        @unfavorite="unfavorite"
+         />
 </template>
 <script>
 import axios from 'axios';
@@ -47,6 +50,12 @@ export default {
             this.$store.dispatch('timeline/loadNext');
 
         },
+        favorite(noteId){
+            this.$store.dispatch('favorite', noteId);
+        },
+        unfavorite(noteId){
+            this.$store.dispatch('unfavorite', noteId);
+        }
         
     }
 }

@@ -12,11 +12,11 @@
         
         <div class="content col-10">
             <header>
-            <router-link class="user_name" :to="{ name: 'user_notes', params: { userId: note.author.id}}">
-                <h4>
-                    {{ note.author.user_name }}
-                </h4>
-            </router-link>   
+               <router-link class="user_name" :to="{ name: 'user_notes', params: { userId: note.author.id}}">
+                    <h4>
+                        {{ note.author.user_name }}
+                    </h4>
+                </router-link>
 
             </header>
             <div class="main-content">
@@ -27,10 +27,22 @@
                 <summary-component :summary="note.summary"/>        
                         
             </div>
-            <footer class="nav-note col-12">
-                <tags-component 
-                    :tags="note.tags"
-                />
+            <footer class="nav-note">
+                <div class="row no-padding-rl">
+                    <tags-component
+                        class="col-10" 
+                        :tags="note.tags"
+                    />
+                    <favorite-button 
+                        class="col-2 no-padding-rl" 
+                        :favorite="note.is_favorited"
+                        @favorite="favorite"
+                        @unfavorite="unfavorite"
+                        />
+
+                </div>
+                
+                
             </footer>
 
         </div>
@@ -42,12 +54,14 @@
 import SummaryComponent from './SummaryComponent.vue';
 import TagsComponent from './TagsComponent.vue';
 import AvatarIcon from '../atoms/AvatarIcon';
+import FavoriteButton from '../atoms/FavoriteButton';
 
 export default {
     components: {
         'summary-component': SummaryComponent,
         'tags-component': TagsComponent,
-        'avatar-icon': AvatarIcon
+        'avatar-icon': AvatarIcon,
+        'favorite-button': FavoriteButton
     },
     props: {
         note: {
@@ -58,31 +72,24 @@ export default {
     methods: {
         loadAvatarIcon(e){
             e.target.src = "ic_avatar.png";
+        },
+        favorite(){
+            this.$emit('favorite', this.note.id);
+        },
+        unfavorite(){
+            this.$emit('unfavorite', this.note.id);
+
         }
     }
 }
 </script>
 <style scoped>
-
-/*
-.note-article{
-    display: flex;
-}
-*/
-/*
-.avatar_icon{
-    width: 58px;
-    height: 58px;
-    min-width: 58px;
-    min-height: 58px;
-    margin-right: 8px;
-    margin-bottom: 16px;
-    background: gray;
-}*/
-/*
 .content{
-    flex: 1;
+    padding-left: 0;
 }
-*/
 
+.no-padding-rl{
+    padding-left: 0;
+    padding-right: 0;
+}
 </style>

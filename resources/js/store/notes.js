@@ -33,7 +33,7 @@ export default {
     actions: {
         favorite({commit , state, getters, rootState}, noteId){
             axios.post(
-                `/api/users/${userId}`,
+                `/api/notes/${noteId}/favorites`,
                 {},
                 {
                     headers: { Authorization: `Bearer ${rootState.token }` }
@@ -45,7 +45,7 @@ export default {
                 note = {
                     ...note
                 };
-                note.favorite = true;
+                note.is_favorited = true;
                 commit('setNote', note);
             }).catch((e)=>{
                 console.log(e);
@@ -68,7 +68,7 @@ export default {
                     /*note = {
                         ...note
                     };*/
-                    note.favorite = false;
+                    note.is_favorited = false;
                     commit('setNote', note);
                     //Vue.set(state.notes, String(note.id), )
                 }
