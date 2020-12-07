@@ -5,6 +5,7 @@ import { reject } from 'lodash';
 import timeline from './store/timeline';
 import notification from './store/notification';
 import users from './store/users';
+import notes from './store/notes';
 
 Vue.use(Vuex);
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     modules:{
         'timeline': timeline,
         'notification': notification,
-        'users': users
+        'users': users,
+        'notes': notes
     },
     state:{
         user: null,

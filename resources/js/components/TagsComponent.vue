@@ -1,6 +1,6 @@
 <template>
     
-    <div class="row mt-1 mb-1">
+    <div class="mt-1 mb-1">
         <router-link 
             v-for="tag in tags" :key="tag.name"
             :to="{ name: 'searchByTag', query: { condition: [tag.name] } }" 

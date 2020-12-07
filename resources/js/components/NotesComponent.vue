@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-header">{{ title }}</div>
         <div class="card-body">
-            <note-component v-for="note in notes" :key="note.id" :note="note" />
+            <note-component v-for="note in notes" :key="note.id" :note="note" @favorite="favorite" @unfavorite="unfavorite"/>
 
         </div>
         
@@ -38,6 +38,12 @@ export default {
     methods: {
         loadNext(){
             this.$emit('loadNext');
+        },
+        favorite(noteId){
+            this.$emit('favorite', noteId);
+        },
+        unfavorite(noteId){
+            this.$emit('unfavorite', noteId);
         }
     }
 }

@@ -4,7 +4,7 @@ export default {
     namespaced: true,
     state(){
         return {
-            notes: [],
+            noteIds: [],
             isLoading: false,
             currentPage: 0
         }
@@ -12,24 +12,24 @@ export default {
     mutations: {
         pushNotes(state, notes){
             if(Array.isArray(notes)){
-                state.notes.push(...notes);
+                state.noteIds.push(...notes.map((note)=>note.id));
             }else{
-                state.notes.push(notes);
+                state.noteIds.push(notes.id);
             }
 
         },
         addNotesAtTheFirst(state, notes){
             if(Array.isArray(notes)){
-                state.notes.unshift(...notes);
+                state.noteIds.unshift(...notes.map((note)=>note.id));
 
             }else{
-                state.notes.unshift(notes);
+                state.noteIds.unshift(notes.id);
             }
         },
 
         nextPage(state, page){
             if(Array.isArray(page.data) && page.data.length){
-                state.notes.push(...page.data);
+                state.noteIds.push(...page.data.map((note)=>note.id));
             }
             state.isLoading = false;
             state.currentPage = page.current_page;
@@ -37,7 +37,7 @@ export default {
 
     },
     actions: {
-        async createNote({ commit }, note){
+        async createNote({ commit, }, note){
             let res = await axios.post(
                 'api/notes',
                 note,
@@ -49,6 +49,7 @@ export default {
 
             let createdNote = res.data;
             commit('addNotesAtTheFirst', createdNote);
+            commit('setNote', createdNote, { root: true});
             return res;
         },
 
@@ -56,6 +57,7 @@ export default {
             if(state.isLoading){
                 return;
             }
+            console.log(rootState);
             state.isLoading = true;
 
             console.log("load開始");
@@ -66,8 +68,10 @@ export default {
                     headers: { Authorization: `Bearer ${rootState.token}`},
                     params: { page: state.currentPage + 1 }
                 }
-            ).then((res)=>{                
+            ).then((res)=>{        
+                    
                 commit('nextPage', res.data);
+                commit('setNotes', res.data.data, {root: true});
             }).catch((e)=>{
                 console.log(e);
                 commit('nextPage', null);
@@ -78,12 +82,21 @@ export default {
 
         initTimeline(context){
             console.log("initTimeline開始しました");
-            context.state.notes = [];
+            context.state.noteIds = [];
             context.state.isLoading = false;
             context.state.currentPage = 0;
 
             context.dispatch('loadNext');
         },
 
+    },
+    getters: {
+        notes(state, getters, rootState, rootGetters){
+            
+            let notes =  rootGetters.getNotesByIds(state.noteIds);
+            console.log('timeline#notes');
+            console.log(notes);
+            return notes;
+        }
     }
 };
