@@ -23,7 +23,10 @@ export default {
             console.log(state.notes);
         },
         setNote(state, note){
+            console.log('setNote');
+            console.log(note);
             Vue.set(state.notes, new String(note.id), note);
+            console.log(state.notes);
         }
     },
 
@@ -80,7 +83,8 @@ export default {
             console.assert(Array.isArray(ids), "idsは配列である必要があります。");
             console.log(state.notes.length);
             console.log(state.notes);
-            let notes = ids.map((id)=> state.notes[new String(id)]);
+            let notes = ids.map((id)=> state.notes[new String(id)])
+                .filter((note)=>note);
             console.log(typeof(notes));
             console.assert(Array.isArray(notes), "配列ではない値が返ってきます");
             return notes;

@@ -49,7 +49,7 @@ export default {
 
             let createdNote = res.data;
             commit('addNotesAtTheFirst', createdNote);
-            commit('setNote', createdNote);
+            commit('setNote', createdNote, { root: true});
             return res;
         },
 
