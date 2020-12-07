@@ -38,6 +38,7 @@
                         :favorite="note.is_favorited"
                         @favorite="favorite"
                         @unfavorite="unfavorite"
+                        v-if="note.is_favorited !== undefined"
                         />
 
                 </div>
