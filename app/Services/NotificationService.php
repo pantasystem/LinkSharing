@@ -13,7 +13,7 @@ use App\Models\User;
 class NotificationService
 {
 
-    public function create(User $publisher, Model $model): Notification
+    public function create(User $publisher, Model $model): ?Notification
     {
         $notification = new Notification;
 
@@ -28,6 +28,9 @@ class NotificationService
 
         }else if($model instanceof Favorite){
             $note = $model->note()->first();
+            if($publisher->id === $note->author()->first()->id){
+                return null;
+            }
             $notification->subscribe($note->author()->first());
             $notification->favorite()->associate($model);
             $notification->type = 'favorite';
