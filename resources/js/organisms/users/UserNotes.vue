@@ -4,6 +4,8 @@
         :isLoading="isLoading"
         @loadNext="loadNext"
         title="投稿"
+        @favorite="favorite"
+        @unfavorite="unfavorite"
     />
 </template>
 <script>
@@ -22,10 +24,15 @@ export default {
     },
     data(){
         return {
-            notes: [],
             isLoading: false,
-            currentPage: 0
+            currentPage: 0,
+            noteIds: []
         };
+    },
+    computed: {
+        notes(){
+            return this.$store.getters['getNotesByIds'](this.noteIds);
+        }
     },
     methods: {
         loadNext(){
@@ -42,7 +49,8 @@ export default {
                     }
                 }
             ).then((res)=>{
-                this.notes.push(...res.data.data);
+                this.$store.commit('setNotes', res.data.data);
+                this.noteIds.push(...res.data.data.map((note)=>note.id));
                 this.currentPage = res.data.current_page;
             })
             .catch((e)=>{
@@ -51,12 +59,20 @@ export default {
             .finally(()=>{
                 this.isLoading = false;
             })
+        },
+
+        favorite(noteId){
+            this.$store.dispatch('favorite', noteId);
+        },
+        unfavorite(noteId){
+            this.$store.dispatch('unfavorite', noteId);
         }
     },
     created(){
-        this.notes = [];
+        this.noteIds = [];
         this.isLoading = false;
         this.loadNext();
-    }
+    },
+    
 }
 </script>
