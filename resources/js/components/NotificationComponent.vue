@@ -16,7 +16,7 @@
         <div>
             <div v-if="notification.favorite">
                 <slot name="favorite" :favorite="notification.favorite">
-                    <note-component :note="notification.favorite.note" />
+                    <note-component :note="notification.favorite.note" @favorite="favorite" @unfavorite="unfavorite"/>
                 </slot>
             </div>
             <div v-else-if="notification.comment">
@@ -67,6 +67,14 @@ export default {
                 .then((res)=>{
                     console.log(res);
                 });
+        },
+
+        favorite(noteId){
+            this.$store.dispatch('favorite', noteId);
+        },
+
+        unfavorite(noteId){
+            this.$store.dispatch('unfavorite', noteId);
         }
 
     }

@@ -38,7 +38,10 @@ export default {
         },
         notifications(){
             console.log(this.$store);
-            return this.$store.getters['notification/getNotifications'];
+            
+            let notifications = this.$store.getters['notification/getNotifications'];
+            console.log(notifications);
+            return notifications;
         }
     },
     
@@ -59,6 +62,12 @@ export default {
             console.log("通知を読み込もうとしている");
             console.log(this.$store);
             this.$store.dispatch('notification/loadNext');
+        },
+        favorite(note_id){
+
+        },
+        unfavorite(note_id){
+
         }
     }
 }
