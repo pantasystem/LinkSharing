@@ -50,7 +50,7 @@ class NoteService
                     
                 }
             }
-            return Note::with(['author', 'tags', 'summary'])->findOrFail($createdNote->id);
+            return Note::withDetail($user)->findOrFail($createdNote->id);
         });
         
 

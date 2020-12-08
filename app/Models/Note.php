@@ -74,6 +74,29 @@ class Note extends Model
         $query->selectSub($q->toBase(), 'is_favorited');
     }
 
+  
+    public function scopeWithDetail($query, User $user){
+        $columns = ['notes.*'];
+        if(isset($user)){
+            $columns['is_favorited'] = function($query) use ($user){
+                $query->selectRaw('count(*)')
+                    ->from('favorites')
+                    ->whereRaw('favorites.note_id = notes.id')
+                    ->where('favorites.user_id', '=', $user->id);
+            };
+        }
+        
+
+        $columns['favorite_count'] = function($query){
+            $query->selectRaw('count(*)')
+                ->from('favorites')
+                ->whereRaw('favorites.note_id = notes.id');
+        };
+
+        return $query->addSelect($columns)
+            ->with(['summary', 'tags', 'author']);
+    }
+
     function scopeWithFavoriteCount($query)
     {
         return $query->withCount(['favoritedUsers', 'favoritedUsers as favorite_count']);
