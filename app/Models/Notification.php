@@ -74,7 +74,9 @@ class Notification extends Model
                     
                 }, 
                 'comment', 
-                'favorite.note',
+                'favorite.note' => function($query) use ($me){
+                    $query->withDetail($me);
+                },
                 'favorite.note.summary', 
                 'favorite.note.tags', 
                 'follow',
