@@ -18,6 +18,8 @@ require("bootstrap/dist/css/bootstrap.css");
 
 require("bootstrap-vue/dist/bootstrap-vue.css");
 
+var _sanitizeHtml = _interopRequireDefault(require("sanitize-html"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
@@ -34,6 +36,7 @@ _vue["default"].use(_bootstrapVue.BootstrapVue);
 _vue["default"].use(_bootstrapVue.IconsPlugin);
 
 window.Vue = _vue["default"];
+_vue["default"].prototype.$sanitize = _sanitizeHtml["default"];
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

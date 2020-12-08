@@ -16,10 +16,13 @@ import RegisterPage from './pages/RegisterPage.vue';
 import Header from './organisms/Header.vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import sanitizeHTML from 'sanitize-html';
+
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 window.Vue = Vue;
+Vue.prototype.$sanitize = sanitizeHTML;
 
 
 /**

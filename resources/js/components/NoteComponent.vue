@@ -20,8 +20,8 @@
 
             </header>
             <div class="main-content">
-                <p>
-                    {{ note.text }}
+                <p v-html="$sanitize(note.text.replace(/\n/g, '<br>'))">
+                    
                 </p>
 
                 <summary-component :summary="note.summary"/>        
