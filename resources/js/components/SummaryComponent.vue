@@ -1,4 +1,5 @@
 <template>
+<div class="card cd">
     <div class="row media position-relative">
         
 
@@ -20,6 +21,7 @@
         </div>
             
     </div>
+</div>
 </template>
 <script>
 import axios from 'axios';
@@ -78,5 +80,8 @@ export default {
     white-space: nowrap;
 }
 
+.cd {
+    padding: 0.5rem;
+}
 
 </style>

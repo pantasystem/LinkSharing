@@ -67,15 +67,15 @@ class NotesController extends Controller
 
     function get($noteId)
     {
-        return Note::withFavoriteCount()->with(['author', 'tags','summary'])->findOrFail($noteId);
+        $me = auth('sanctum')->user();
+        return Note::withDetail($me)->findOrFail($noteId);
     }
 
     public function searchByTag(Request $request){
-        $builder = Note::with(['author', 'tags', 'summary']);
 
         $conditions = $request->input('conditions');
 
-        $builder->whereHas('tags', function($builder) use ($conditions){
+        $builder = Note::whereHas('tags', function($builder) use ($conditions){
             foreach($conditions as $orConditions){
                 $builder->where(function($builder) use ($orConditions){
                     foreach($orConditions as $condition){
@@ -87,7 +87,8 @@ class NotesController extends Controller
 
         
 
-        return $builder->simplePaginate(30);
+        $me = auth('sanctum')->user();
+        return $builder->withDetail($me)->simplePaginate(30);
     }
 
 

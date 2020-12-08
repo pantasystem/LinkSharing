@@ -11,6 +11,8 @@
             :notes="notes"
             :isLoading="isLoading"
             @loadNext="loadNext"
+            @favorite="favorite"
+            @unfavorite="unfavorite"
 
         />
     </div>
@@ -21,6 +23,7 @@ import Notes from './../components/NotesComponent';
 import AdvancedSearchForm from './../molecules/AdvancedSearchForm.vue';
 
 import axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     
@@ -31,11 +34,16 @@ export default {
 
     data(){
         return {
-            notes: [],
+            noteIds: [],
             isLoading: false,
             conditionKey: 0,
             conditions: [{ condition: this.name, id: 0}],
             currentPage: 0
+        }
+    },
+    computed:{
+        notes(){
+            return this.$store.getters['getNotesByIds'](this.noteIds);
         }
     },
 
@@ -91,7 +99,8 @@ export default {
             ).then((res)=>{
                 if(this.isLoading){
                     this.currentPage = res.data.current_page;
-                    this.notes.push(...res.data.data);
+                    this.$store.commit('setNotes', res.data.data);
+                    this.noteIds.push(...res.data.data.map((note)=>note.id));
                 }
                 
             }).catch((e)=>{
@@ -146,7 +155,8 @@ export default {
             this.$router.push(req).catch((e)=>{});
             
 
-        }
+        },
+        ...mapActions(['favorite', 'unfavorite']),
     },
 
     /*created(){

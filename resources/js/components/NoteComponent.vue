@@ -20,8 +20,8 @@
 
             </header>
             <div class="main-content">
-                <p>
-                    {{ note.text }}
+                <p v-html="$sanitize(note.text.replace(/\n/g, '<br>'))">
+                    
                 </p>
 
                 <summary-component :summary="note.summary"/>        
@@ -30,11 +30,11 @@
             <footer class="nav-note">
                 <div class="row no-padding-rl">
                     <tags-component
-                        class="col-10" 
+                        class="col-md-11 col-sm-10" 
                         :tags="note.tags"
                     />
                     <favorite-button 
-                        class="col-2 no-padding-rl" 
+                        class="col-md-1 col-sm-1 no-padding-rl" 
                         :favorite="note.is_favorited"
                         @favorite="favorite"
                         @unfavorite="unfavorite"
