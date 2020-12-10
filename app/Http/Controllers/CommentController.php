@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Note;
 use App\Models\Comment;
 use App\Services\NotificationService;
+use App\Events\Replied;
 
 class CommentController extends Controller
 {
 
 
-    public function replyToNote(NotificationService $service, Request $request, $noteId)
+    public function replyToNote(Request $request, $noteId)
     {
         $note = Note::findOrFail($noteId);
         $user = Auth::user();
@@ -19,7 +20,7 @@ class CommentController extends Controller
             'commentable_id' => $note->id,
             'text' => $request->input('text'),
         ]);
-        $service->create($user, $comment);
+        Replied::dispatch($comment);
 
         return $comment;
     }
