@@ -29,6 +29,8 @@ class CreateRepliedNotification
     public function handle(Replied $event)
     {
         //
-        $notificationService->create($event->publisher, $event->comment);
+        $publisher = $event->comment->author()->first();
+
+        $notificationService->create($publisher,  $event->comment);
     }
 }

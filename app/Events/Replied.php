@@ -24,7 +24,6 @@ class Replied
     {
         //
         $this->comment = $comment;
-        $this->publisher = $comment->author()->first();
     }
 
     /**

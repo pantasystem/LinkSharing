@@ -24,7 +24,6 @@ class Followed
     {
         //
         $this->followingUser = $followingUser;
-        $this->publisher = $followingUser->user()->first();
     }
 
     /**

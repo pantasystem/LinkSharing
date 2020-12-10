@@ -29,6 +29,8 @@ class CreateFollowedNotification
     public function handle(Followed $event)
     {
         //
-        $this->notificationService->create($event->publisher, $event->followingUser);
+        $publisher = $event->followingUser->user()->first();
+
+        $this->notificationService->create($publisher, $event->followingUser);
     }
 }

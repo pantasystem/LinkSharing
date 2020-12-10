@@ -29,6 +29,7 @@ class CreateFavoritedNotification
      */
     public function handle(Favorited $event)
     {
-        $notification = $this->notificationService->create($event->publisher, $event->favorite);
+        $publisher = $event->favorite->user()->first();
+        $notification = $this->notificationService->create($publisher , $event->favorite);
     }
 }

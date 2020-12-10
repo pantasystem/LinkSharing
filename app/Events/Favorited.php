@@ -11,10 +11,13 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Favorite;
 
-class Favorited
+class Favorited implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $favorite;
+    public $publisher;
+    public $subscriber;
     /**
      * Create a new event instance.
      *
@@ -23,7 +26,6 @@ class Favorited
     public function __construct(Favorite $favorite)
     {
         $this->favorite = $favorite;
-        $this->publisher = $favorite->user()->first();
     }
 
     /**
@@ -33,6 +35,9 @@ class Favorited
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new Channel('favorites');
     }
+
+
+   
 }
