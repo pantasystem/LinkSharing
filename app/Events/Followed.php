@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\FollowingUser;
 
 class Followed
 {
@@ -19,9 +20,11 @@ class Followed
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(FollowingUser $followingUser)
     {
         //
+        $this->followingUser = $followingUser;
+        $this->publisher = $followingUser->user()->first();
     }
 
     /**

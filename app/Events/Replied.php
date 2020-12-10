@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Comment;
 
 class Replied
 {
@@ -19,9 +20,11 @@ class Replied
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Comment $comment)
     {
         //
+        $this->comment = $comment;
+        $this->publisher = $comment->author()->first();
     }
 
     /**

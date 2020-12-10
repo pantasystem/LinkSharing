@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Favorite;
 
 class Favorited
 {
@@ -19,9 +20,10 @@ class Favorited
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Favorite $favorite)
     {
-        //
+        $this->favorite = $favorite;
+        $this->publisher = $favorite->user()->first();
     }
 
     /**

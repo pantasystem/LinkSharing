@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\Replied;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Services\NotificationService;
 
 class CreateRepliedNotification
 {
@@ -13,9 +14,10 @@ class CreateRepliedNotification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(NotificationService $notificationService)
     {
         //
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -27,5 +29,6 @@ class CreateRepliedNotification
     public function handle(Replied $event)
     {
         //
+        $notificationService->create($event->publisher, $event->comment);
     }
 }

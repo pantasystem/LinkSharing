@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\Followed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Services\NotificationService;
 
 class CreateFollowedNotification
 {
@@ -13,9 +14,10 @@ class CreateFollowedNotification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(NotificationService $notificationService)
     {
         //
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -27,5 +29,6 @@ class CreateFollowedNotification
     public function handle(Followed $event)
     {
         //
+        $this->notificationService->create($event->publisher, $event->followingUser);
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Note;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Favorite;
 use App\Services\NotificationService;
+use App\Events\Favorited;
 
 class FavoritesController extends Controller
 {
@@ -24,8 +25,9 @@ class FavoritesController extends Controller
             ]);
     
     
-            $service->create($user, $created);
-            return Favorite::findOrFail($created->id);
+            Favorited::dispatch($created);
+            //$service->create($user, $created);
+            //return Favorite::findOrFail($created->id);
         });
         
         
