@@ -20,15 +20,12 @@ class EventServiceProvider extends ServiceProvider
         ],*/
         'App\Events\Replied' => [
             'App\Listeners\CreateRepliedNotification',
-            'App\Listeners\EchoReplied',
         ],
         'App\Events\Favorited' =>[
             'App\Listeners\CreateFavoritedNotification',
-            'App\Listeners\EchoFavorited'
         ],
         'App\Events\Followed' => [
             'App\Listeners\CreateFollowedNotification',
-            'App\Listeners\EchoFollowed'
         ],
     ];
 
