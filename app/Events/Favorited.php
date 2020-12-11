@@ -16,8 +16,6 @@ class Favorited implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $favorite;
-    public $publisher;
-    public $subscriber;
     /**
      * Create a new event instance.
      *
@@ -35,9 +33,11 @@ class Favorited implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('favorites');
+        return new Channel('favorite');
     }
 
-
+    public function broadcastAs(){
+        return "Favorited";
+    }
    
 }

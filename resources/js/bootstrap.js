@@ -1,4 +1,5 @@
 window._ = require('lodash');
+import Echo from 'laravel-echo';
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -41,3 +42,99 @@ window.axios.defaults.baseURL = baseURL.content;
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+window.io = require('socket.io-client');
+
+//接続情報
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: 'http://192.168.10.10:6001',
+});
+//購読するチャネルの設定
+/*let channel = window.Echo.channel('favorite')
+    .listen('Favorited', (e) => {
+        console.log("イベントが発生した");
+        console.log(e);
+    });
+channel.error((error)=>{
+    console.log(error);
+    console.log("エラー発生");
+})
+console.log(window.Echo.connector.socket);*/
+
+let channel = window.Echo.channel('favorite')
+    .listen('Favorited', (e) => {
+        console.log("イベントが発生した");
+        console.log(e);
+    });
+channel.error((error)=>{
+    console.log(error);
+    console.log("エラー発生");
+})
+
+/*window.Echo.connector.socket.on('connect', () => {
+    //your code
+    console.log("接続完了");
+});
+window.Echo.connector.socket.on('reconnecting', (attemptNumber) => {
+    //your code
+    console.log(`%cSocket reconnecting attempt ${attemptNumber}`, 'color:orange; font-weight:700;');
+  });
+window.Echo.connector.socket.on('connect', ()=>{
+    console.log("接続完了");
+})
+window.Echo.connector.socket.on('connectiong', ()=>{
+    console.log("接続を試行しています");
+})
+window.Echo.connector.socket.on('disconnect', ()=>{
+    console.log("切断されました");
+})
+
+window.Echo.connector.socket.on('connect_failed', ()=>{
+    console.log("接続に失敗しました");
+})
+
+window.Echo.connector.socket.on('message', (msg)=>{
+    console.log('メッセージを受信しました')
+    console.log(msg);
+})
+
+window.Echo.connector.socket.on('error', ()=>{
+    console.log("エラーが発生しました");
+})
+
+window.Echo.connector.socket.on('reconnect', ()=>{
+    console.log("再接続しました");
+})
+
+window.Echo.connector.socket.on('reconnectiong', ()=>{
+    console.log('再接続しています');
+})
+
+window.Echo.connector.socket.on('reconnect_failed', ()=>{
+    console.log('再接続に失敗しました');
+})
+
+//console.log(channel);
+console.log(window.Echo);
+console.log("初期処理完了");
+*/
+/*setInterval(()=>{
+    console.log(window.Echo);
+    console.log(window.Echo.connector);
+    window.Echo.connect();
+}, 2000);
+*/
+/*window.Echo.connector.socket.on('connect', function(){
+    console.log('connected');
+    this.isConnected = true
+})
+
+window.Echo.connector.socket.on('disconnect', function(){
+    console.log('dissconnect');
+    this.isConnected = false
+})
+
+window.Echo.private('contacts').listen('ContactUpdated', event => {
+    console.log(event)
+})
+*/
