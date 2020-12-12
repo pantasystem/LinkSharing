@@ -27,6 +27,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Followed' => [
             'App\Listeners\CreateFollowedNotification',
         ],
+        'App\Events\Notified' => []
     ];
 
     /**

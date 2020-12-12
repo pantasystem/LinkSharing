@@ -6,6 +6,7 @@ import timeline from './store/timeline';
 import notification from './store/notification';
 import users from './store/users';
 import notes from './store/notes';
+import streaming from './streaming';
 
 Vue.use(Vuex);
 
@@ -47,7 +48,7 @@ export default new Vuex.Store({
 
     actions: {
         async register(
-            { commit }, 
+            { commit, dispatch }, 
             req,
         ){
             const response = await axios.post(
@@ -63,11 +64,12 @@ export default new Vuex.Store({
             if(response.data){
                 this.localStorage.setItem("token", response.data.token);
                 commit("setAccount", response.data);
+                dispatch('listen');
             }
             return response;
         },
 
-        async login({ commit }, req){
+        async login({ commit, dispatch }, req){
             
             let data = {
                 ...req,
@@ -83,12 +85,13 @@ export default new Vuex.Store({
                 localStorage.setItem("token", res.data.token);
 
                 commit("setAccount", res.data);
+                dispatch('listen');
             }
             return res;
             
         },
 
-        async loadMe({ commit }){
+        async loadMe({ commit, dispatch }){
             let token = this.state.token;
             if( ! token){
                 token = localStorage.getItem("token");
@@ -114,6 +117,8 @@ export default new Vuex.Store({
                     user: res.data
                 };
                 commit("setAccount", account);
+                dispatch('listen');
+
                 return account;
             }
             return null;
@@ -129,6 +134,7 @@ export default new Vuex.Store({
             );
             dispatch('timeline/init');
             dispatch('notification/init');
+            dispatch('dispose')
         },
 
         
@@ -155,6 +161,21 @@ export default new Vuex.Store({
             context.commit('user', res.data);
             context.dispatch('timeline/initTimeline');
             return res.data;
+        },
+        dispose(){
+            streaming.disconnect();
+        },
+        listen({ state }){
+            streaming.connect(state.token);
+            let echo = streaming.getEcho();
+            console.assert(echo != null, "echoがNULLです");
+            console.assert(state.user.id, "user.idが無効です");
+            echo.private(`notifications.subscriber.${state.user.id}`)
+                .listen('Notified', (e)=>{
+                    console.log("通知が来ました");
+                    console.log(e);
+                });
+            console.log("listen処理完了");
         }
 
       

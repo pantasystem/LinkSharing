@@ -6,6 +6,7 @@ use App\Events\Favorited;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Services\NotificationService;
+use App\Events\Notified;
 
 
 class CreateFavoritedNotification
@@ -31,5 +32,6 @@ class CreateFavoritedNotification
     {
         $publisher = $event->favorite->user()->first();
         $notification = $this->notificationService->create($publisher , $event->favorite);
+        Notified::dispatch($notification);
     }
 }

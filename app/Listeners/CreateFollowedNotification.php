@@ -6,6 +6,7 @@ use App\Events\Followed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Services\NotificationService;
+use App\Events\Notified;
 
 class CreateFollowedNotification
 {
@@ -31,6 +32,8 @@ class CreateFollowedNotification
         //
         $publisher = $event->followingUser->user()->first();
 
-        $this->notificationService->create($publisher, $event->followingUser);
+        $notification = $this->notificationService->create($publisher, $event->followingUser);
+
+        Notified::dispatch($notification);
     }
 }

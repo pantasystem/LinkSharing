@@ -21,6 +21,8 @@ var _users = _interopRequireDefault(require("./store/users"));
 
 var _notes = _interopRequireDefault(require("./store/notes"));
 
+var _streaming = _interopRequireDefault(require("./streaming"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -63,12 +65,12 @@ var _default = new _vuex["default"].Store({
   },
   actions: {
     register: function register(_ref3, req) {
-      var commit, response;
+      var commit, dispatch, response;
       return regeneratorRuntime.async(function register$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref3.commit;
+              commit = _ref3.commit, dispatch = _ref3.dispatch;
               _context.next = 3;
               return regeneratorRuntime.awrap(_axios["default"].post('/api/register', {
                 email: req.email,
@@ -84,6 +86,7 @@ var _default = new _vuex["default"].Store({
               if (response.data) {
                 this.localStorage.setItem("token", response.data.token);
                 commit("setAccount", response.data);
+                dispatch('listen');
               }
 
               return _context.abrupt("return", response);
@@ -96,12 +99,12 @@ var _default = new _vuex["default"].Store({
       }, null, this);
     },
     login: function login(_ref4, req) {
-      var commit, data, res;
+      var commit, dispatch, data, res;
       return regeneratorRuntime.async(function login$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref4.commit;
+              commit = _ref4.commit, dispatch = _ref4.dispatch;
               data = _objectSpread({}, req, {
                 device_name: 'Web Client'
               });
@@ -114,6 +117,7 @@ var _default = new _vuex["default"].Store({
               if (res.data) {
                 localStorage.setItem("token", res.data.token);
                 commit("setAccount", res.data);
+                dispatch('listen');
               }
 
               return _context2.abrupt("return", res);
@@ -126,12 +130,12 @@ var _default = new _vuex["default"].Store({
       });
     },
     loadMe: function loadMe(_ref5) {
-      var commit, token, res, account;
+      var commit, dispatch, token, res, account;
       return regeneratorRuntime.async(function loadMe$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref5.commit;
+              commit = _ref5.commit, dispatch = _ref5.dispatch;
               token = this.state.token;
 
               if (!token) {
@@ -153,7 +157,7 @@ var _default = new _vuex["default"].Store({
               res = _context3.sent;
 
               if (!(res.status == 200)) {
-                _context3.next = 10;
+                _context3.next = 11;
                 break;
               }
 
@@ -162,12 +166,13 @@ var _default = new _vuex["default"].Store({
                 user: res.data
               };
               commit("setAccount", account);
+              dispatch('listen');
               return _context3.abrupt("return", account);
 
-            case 10:
+            case 11:
               return _context3.abrupt("return", null);
 
-            case 11:
+            case 12:
             case "end":
               return _context3.stop();
           }
@@ -183,6 +188,7 @@ var _default = new _vuex["default"].Store({
       });
       dispatch('timeline/init');
       dispatch('notification/init');
+      dispatch('dispose');
     },
     follow: function follow(context, user) {
       var res;
@@ -235,6 +241,24 @@ var _default = new _vuex["default"].Store({
           }
         }
       });
+    },
+    dispose: function dispose() {
+      _streaming["default"].disconnect();
+    },
+    listen: function listen(_ref7) {
+      var state = _ref7.state;
+
+      _streaming["default"].connect(state.token);
+
+      var echo = _streaming["default"].getEcho();
+
+      console.assert(echo != null, "echoがNULLです");
+      console.assert(state.user.id, "user.idが無効です");
+      echo["private"]("notifications.subscriber.".concat(state.user.id)).listen('Notified', function (e) {
+        console.log("通知が来ました");
+        console.log(e);
+      });
+      console.log("listen処理完了");
     }
   }
 });

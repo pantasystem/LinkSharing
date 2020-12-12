@@ -44,11 +44,9 @@ window.axios.defaults.baseURL = baseURL.content;
 // });
 window.io = require('socket.io-client');
 
-//接続情報
-window.Echo = new Echo({
-    broadcaster: 'socket.io',
-    host: 'http://192.168.10.10:6001',
-});
+
+
+
 //購読するチャネルの設定
 /*let channel = window.Echo.channel('favorite')
     .listen('Favorited', (e) => {
@@ -61,15 +59,6 @@ channel.error((error)=>{
 })
 console.log(window.Echo.connector.socket);*/
 
-let channel = window.Echo.channel('favorite')
-    .listen('Favorited', (e) => {
-        console.log("イベントが発生した");
-        console.log(e);
-    });
-channel.error((error)=>{
-    console.log(error);
-    console.log("エラー発生");
-})
 
 /*window.Echo.connector.socket.on('connect', () => {
     //your code
