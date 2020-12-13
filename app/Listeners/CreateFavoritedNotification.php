@@ -32,6 +32,8 @@ class CreateFavoritedNotification
     {
         $publisher = $event->favorite->user()->first();
         $notification = $this->notificationService->create($publisher , $event->favorite);
-        Notified::dispatch($notification);
+        if(isset($notification)){
+            Notified::dispatch($notification);
+        }
     }
 }

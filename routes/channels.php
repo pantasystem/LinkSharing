@@ -18,6 +18,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('notifications.subscriber.{id}', function($user, $id){
-    \Log::log('log', "channelへのアクセス:" . $user);
+    //\Log::log('log', "channelへのアクセス:" . $user);
     return $user->id === (int)$id;
 });
