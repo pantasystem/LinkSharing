@@ -165,15 +165,14 @@ export default new Vuex.Store({
         dispose(){
             streaming.disconnect();
         },
-        listen({ state }){
+        listen({ state, dispatch }){
             streaming.connect(state.token);
             let echo = streaming.getEcho();
             console.assert(echo != null, "echoがNULLです");
             console.assert(state.user.id, "user.idが無効です");
             echo.private(`notifications.subscriber.${state.user.id}`)
                 .listen('Notified', (e)=>{
-                    console.log("通知が来ました");
-                    console.log(e);
+                    dispatch('notification/onRecieveNotification', e.notification);
                 });
             console.log("listen処理完了");
         }

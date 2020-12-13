@@ -12,6 +12,9 @@ export default {
         }
     },
     mutations: {
+        unshiftNotification(state, notification){
+            state.notifications.unshift(notification);
+        },
         pushNotifications(state, notifications){
             state.notifications.push(...notifications);
         },
@@ -59,6 +62,36 @@ export default {
             }).catch((e)=>{
                 console.log(e);
             });
+        },
+        onRecieveNotification({commit, state, rootState}, notification){
+            if(state.isLoading){
+                return;
+            }
+            commit('setLoading', true);
+            let token = rootState.token;
+
+            axios.get(`/api/notifications/${notification.id}`,
+            {
+                headers: { Authorization: `Bearer ${token}`},
+                params: { page: state.currentPage + 1 }
+            })
+                .then((res)=>{
+                    let n = res.data;
+                    commit('user', n.publisher, { root: true});
+                    if(n.favorite != null && n.favorite.note != null){
+                        let note = n.favorite.note;
+                        commit('setNote', note, { root: true});
+                        
+                    }
+                    Vue.delete(n.publisher, 'publisher');
+                    commit('unshiftNotification', n);
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
+                .finally(()=>{
+                    commit('setLoading', false);
+                });
         },
 
         init({commit}){
