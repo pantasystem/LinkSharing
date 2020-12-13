@@ -35,6 +35,6 @@ class Notified implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('notifications.subscriber.' . $this->notification->subscriber_id);
+        return new PrivateChannel('notifications.subscriber.' . $this->notification->subscriber_id);
     }
 }
