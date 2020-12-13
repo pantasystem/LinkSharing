@@ -1,6 +1,8 @@
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 window.Pusher = Pusher;
+window.io = require('socket.io-client');
+
 
 
 export class Streaming{
@@ -15,9 +17,10 @@ export class Streaming{
             this.echo.disconnect();
         }
         this.echo = new Echo({
-            broadcaster: 'pusher',
-            key: 'd1f04d6670716a2ab185',
-            cluster: 'ap3',
+            broadcaster: 'socket.io',
+            host: window.location.hostname + ':6001',
+            //key: 'd1f04d6670716a2ab185',
+            //cluster: 'ap3',
             encrypted: true,
             auth: {
                 headers: { Authorization: `Bearer ${token}`}
@@ -43,7 +46,11 @@ export class Streaming{
             },
         });
         console.log(this.echo);
-
+        this.echo.channel('favorited')
+            .listen((e)=>{
+                console.log("publicチャンネル受信");
+                console.log(e);
+            })
     }
     disconnect(){
         if(this.echo != null){
