@@ -8,6 +8,7 @@
     
 </template>
 <script>
+import StreamingAPI from '../streaming';
 export default {
 
     created(){
@@ -24,8 +25,12 @@ export default {
         this.$store.dispatch('timeline/initTimeline');
         this.$store.dispatch('notification/init');
         this.$store.dispatch('notification/loadNext');
+        this.$store.dispatch('listen');
         
         
+    },
+    beforeDestroy(){
+        this.$store.dispatch('dispose');
     }
 }
 </script>

@@ -8,7 +8,7 @@ use App\Models\Notes;
 use Illuminate\Support\Facades\Auth;
 use App\Services\NotificationService;
 use App\Models\FollowingUser;
-
+use App\Events\Followed;
 
 class UsersController extends Controller
 {
@@ -16,19 +16,20 @@ class UsersController extends Controller
     
    
 
-    function follow(NotificationService $notificationService, $userId)
+    function follow($userId)
     {
 
         $me = Auth::user();
        
         $user = User::findOrFail($userId);
-        \DB::transaction(function () use($me, $user, $notificationService){
+        \DB::transaction(function () use($me, $user){
             $followingUser = FollowingUser::create([
                 'following_user_id' => $user->id,
                 'user_id' => $me->id
             ]);
 
-            $notificationService->create($me, $followingUser);
+            Followed::dispatch($followingUser);
+
         });
         
         return $this->get($userId);
