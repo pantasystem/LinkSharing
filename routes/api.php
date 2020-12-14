@@ -47,7 +47,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('users/{userId}', [UsersController::class, 'unfollow']);
 
     Route::post('notes/{noteId}/comments', [CommentController::class, 'replyToNote']);
-    // Route::post('notes/{noteId}/comments/{commentId}', [CommentController::class, 'replyToComment']);
+    Route::post('notes/{noteId}/comments/{commentId}', [CommentController::class, 'replyToComment']);
     Route::delete('notes/{noteId}/comments/{commentId}', [CommentController::class, 'delete']);
 
     Route::get('notifications', [NotificationController::class, 'notifications']);
