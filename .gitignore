@@ -58,3 +58,4 @@ _ide_*
 
 .DS_Store
 dist/
+.laravel-echo-server.lock
