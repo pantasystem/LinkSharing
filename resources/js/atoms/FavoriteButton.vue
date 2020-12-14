@@ -1,10 +1,8 @@
 <template>
-    <div class="favorite">
-        <b-button variant="link" size="sm">
+   <b-button variant="link" size="sm">
             <b-icon-star-fill v-if="favorite" class="favorite rounded" @click="onClick"/>
             <b-icon-star v-else class="favorite rounded" @click="onClick" />
         </b-button> 
-    </div>
 </template>
 <script>
 export default {

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-lg-8 col-md-12">
                 <router-view />
             </div>
             <div class="col-md-4 d-none d-lg-block">

@@ -16,7 +16,7 @@
 
             </a>
             <div class="wrapper col-11" v-if="summary.image">
-                <img  class="content img-fluid" :src="summary.image" v-on:error="imgLoadError" />
+                <img  class="thumbnail" :src="summary.image" v-on:error="imgLoadError" />
             </div>
         </div>
             
@@ -53,13 +53,16 @@ export default {
     overflow: hidden;
 
 }
-.content {
+.thumbnail {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
     object-fit: contain;
+
+    max-width: 100%;
+    height: auto; 
 }
 
 .summary_content{

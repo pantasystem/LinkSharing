@@ -42,7 +42,6 @@ window.axios.defaults.baseURL = baseURL.content;
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
-window.io = require('socket.io-client');
 
 
 

@@ -28,13 +28,16 @@
                         
             </div>
             <footer class="nav-note">
-                <div class="row no-padding-rl">
-                    <tags-component
-                        class="col-md-11 col-sm-10" 
-                        :tags="note.tags"
-                    />
+                <tags-component
+                    :tags="note.tags"
+                />
+                
+                <div>
+                    <b-button variant="link" class="float-left" style="margin-left: -0.8rem;"><b-icon-reply />コメントなど</b-button>
+
                     <favorite-button 
-                        class="col-md-1 col-sm-1 no-padding-rl" 
+                        class="col-md-1 col-sm-1 no-padding-rl float-right" 
+                        style="margin-right: -0.8rem"
                         :favorite="note.is_favorited"
                         @favorite="favorite"
                         @unfavorite="unfavorite"
@@ -42,6 +45,9 @@
                         />
 
                 </div>
+                
+                
+                
                 
                 
             </footer>
