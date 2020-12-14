@@ -33,7 +33,7 @@
                 />
                 
                 <div>
-                    <b-button variant="link" class="float-left" style="margin-left: -0.8rem;"><b-icon-reply />返信</b-button>
+                    <b-button variant="link" class="float-left" style="margin-left: -0.8rem;"><b-icon-reply />コメントなど</b-button>
 
                     <favorite-button 
                         class="col-md-1 col-sm-1 no-padding-rl float-right" 

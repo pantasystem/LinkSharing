@@ -24,6 +24,7 @@ import AdvancedSearchForm from './../molecules/AdvancedSearchForm.vue';
 
 import axios from 'axios';
 import { mapGetters, mapActions } from 'vuex';
+import queryString from 'query-string';
 
 export default {
     
@@ -48,38 +49,21 @@ export default {
     },
 
     methods: {
-        /*getConditions(){
-            let srcCondition = this.conditions;
-            console.log(srcCondition);
-            let searchCondition = [];
-            let exp = /[\t\s\S]+/
-            for(let i = 0; i < srcCondition.length; i ++){
-                console.log(srcCondition[i]);
-                let strCondition = srcCondition[i].condition;
-                const regex = /\s+/;
-                console.log(strCondition);
-                let orConditions = strCondition.split(regex);
-                searchCondition.push(orConditions);
-            }
-            
-            console.log(searchCondition);
-            return searchCondition;
-
-        },*/
-
+        
         getConditions(){
             let srcConditions = this.conditions;
 
             console.assert(Array.isArray(srcConditions), "エラー：配列ではありません");
 
             let searchConditions = srcConditions.map((conditionObj)=> conditionObj.condition)
-                .map((condition)=> condition.split(/\s/));
+                .map((condition)=> {console.log(condition); return condition.split(/\s/)});
 
             console.assert(Array.isArray(searchConditions), "できたオブジェクトはなんと配列ではありませんでした！！");
             return searchConditions;
         },
         loadNext(){
-            console.log(this.conditions);
+            console.log('リクエスト条件');
+            console.log(this.getConditions());
             if(this.isLoading){
                 return;
             }
@@ -110,31 +94,30 @@ export default {
             });
         },
         init(){
+            console.log(this.conditions);
             this.isLoading = false;
-            this.notes = [];
+            this.noteIds.splice(0);
             this.currentPage = 0;
             this.loadNext();
         },
         
         initByCondition(condition){
-            console.assert(Array.isArray(condition), "initByCondition:引数は配列を要求している");
-            this.conditions = [];
+            this.conditions.splice(0);
             this.conditionKey += 1;
+
+            if(!Array.isArray(condition)){
+                this.addCondition(condition);
+                this.init();
+
+                return;
+            }
             for(let i = 0; i < condition.length; i ++){
                 this.addCondition(condition[i]);
 
             }
             this.init();
         },
-        /*input(event){
-            this.conditions = this.conditions.map((c)=>{
-                if(c.id == event.id){
-                    c.condition = event.text;
-                    return c;
-                }
-                return c;
-            });
-        },*/
+       
         addCondition(str = ''){
             this.conditions.push({
                 id: this.conditionKey + 1,
@@ -152,7 +135,7 @@ export default {
             }
 
             console.log(req);
-            this.$router.push(req).catch((e)=>{});
+            this.$router.push(req).catch((e)=>{ console.log(e) });
             
 
         },
@@ -166,16 +149,16 @@ export default {
         this.loadNext();
         
     },*/
+    created(){
+        let condition = queryString.parse(window.location.search);
+        this.initByCondition(condition.condition);
+    },
     
     beforeRouteUpdate(to, from, next){
-        console.log("遷移しようとしている");
+        console.log('push');
         console.log(to);
-        if(to.query.condition){
-            console.log("query + ");
-            console.log(to.query);
-            console.log(" + query end");
-            this.initByCondition(to.query.condition);
-        }
+        this.initByCondition(to.query.condition);
+
         next();
     },
 }
