@@ -21,7 +21,6 @@ class CommentController extends Controller
             'commentable_id' => $note->id,
             'text' => $request->input('text'),
         ]);
-        Replied::dispatch($comment);
 
         return $comment;
     }
