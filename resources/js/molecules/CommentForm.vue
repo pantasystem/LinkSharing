@@ -2,7 +2,10 @@
     <div>
         <form @submit.prevent="submit">
             <b-textarea v-model="text"></b-textarea>
-            <b-button type="submit" :variant="primary">送信</b-button>
+            <div>
+                <b-button type="submit" :variant="primary">送信</b-button>
+                <b-button @click="cancel">やっぱりやめる</b-button>
+            </div>
         </form>
     </div>
 </template>
@@ -19,6 +22,9 @@ export default {
     methods: {
         submit(){
             this.$emit('submit', this.text);
+        },
+        cancel(){
+            this.$emit('cancel');
         }
     }
 }
