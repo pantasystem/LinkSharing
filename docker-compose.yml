@@ -23,30 +23,32 @@ services:
         - db
   # MySQL
   db:
-    image: mysql:5.7
-    container_name: linksharing_mysql
+    image: postgres:13.1
+    container_name: linksharing_pgsql
+    volumes:
+      - ./docker/pg:/var/lib/postgresql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: homestead
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
-      TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      POSTGRES_USER: homestead
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: homestead
     ports:
-      - 3306:3306
+      - '5432:5432'
   redis:
     container_name: linksharing_redis
     image: redis:6.0.9
     ports:
       - "6379:6379"
+    volumes:
+     - "./docker/redis/data:/data"
   
   laravel-echo-server:
-      build:
-          context: .
-          dockerfile: laravel-echo-server.dockerfile
-      ports: 
-        - 6001:6001
-      volumes:
-        - ./:/work:cached
-      working_dir: /work
+    container_name: echo-server
+    build:
+        context: .
+        dockerfile: laravel-echo-server.dockerfile
+    ports: 
+      - 6001:6001
+    volumes:
+      - ./:/work:cached
+    working_dir: /work
 

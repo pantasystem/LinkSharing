@@ -1,10 +1,13 @@
 {
-	"authHost": "http://linksharing_php",
+	"authHost": "http://linksharing_nginx",
 	"authEndpoint": "/api/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
 	"databaseConfig": {
-		"redis": {},
+		"redis": {
+			"port": "6379",
+			"host": "linksharing_redis"
+		},
 		"sqlite": {
 			"databasePath": "/database/laravel-echo-server.sqlite"
 		}
