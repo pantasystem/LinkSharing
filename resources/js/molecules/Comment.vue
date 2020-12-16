@@ -8,7 +8,7 @@
             </div>
             
             <div class="col-10">
-                
+                {{ comment.author.user_name }}   
             </div>
             
         </router-link>
