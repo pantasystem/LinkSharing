@@ -68,13 +68,13 @@ export default new VueRouter({
                 },
                 {
                     path: 'notes/:noteId',
-                    name: 'note-replies',
+                    name: 'note_replies',
                     props: true,
                     component: Comments
                 },
                 {
                     path: 'notes/:noteId/comments/:commentId',
-                    name: 'comment-replies',
+                    name: 'comment_replies',
                     props: true,
                     component: Comments
                 }
