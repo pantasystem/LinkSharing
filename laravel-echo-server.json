@@ -1,5 +1,5 @@
 {
-	"authHost": "http://localhost",
+	"authHost": "http://linksharing_php",
 	"authEndpoint": "/api/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
