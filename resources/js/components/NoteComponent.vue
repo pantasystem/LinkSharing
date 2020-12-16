@@ -33,7 +33,12 @@
                 />
                 
                 <div>
-                    <b-button variant="link" class="float-left" style="margin-left: -0.8rem;"><b-icon-reply />コメントなど</b-button>
+                    <router-link 
+                        variant="link" 
+                        class="float-left" 
+                        style="margin-left: -0.8rem;"
+                        :to="{ name: 'note_replies', params: { noteId: note.id } }"
+                    ><b-icon-reply />コメントなど</router-link>
 
                     <favorite-button 
                         class="col-md-1 col-sm-1 no-padding-rl float-right" 
