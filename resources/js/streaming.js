@@ -46,11 +46,6 @@ export class Streaming{
             },
         });
         console.log(this.echo);
-        this.echo.channel('favorited')
-            .listen((e)=>{
-                console.log("publicチャンネル受信");
-                console.log(e);
-            })
     }
     disconnect(){
         if(this.echo != null){

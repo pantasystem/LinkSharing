@@ -166,15 +166,28 @@ export default new Vuex.Store({
             streaming.disconnect();
         },
         listen({ state, dispatch }){
-            streaming.connect(state.token);
-            let echo = streaming.getEcho();
-            console.assert(echo != null, "echoがNULLです");
-            console.assert(state.user.id, "user.idが無効です");
-            echo.private(`notifications.subscriber.${state.user.id}`)
-                .listen('Notified', (e)=>{
-                    dispatch('notification/onRecieveNotification', e.notification);
-                });
-            console.log("listen処理完了");
+            try{
+                streaming.connect(state.token);
+                let echo = streaming.getEcho();
+                console.assert(echo != null, "echoがNULLです");
+                console.assert(state.user.id, "user.idが無効です");
+                echo.private(`notifications.subscriber.${state.user.id}`)
+                    .listen('Notified', (e)=>{
+                        console.log('通知');
+                        dispatch('notification/onRecieveNotification', e.notification);
+                    });
+                console.log('notifications.subscriber開始');
+                echo.channel('favorite')
+                    .listen('Favorited', (e)=>{
+                        console.log("受信");
+                        console.log(e);
+                    });
+                console.log("listen処理完了");
+                console.log(echo);
+            }catch(e){
+                console.log(e);
+                console.log(streaming.getEcho());
+            }
         }
 
       

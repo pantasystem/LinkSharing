@@ -36,8 +36,6 @@ class Favorited implements ShouldBroadcast
         return new Channel('favorite');
     }
 
-    public function broadcastAs(){
-        return "Favorited";
-    }
+    
    
 }
