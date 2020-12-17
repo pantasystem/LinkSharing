@@ -18,7 +18,7 @@ export class Streaming{
         }
         this.echo = new Echo({
             broadcaster: 'socket.io',
-            host: window.location.hostname + ':6001',
+            host: window.location.host,
             //key: 'd1f04d6670716a2ab185',
             //cluster: 'ap3',
             encrypted: true,
