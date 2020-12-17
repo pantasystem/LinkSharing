@@ -60,4 +60,4 @@ _ide_*
 dist/
 laravel-echo-server.lock
 
-/docker
+docker/
