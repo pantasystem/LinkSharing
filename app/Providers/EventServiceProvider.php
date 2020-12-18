@@ -27,7 +27,11 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Followed' => [
             'App\Listeners\CreateFollowedNotification',
         ],
-        'App\Events\Notified' => []
+        'App\Events\Notified' => [],
+        'App\Events\NoteCreated' => [
+            'App\Listeners\PublishNote'
+        ],
+        'App\Events\TimelineUpdated' => []
     ];
 
     /**

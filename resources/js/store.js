@@ -188,6 +188,10 @@ export default new Vuex.Store({
                     });
                 console.log("listen処理完了");
                 console.log(echo);
+                echo.private(`timeline.streaming.${state.user.id}`)
+                    .listen('TimelineUpdated', (e) => {
+                        dispatch('timeline/onTimelineUpdated', e.noteId);
+                    });
             }catch(e){
                 console.log(e);
                 console.log(streaming.getEcho());
