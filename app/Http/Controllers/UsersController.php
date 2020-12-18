@@ -29,7 +29,6 @@ class UsersController extends Controller
             ]);
 
             Followed::dispatch($followingUser);
-
         });
         
         return $this->get($userId);

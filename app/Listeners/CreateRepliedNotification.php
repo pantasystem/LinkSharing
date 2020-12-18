@@ -6,6 +6,8 @@ use App\Events\Replied;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Services\NotificationService;
+use App\Events\Notified;
+
 
 class CreateRepliedNotification
 {
@@ -31,6 +33,9 @@ class CreateRepliedNotification
         //
         $publisher = $event->comment->author()->first();
 
-        $notificationService->create($publisher,  $event->comment);
+        $notification = $notificationService->create($publisher,  $event->comment);
+        if(isset($notification)){
+            Notified::dispatch($notification);
+        }
     }
 }

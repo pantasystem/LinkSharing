@@ -18,8 +18,8 @@ class CreateNotesTable extends Migration
             $table->timestamps();
 
             $table->text('text');
-            $table->bigInteger('author_id');
-            $table->bigInteger('summary_id');
+            $table->bigInteger('author_id')->index();
+            $table->bigInteger('summary_id')->index();
 
             $table->foreign('author_id')->references('id')->on('users')
                     ->onDelete('cascade')->onUpdate('cascade');

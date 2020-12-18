@@ -9,33 +9,23 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Favorite;
+use App\Models\Note;
 
-class Favorited implements ShouldBroadcast
+class NoteCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $favorite;
+    public $note;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Favorite $favorite)
+    public function __construct(Note $note)
     {
-        $this->favorite = $favorite;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new Channel('favorite');
+        //
+        $this->note = $note;
     }
 
     
-   
 }

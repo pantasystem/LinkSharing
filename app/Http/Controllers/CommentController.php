@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateCommentRequest;
 use App\Models\Note;
 use App\Models\Comment;
 use App\Services\NotificationService;
@@ -12,7 +13,7 @@ class CommentController extends Controller
 {
 
 
-    public function replyToNote(Request $request, $noteId)
+    public function replyToNote(CreateCommentRequest $request, $noteId)
     {
         $note = Note::findOrFail($noteId);
         $user = Auth::user();
@@ -23,6 +24,21 @@ class CommentController extends Controller
         Replied::dispatch($comment);
 
         return $comment;
+    }
+
+    public function replyToComment(CreateCommentRequest $request, $noteId, $commentId)
+    {
+        $replyToComment = Note::findOrFail($noteId)->comments()
+            ->findOrFail($commentId);
+        $user = Auth::user();
+        $replyToComment->comments()->create([
+            'author_id' => $user->id,
+            'text' => $request->input('text')
+        ]);
+        Replied::dispatch($comment);
+
+        return $comment;
+        
     }
 
     public function findAllByNote($noteId)

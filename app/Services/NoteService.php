@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Http\Requests\CreateNoteRequest;
 use App\Models\Summary;
 use App\Models\Tag;
+use App\Events\NoteCreated;
 
 
 class NoteService
@@ -50,6 +51,7 @@ class NoteService
                     
                 }
             }
+            NoteCreated::dispatch($createdNote);
             return Note::withDetail($user)->findOrFail($createdNote->id);
         });
         

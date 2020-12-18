@@ -10,6 +10,7 @@ import HomeTimeline from './organisms/HomeTimeline.vue';
 import UserDetail from './organisms/UserDetail.vue';
 import UserNotification from './organisms/UserNotification.vue';
 import SearchNotes from './organisms/SearchNotes.vue';
+import Comments from './organisms/Comments';
 
 import store from './store';
 
@@ -64,6 +65,18 @@ export default new VueRouter({
                     name: 'searchByTag',
                     props: true,
                     component: SearchNotes
+                },
+                {
+                    path: 'notes/:noteId',
+                    name: 'note_replies',
+                    props: true,
+                    component: Comments
+                },
+                {
+                    path: 'notes/:noteId/comments/:commentId',
+                    name: 'comment_replies',
+                    props: true,
+                    component: Comments
                 }
             ],
             beforeEnter: (to, from, next)=>{

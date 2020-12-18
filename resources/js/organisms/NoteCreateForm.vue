@@ -1,10 +1,12 @@
 <template>
     <form @submit="submitListener">
-        <b-form-input
-         v-model="url"
-         placeholder="共有URL"
-         class="mb-2"
-        />
+        <div>
+            <b-form-input
+            v-model="url"
+            placeholder="共有URL"
+            class="mb-2"
+            />
+        </div>
         <b-form-textarea
 
             :required="true"
@@ -30,13 +32,14 @@
                 placeholder="タグ名"
                 v-model="tag"
             />
-            <b-button variant="primary" class="col-3" @click="addTag">タグを追加</b-button>
+            <b-button variant="primary" class="col-3" @click="addTag" :disabled="!checkTagName">タグを追加</b-button>
         </div>
         
     </form>
 </template>
 
 <script>
+import { formatError } from '../errorutil';
 export default {
     data(){
         return {
@@ -44,10 +47,25 @@ export default {
             text: '',
             tag: '',
             tags: [],
+            errors: {}
         }
     },
+    computed:{
+        checkTagName(){
+            return !this.tags.some((t)=> t.name == this.tag) && this.tag.length >= 2 && this.tag.length <= 15;
+        },
+        
+        validation(){
+            return this.checkTagName &&  this.url.length && this.text.length >= 3 && this.text.length <= 200;
+        }
+    },
+
     methods: {
         addTag(){
+            if(!this.checkTagName){
+
+                return;
+            }
             let nextId = this.tags.length;
             let newTag = {
                 id: nextId,
@@ -77,10 +95,11 @@ export default {
                 .then((res)=>{
                     console.log(`作成成功:${res.data}`);
                     this.$emit('submit', res.data);
+                    this.errors = {};
                 })
                 .catch((e)=>{
-                    console.log(e);
-                })
+                    this.errors = formatError(e);
+                });
 
         }
     }

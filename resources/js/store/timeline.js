@@ -89,6 +89,22 @@ export default {
             context.dispatch('loadNext');
         },
 
+        onTimelineUpdated({ commit, state, rootState }, noteId) {
+            console.log(noteId);
+            axios.get(
+                `/api/notes/${noteId}`,
+                {
+                    headers: { Authorization: `Bearer ${rootState.token}` },
+                }
+            ).then((res) => {
+                let createdNote = res.data;
+                commit('addNotesAtTheFirst', createdNote);
+                commit('setNote', createdNote, { root: true });
+            }).catch((e) => {
+                console.log(e); 
+            });
+        }
+
     },
     getters: {
         notes(state, getters, rootState, rootGetters){

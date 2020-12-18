@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateNoteRequest extends FormRequest
+class CreateCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class CreateNoteRequest extends FormRequest
     public function rules()
     {
         return [
-            'url' => 'required|url',
-            'text' => 'required|max:200|min:3',
-            'tags.*' => 'string|max:15|min:2'
+            'text' => 'required|max:100|min:3'
         ];
     }
 }

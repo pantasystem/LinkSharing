@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Favorite;
-use App\Services\NotificationService;
+use App\Events\Favorited;
 
 class FavoriteObserver
 {
@@ -16,8 +16,8 @@ class FavoriteObserver
     public function created(Favorite $favorite)
     {
         //
-        $notificationService = app(NotificationService::class);
-        $notificationService->create($favorite->user, $favorite);
+        Favorited::dispatch($created);
+
     }
 
     /**

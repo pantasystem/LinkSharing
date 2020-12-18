@@ -21,3 +21,7 @@ Broadcast::channel('notifications.subscriber.{id}', function($user, $id){
     //\Log::log('log', "channelへのアクセス:" . $user);
     return $user->id === (int)$id;
 });
+
+Broadcast::channel('timeline.streaming.{id}', function($user, $id){
+    return $user->id === (int)$id;
+});

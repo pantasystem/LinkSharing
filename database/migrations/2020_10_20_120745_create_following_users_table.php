@@ -16,8 +16,8 @@ class CreateFollowingUsersTable extends Migration
         Schema::create('following_users', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger('following_user_id');
-            $table->bigInteger('user_id');
+            $table->bigInteger('following_user_id')->index();
+            $table->bigInteger('user_id')->index();
 
             $table->foreign('following_user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

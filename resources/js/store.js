@@ -61,9 +61,13 @@ export default new Vuex.Store({
                     device_name: 'Client' 
                 }
             );
-            if(response.data){
-                this.localStorage.setItem("token", response.data.token);
-                commit("setAccount", response.data);
+            if (response.data) {
+                console.log(response.data);
+                console.log(response.data.token);
+                commit("setAccount", {
+                    user: response.data.user,
+                    token: response.data.token.plainTextToken
+                });
                 dispatch('listen');
             }
             return response;
@@ -132,7 +136,7 @@ export default new Vuex.Store({
                     user: null
                 }
             );
-            dispatch('timeline/init');
+            dispatch('timeline/initTimeline');
             dispatch('notification/init');
             dispatch('dispose')
         },
@@ -166,15 +170,32 @@ export default new Vuex.Store({
             streaming.disconnect();
         },
         listen({ state, dispatch }){
-            streaming.connect(state.token);
-            let echo = streaming.getEcho();
-            console.assert(echo != null, "echoがNULLです");
-            console.assert(state.user.id, "user.idが無効です");
-            echo.private(`notifications.subscriber.${state.user.id}`)
-                .listen('Notified', (e)=>{
-                    dispatch('notification/onRecieveNotification', e.notification);
-                });
-            console.log("listen処理完了");
+            try{
+                streaming.connect(state.token);
+                let echo = streaming.getEcho();
+                console.assert(echo != null, "echoがNULLです");
+                console.assert(state.user.id, "user.idが無効です");
+                echo.private(`notifications.subscriber.${state.user.id}`)
+                    .listen('Notified', (e)=>{
+                        console.log('通知');
+                        dispatch('notification/onRecieveNotification', e.notification);
+                    });
+                console.log('notifications.subscriber開始');
+                echo.channel('favorite')
+                    .listen('Favorited', (e)=>{
+                        console.log("受信");
+                        console.log(e);
+                    });
+                console.log("listen処理完了");
+                console.log(echo);
+                echo.private(`timeline.streaming.${state.user.id}`)
+                    .listen('TimelineUpdated', (e) => {
+                        dispatch('timeline/onTimelineUpdated', e.noteId);
+                    });
+            }catch(e){
+                console.log(e);
+                console.log(streaming.getEcho());
+            }
         }
 
       

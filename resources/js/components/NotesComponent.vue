@@ -2,11 +2,10 @@
 <div>        
     <div class="card">
         <div class="card-header">{{ title }}</div>
-        <div class="card-body">
-            <note-component v-for="note in notes" :key="note.id" :note="note" @favorite="favorite" @unfavorite="unfavorite"/>
+        <transition-group name="note-list" tag="div" class="card-body">
+                <note-component v-for="note in notes" :key="note.id" :note="note" @favorite="favorite" @unfavorite="unfavorite"/>
 
-        </div>
-        
+        </transition-group>
     </div>
     <load-button :isLoading="isLoading" v-on:load="loadNext"/>
 </div>
@@ -48,3 +47,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+.note-list-move {
+  transition: transform 0.5s;
+}
+</style>
