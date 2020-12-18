@@ -14,7 +14,7 @@
         </router-link>
         
         <div>
-            <p v-html="$sanitize(comment.text)"></p>
+            <p v-html="$sanitize(comment.text.replace(/\n/g, '<br>'))"></p>
         </div>
     </article>
 </template>

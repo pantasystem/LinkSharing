@@ -1,7 +1,7 @@
 <template>
     <div>
         <form @submit.prevent="submit">
-            <b-textarea v-model="text"></b-textarea>
+            <b-textarea v-model="text" autofocus></b-textarea>
             <div>
                 <b-button type="submit" :variant="primary">送信</b-button>
                 <b-button @click="cancel">やっぱりやめる</b-button>
