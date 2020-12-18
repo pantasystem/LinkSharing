@@ -61,9 +61,13 @@ export default new Vuex.Store({
                     device_name: 'Client' 
                 }
             );
-            if(response.data){
-                this.localStorage.setItem("token", response.data.token);
-                commit("setAccount", response.data);
+            if (response.data) {
+                console.log(response.data);
+                console.log(response.data.token);
+                commit("setAccount", {
+                    user: response.data.user,
+                    token: response.data.token.plainTextToken
+                });
                 dispatch('listen');
             }
             return response;
@@ -132,7 +136,7 @@ export default new Vuex.Store({
                     user: null
                 }
             );
-            dispatch('timeline/init');
+            dispatch('timeline/initTimeline');
             dispatch('notification/init');
             dispatch('dispose')
         },

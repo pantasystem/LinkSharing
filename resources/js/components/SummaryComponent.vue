@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         imgLoadError(element){
-            element.target.src = axios.defaults.baseURL + "/ic_link.svg";
+            element.target.src = window.location.protocol + window.location.host + "/ic_link.svg";
 
         }
     }
