@@ -34,8 +34,8 @@ export default {
     },
     methods: {
         imgLoadError(element){
-            element.target.src = window.location.protocol + window.location.host + "/ic_link.svg";
-
+            let url = window.location.protocol + '//' + window.location.host + "/ic_link.svg";
+            element.target.src = url;
         }
     }
 }

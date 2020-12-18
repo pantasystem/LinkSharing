@@ -16,8 +16,8 @@ class TagsAndNotesTable extends Migration
         //
         Schema::create('tags_and_notes', function(Blueprint $table){
             $table->id();
-            $table->bigInteger('note_id');
-            $table->bigInteger('tag_id');
+            $table->bigInteger('note_id')->index();
+            $table->bigInteger('tag_id')->index();
             $table->timestamps();
 
 
@@ -25,6 +25,7 @@ class TagsAndNotesTable extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')
                 ->onDelete('cascade')->onUpdate('cascade');
+            $table->unique(['tag_id', 'note_id']);
         });
     }
 
