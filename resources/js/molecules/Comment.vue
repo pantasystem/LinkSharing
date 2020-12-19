@@ -1,5 +1,5 @@
 <template>
-    <article class="row">
+    <article class="row p-2">
         
         <div class="col-1">
             <router-link :to="{ name: 'user_notes', params: { userId: comment.author.id}}">
