@@ -15,6 +15,7 @@ class Replied
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $comment;
     /**
      * Create a new event instance.
      *

@@ -89,7 +89,20 @@ export default {
         },
 
         submit(text){
-
+            let endpoint = `/api/notes/${this.noteId}/comments`;
+            if(this.commentId !== undefined && this.commentId !== null){
+                endpoint += `/${this.commentId}`;
+            }
+            let headers = this.createHeaders();
+            axios.post(endpoint, { text: text }, {
+                headers: headers,
+            })
+            .then((res)=>{
+                this.comments.push(res.data);
+            }).catch((e)=>{
+                console.log(headers);
+                console.log(e);
+            })
         },
 
         loadNext(){

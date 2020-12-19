@@ -8,6 +8,7 @@ use App\Models\Note;
 use App\Models\Comment;
 use App\Services\NotificationService;
 use App\Events\Replied;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -17,10 +18,9 @@ class CommentController extends Controller
     {
         $note = Note::findOrFail($noteId);
         $user = Auth::user();
-        $comment = $user->comments()->create([
-            'commentable_id' => $note->id,
-            'text' => $request->input('text'),
-        ]);
+        $comment = new Comment($request->only('text'));
+        $comment->author()->associate($user);
+        $note->comments()->save($comment);
         Replied::dispatch($comment);
 
         return $comment->load(['author']);
