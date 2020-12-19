@@ -31,10 +31,9 @@ class CommentController extends Controller
         $replyToComment = Note::findOrFail($noteId)->comments()
             ->findOrFail($commentId);
         $user = Auth::user();
-        $replyToComment->comments()->create([
-            'author_id' => $user->id,
-            'text' => $request->input('text')
-        ]);
+        $comment = new Comment($request->only('text'));
+        $comment->author()->associate($user);
+        $replyToComment->comments()->save($comment);
         Replied::dispatch($comment);
 
         return $comment->load(['author']);
