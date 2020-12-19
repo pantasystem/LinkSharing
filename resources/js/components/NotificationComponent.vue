@@ -21,7 +21,7 @@
             </div>
             <div v-else-if="notification.comment">
                 <slot name="comment" :comment="notification.favorite">
-                    
+                    <a-comment :comment="notification.comment" />
                 </slot>
             </div>
             <div v-else>
@@ -38,6 +38,7 @@
 import AvatarIcon from '../atoms/AvatarIcon';
 import NoteComponent from './NoteComponent';
 import FolloweeComponent from './FolloweeComponent';
+import Comment from './../molecules/Comment';
 import { mapState, mapActions } from 'vuex';
 
 export default {
@@ -50,7 +51,8 @@ export default {
     components: {
         'avatar-icon': AvatarIcon,
         'followee-component': FolloweeComponent,
-        'note-component': NoteComponent
+        'note-component': NoteComponent,
+        'a-comment': Comment
     },
     computed: {
         ...mapState(['user']),
