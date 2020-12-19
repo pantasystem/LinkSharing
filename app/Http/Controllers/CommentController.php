@@ -52,6 +52,10 @@ class CommentController extends Controller
         return $this->getComment($noteId, $commentId)->comments()->simplePaginate();
     }
 
+    public function findComments($commentId){
+        return Comment::findOrFail($commentId)->comments()->simplePaginate();
+    }
+
     public function show($noteId, $commentId)
     {
         return $this->getComment($noteId, $commentId);
