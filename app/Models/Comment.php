@@ -17,7 +17,7 @@ class Comment extends Model
 
     protected $fillable = ['author_id', 'commentable_id', 'text'];
 
-    public function author(): User
+    public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
     }
