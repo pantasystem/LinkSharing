@@ -23,7 +23,7 @@ class CommentController extends Controller
         ]);
         Replied::dispatch($comment);
 
-        return $comment;
+        return $comment->load(['author']);
     }
 
     public function replyToComment(CreateCommentRequest $request, $noteId, $commentId)
@@ -37,23 +37,23 @@ class CommentController extends Controller
         ]);
         Replied::dispatch($comment);
 
-        return $comment;
+        return $comment->load(['author']);
         
     }
 
     public function findAllByNote($noteId)
     {
         $note = Note::findOrFail($noteId);
-        return $note->comments()->simplePaginate();
+        return $note->comments()->with(['author'])->simplePaginate();
     }
 
     public function findAllByNoteAndComment($noteId, $commentId)
     {
-        return $this->getComment($noteId, $commentId)->comments()->simplePaginate();
+        return $this->getComment($noteId, $commentId)->comments()->with(['author'])->simplePaginate();
     }
 
     public function findComments($commentId){
-        return Comment::findOrFail($commentId)->comments()->simplePaginate();
+        return Comment::findOrFail($commentId)->comments()->with(['author'])->simplePaginate();
     }
 
     public function show($noteId, $commentId)
@@ -70,7 +70,7 @@ class CommentController extends Controller
     private function getComment($noteId, $commentId): Comment{
 
         $note = Note::findOrFail($noteId);
-        return $note->comments()->findOrFail($commentId);
+        return $note->comments()->with(['author'])->findOrFail($commentId);
     }
   
 }
