@@ -9,6 +9,7 @@ use App\Models\Note;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Summary;
+use App\Models\Comment;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +25,8 @@ class DatabaseSeeder extends Seeder
            NoteSeeder::class,
            TagSeeder::class,
            FavoriteSeeder::class,
-           FollowingUserSeeder::class
+           FollowingUserSeeder::class,
+           CommentSeeder::class
        ]);
     }
 }

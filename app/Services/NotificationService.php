@@ -23,7 +23,7 @@ class NotificationService
 
         if($model instanceof Comment){
 
-            $to = $model->commentable()->author()->get();
+            $to = $model->commentable()->first()->author()->first();
             $subscriber = $to;
             $notification->comment()->associate($model);
             $notification->type = 'comment';

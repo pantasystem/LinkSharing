@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   nginx:
@@ -12,15 +12,15 @@ services:
     depends_on:
       - php
   php:
-      container_name: linksharing_php
-      user: ${user}
-      build:
-          context: .
-          dockerfile: php.dockerfile
-      volumes:
-          - ./:/var/www/html
-      depends_on:
-        - db
+    container_name: linksharing_php
+    user: ${user}
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
   # MySQL
   db:
     image: postgres:13.1
@@ -31,24 +31,23 @@ services:
       POSTGRES_USER: homestead
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: homestead
-    ports:
-      - '5432:5432'
+    expose:
+      - "5432"
   redis:
     container_name: linksharing_redis
     image: redis:6.0.9
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
     volumes:
-     - "./docker/redis/data:/data"
-  
+      - "./docker/redis/data:/data"
+
   laravel-echo-server:
     container_name: echo-server
     build:
-        context: .
-        dockerfile: laravel-echo-server.dockerfile
-    ports: 
-      - 6001:6001
+      context: .
+      dockerfile: laravel-echo-server.dockerfile
+    expose:
+      - "6001"
     volumes:
       - ./:/work:cached
     working_dir: /work
-

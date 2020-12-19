@@ -8,6 +8,7 @@ use App\Models\Note;
 use App\Models\Comment;
 use App\Services\NotificationService;
 use App\Events\Replied;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -17,13 +18,12 @@ class CommentController extends Controller
     {
         $note = Note::findOrFail($noteId);
         $user = Auth::user();
-        $comment = $user->comments()->create([
-            'commentable_id' => $note->id,
-            'text' => $request->input('text'),
-        ]);
+        $comment = new Comment($request->only('text'));
+        $comment->author()->associate($user);
+        $note->comments()->save($comment);
         Replied::dispatch($comment);
 
-        return $comment;
+        return $comment->load(['author']);
     }
 
     public function replyToComment(CreateCommentRequest $request, $noteId, $commentId)
@@ -31,25 +31,28 @@ class CommentController extends Controller
         $replyToComment = Note::findOrFail($noteId)->comments()
             ->findOrFail($commentId);
         $user = Auth::user();
-        $replyToComment->comments()->create([
-            'author_id' => $user->id,
-            'text' => $request->input('text')
-        ]);
+        $comment = new Comment($request->only('text'));
+        $comment->author()->associate($user);
+        $replyToComment->comments()->save($comment);
         Replied::dispatch($comment);
 
-        return $comment;
+        return $comment->load(['author']);
         
     }
 
     public function findAllByNote($noteId)
     {
         $note = Note::findOrFail($noteId);
-        return $note->comments()->simplePaginate();
+        return $note->comments()->with(['author'])->simplePaginate();
     }
 
     public function findAllByNoteAndComment($noteId, $commentId)
     {
-        return $this->getComment($noteId, $commentId)->comments()->simplePaginate();
+        return $this->getComment($noteId, $commentId)->comments()->with(['author'])->simplePaginate();
+    }
+
+    public function findComments($commentId){
+        return Comment::findOrFail($commentId)->comments()->with(['author'])->simplePaginate();
     }
 
     public function show($noteId, $commentId)
@@ -66,7 +69,7 @@ class CommentController extends Controller
     private function getComment($noteId, $commentId): Comment{
 
         $note = Note::findOrFail($noteId);
-        return $note->comments()->findOrFail($commentId);
+        return $note->comments()->with(['author'])->findOrFail($commentId);
     }
   
 }

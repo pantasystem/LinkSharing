@@ -87,9 +87,9 @@ Route::middleware('guest')->group(function(){
 
 
     Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote']);
-    //Route::get('notes/{noteId}/comments/{commentId}/all', [CommentController::class, 'findAllByNoteAndCommentId']);
 
     Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
+    Route::get('comments/{commentId}/comments', [CommentController::class, 'findComments']);
 
 
 });

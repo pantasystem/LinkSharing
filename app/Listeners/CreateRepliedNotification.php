@@ -33,7 +33,7 @@ class CreateRepliedNotification
         //
         $publisher = $event->comment->author()->first();
 
-        $notification = $notificationService->create($publisher,  $event->comment);
+        $notification = $this->notificationService->create($publisher,  $event->comment);
         if(isset($notification)){
             Notified::dispatch($notification);
         }
