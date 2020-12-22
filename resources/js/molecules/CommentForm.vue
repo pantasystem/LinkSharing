@@ -1,10 +1,9 @@
 <template>
     <div>
         <form @submit.prevent="submit">
-            <b-textarea v-model="text" autofocus></b-textarea>
+            <b-form-textarea v-model="form.text" autofocus :error="textError" :aria-invalid="'error'"></b-form-textarea>
             <div>
-                <b-button type="submit" variant="primary">送信</b-button>
-                <b-button @click="cancel">やっぱりやめる</b-button>
+                <b-button type="submit" variant="primary" class="mt-2">送信</b-button>
             </div>
         </form>
     </div>
@@ -14,18 +13,36 @@
  * バリデーションなどはここで行い送信が決定されたときに親コンポーネントにデータを投げる
  */
 export default {
+    props:{
+        text: {
+            required: false,
+            type: String
+        },
+        errors: {
+            required: false
+        }
+    },
+    computed: {
+        textError(){
+            return this.errors ? this.errors.text[0] : '';
+        }
+    },
+
     data(){
         return {
-            text: ''
+            form: {text: ''}
         }
     },
     methods: {
         submit(){
-            this.$emit('submit', this.text);
+            this.$emit('submit', this.form.text);
+            this.form.text = '';
         },
-        cancel(){
-            this.$emit('cancel');
-        }
+       
+    },
+
+    created(){
+        this.form.text = this.text;
     }
 }
 </script>

@@ -12,7 +12,13 @@
                     <a-comment :comment="comment"/>
                 </div>
             </div>
-            <comment-form @submit="submit"/>
+            <b-alert show dismissible v-if="submitted.success" variant="success">
+                {{ submitted.success }}
+            </b-alert>
+            <b-alert show dismissible v-else-if="submitted.error" variant="danger">
+                {{ submitted.error }}
+            </b-alert>
+            <comment-form @submit="submit" :errors="submitted.errors"/>
             <div v-for="aComment in comments" :key="aComment.id">
                 <a-comment :comment="aComment" />
             </div>
@@ -36,7 +42,7 @@ export default {
             required: false,
             type: Number,
             default: null
-        }
+        },
     },
     components: {
         'a-comment': Comment,
@@ -56,7 +62,12 @@ export default {
             comment: null,
             comments: [],
             currentPage: 0,
-            isLoading: false
+            isLoading: false,
+            submitted: {
+                success: null,
+                error: null,
+                errors : null
+            }
         }
     },
     created(){
@@ -99,9 +110,14 @@ export default {
             })
             .then((res)=>{
                 this.comments.push(res.data);
+                this.submitted.success = '返信に成功しました。';
+                this.submitted.error = '';
+                this.submitted.errors = '';
             }).catch((e)=>{
-                console.log(headers);
-                console.log(e);
+                this.submitted.error = '返信に失敗しました。';
+                this.submitted.success = '';
+                this.submitted.errors = e.response.data.errors;
+                
             })
         },
 
