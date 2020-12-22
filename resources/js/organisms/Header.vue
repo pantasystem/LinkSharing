@@ -34,15 +34,13 @@
                 
                 
             </b-collapse>
-            <b-button class="ml-auto mr-1" variant="primary" v-b-modal.note-creator>投稿</b-button>
+            <b-button class="ml-auto mr-1" variant="primary" @click="tryCreate">投稿</b-button>
             <b-navbar-toggle target="navbarSupportedContent" />
 
         </div>
                 
     </b-navbar>
-    <b-modal id="note-creator" title="投稿" @ok="okListener">
-        <note-create-form ref="notecreator" @submit="submit"/>
-    </b-modal>
+    <note-create-form ref="notecreate" />
 </div>    
 </template>
 
@@ -72,22 +70,11 @@ export default {
             this.$store.dispatch("logout");
             this.$router.push("/login");
         },
-        okListener(e){
-            console.log("作成しようとしています");
-            this.tryCreate();
-            e.preventDefault();
-        },
+        
         tryCreate(){
-            this.$refs.notecreator.create()
-            
+            this.$refs.notecreate.show();
         },
-        submit(note){
-            console.log(`作成されたnote: ${JSON.stringify(note)}`);
-            
-            this.$nextTick(() => {
-                this.$bvModal.hide('note-creator')
-            });
-        },
+        
         search(){
             let tagName = this.keyword;
             this.$router.push(
