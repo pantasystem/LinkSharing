@@ -49,9 +49,17 @@ Vue.component('app-component', require('./pages/App.vue').default);
  */
 
  
-const app = new Vue({
-    el: '#app',
-    store: store,
-    router: router,
-});
 
+const createApp =  async () => {
+    await store.dispatch('loadMe')
+        .catch((e) => {
+            console.log(e);
+        })
+    new Vue({
+        el: '#app',
+        store: store,
+        router: router,
+    });
+}
+
+createApp();
