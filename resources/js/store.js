@@ -68,6 +68,8 @@ export default new Vuex.Store({
                     user: response.data.user,
                     token: response.data.token.plainTextToken
                 });
+                dispatch('timeline/initTimeline');
+                dispatch('notification/init');
                 dispatch('listen');
             }
             return response;
@@ -90,7 +92,10 @@ export default new Vuex.Store({
 
                 commit("setAccount", res.data);
                 dispatch('listen');
+                dispatch('timeline/initTimeline');
+                dispatch('notification/init');
             }
+            
             return res;
             
         },
