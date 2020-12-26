@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('notes/{noteId}/favorites', [FavoritesController::class, 'favorite']);
     Route::delete('notes/{noteId}/favorites', [FavoritesController::class, 'unfavorite']);
-    Route::get('notes/{noteId}/favorites/my-favorite', [FavoritesController::class, 'isFavorited']);
+    Route::get('favorites', [FavoritesController::class, 'favoritedNotes']);
 
     Route::post('users/{userId}', [UsersController::class, 'follow']);
     Route::delete('users/{userId}', [UsersController::class, 'unfollow']);
