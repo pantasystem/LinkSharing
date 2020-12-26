@@ -64,6 +64,6 @@ class FavoritesController extends Controller
     public function favoritedNotes()
     {
         $me = Auth::user();
-        return $me->favorites()->withDetail($me)->simplePaginate();
+        return $me->favoritedNotes()->withDetail($me)->simplePaginate();
     }
 }

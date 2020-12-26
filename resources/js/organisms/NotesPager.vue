@@ -46,7 +46,7 @@ export default {
                 return;
             }
             this.isLoading = true;
-            this.requestBuilder(currentPage + 1)
+            this.requestBuilder(this.currentPage + 1)
                 .then((res)=>{
                     let page = res.data;
                     let notes = page.data;

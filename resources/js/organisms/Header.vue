@@ -8,6 +8,14 @@
 
             <b-collapse id="navbarSupportedContent" is-nav>
                 <b-navbar-nav class="mr-auto">
+                    <b-nav-item to="/" exact-active-class="active">
+                        <i class="fas fa-home pull-left" height="100%"></i><span class="nav-link d-inline icon-title">ホーム</span>
+                    </b-nav-item>
+                    <b-nav-item to="/favorites" exact-active-class="active">
+                        <i class="fas fa-star pull-left" height="100%"></i><span class="nav-link d-inline icon-title">お気に入り</span>
+                    
+                    </b-nav-item>
+                    
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form @submit.prevent.stop="search">
