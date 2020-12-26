@@ -2,6 +2,7 @@
     <notes-pager 
         :requestBuilder="requestBuilder"
         title="お気に入り"
+        ref="notes"
     />
 </template>
 <script>
@@ -26,6 +27,11 @@ export default {
             return { Authorization: `Bearer ${this.$store.state.token}`};
         }
     },
+    beforeRouteUpdate(to, from, next){
+        this.$refs.notes.init();
+    },
+
+    
     
 }
 </script>

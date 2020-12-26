@@ -68,7 +68,18 @@ export default {
         },
         unfavorite(noteId){
             this.$store.dispatch('unfavorite', noteId);
+        },
+
+        init(){
+            this.isLoading = false;
+            this.noteIds = [],
+            this.currentPage = 0;
+            this.loadNext();
         }
+    },
+
+    created(){
+        this.init();
     }
     
 }
