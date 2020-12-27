@@ -46,7 +46,7 @@ export default {
                 return;
             }
             this.isLoading = true;
-            this.requestBuilder(currentPage + 1)
+            this.requestBuilder(this.currentPage + 1)
                 .then((res)=>{
                     let page = res.data;
                     let notes = page.data;
@@ -68,7 +68,18 @@ export default {
         },
         unfavorite(noteId){
             this.$store.dispatch('unfavorite', noteId);
+        },
+
+        init(){
+            this.isLoading = false;
+            this.noteIds = [],
+            this.currentPage = 0;
+            this.loadNext();
         }
+    },
+
+    created(){
+        this.init();
     }
     
 }

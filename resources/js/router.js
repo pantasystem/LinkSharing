@@ -11,6 +11,7 @@ import UserDetail from './organisms/UserDetail.vue';
 import UserNotification from './organisms/UserNotification.vue';
 import SearchNotes from './organisms/SearchNotes.vue';
 import Comments from './organisms/Comments';
+import FavoriteNotes from './organisms/FavoriteNotes';
 
 import store from './store';
 
@@ -28,7 +29,13 @@ export default new VueRouter({
                     path: "",
                     name: "home_timeline",
                     component: HomeTimeline
-                },{
+                },
+                {
+                    path: 'favorites',
+                    name: 'favorites',
+                    component: FavoriteNotes
+                },
+                {
                     path: 'users/:userId',
                     component: UserDetail,
                     props: true,

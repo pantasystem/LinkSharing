@@ -60,4 +60,10 @@ class FavoritesController extends Controller
 
         return $note->favoritedUsers()->paginate(30);
     }
+
+    public function favoritedNotes()
+    {
+        $me = Auth::user();
+        return $me->favoritedNotes()->withDetail($me)->simplePaginate();
+    }
 }
