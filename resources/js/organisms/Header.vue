@@ -26,10 +26,10 @@
                     <b-nav-item to="/login" v-if="!isLoggedIn">ログイン</b-nav-item>
                     <b-nav-item to="/register" v-if="!isLoggedIn">登録</b-nav-item>
                     <b-nav-item to="/notifications" v-if="isLoggedIn">
-                        <i class="fas fa-bell pull-left" height="100%"></i><span class="nav-link d-md-none d-inline icon-title">通知</span>
+                        <i class="fas fa-bell pull-left mr-2 ml-2" height="100%"></i><span class="nav-link d-md-none d-inline icon-title">通知</span>
 
                     </b-nav-item>
-                    <b-nav-item-dropdown :text="user.user_name" v-if="user">
+                    <b-nav-item-dropdown class="mr-2" :text="user.user_name" v-if="user">
                         <b-dropdown-item to="/profile" v-if="user">
                             プロフィール
                         </b-dropdown-item>
