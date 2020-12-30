@@ -20,10 +20,10 @@ RUN apt install -y mecab libmecab-dev mecab-ipadic-utf8 && \
     git clone https://github.com/rsky/php-mecab && \
     cd /usr/local/src/php-mecab/mecab && \
     phpize && ./configure && make && make install && \
+    cd /usr/local/etc/php/conf.d && \
     touch ./docker-php-ext-mecab.ini && \
     echo "extension=mecab.so" >> ./docker-php-ext-mecab.ini && \
-    echo "mecab.default_dicdir=/usr/lib/mecab/dic/mecab-ipadic-neologd/" >> ./docker-php-ext-mecab.ini && \
-    ln -s ./docker-php-ext-mecab.ini /usr/local/etc/php/conf.d/docker-php-ext-mecab.ini 
+    echo "mecab.default_dicdir=/usr/lib/mecab/dic/mecab-ipadic-neologd/" >> ./docker-php-ext-mecab.ini
 
 
 
