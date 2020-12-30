@@ -23,7 +23,7 @@ RUN apt install -y mecab libmecab-dev mecab-ipadic-utf8 && \
     cd /usr/local/etc/php/conf.d && \
     touch ./docker-php-ext-mecab.ini && \
     echo "extension=mecab.so" >> ./docker-php-ext-mecab.ini && \
-    echo "mecab.default_dicdir=/usr/lib/mecab/dic/mecab-ipadic-neologd/" >> ./docker-php-ext-mecab.ini
+    echo "mecab.default_dicdir=/usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd" >> ./docker-php-ext-mecab.ini
 
 
 
