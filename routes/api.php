@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SummaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,12 @@ Route::middleware('guest')->group(function(){
 
     Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
     Route::get('comments/{commentId}/comments', [CommentController::class, 'findComments']);
+
+    Route::post('summaries/fetch', [SummaryController::class, 'fetch']);
+
+    Route::get('summaries/{summaryId}', [SummaryController::class, 'get']);
+
+    Route::get('summaries/{summaryId}', [SummaryController::class, 'getWords']);
 
 
 });
