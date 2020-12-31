@@ -33,7 +33,7 @@ class Summary extends Model
         return $this->hasMany(Summary::class, 'summary_id');
     }
 
-    public function getWord(): array
+    public function getWords(): array
     {
         $words = [];
         $tagger = new Tagger();
@@ -52,7 +52,7 @@ class Summary extends Model
                 $words[$surface] = 1;
             }
         }
-        
+
         return $words;
     }
 
