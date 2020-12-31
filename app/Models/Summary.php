@@ -14,7 +14,7 @@ class Summary extends Model
 
     protected $fillable = ['url', 'title', 'image', 'description'];
 
-    protected $hidden = ['created_at', 'updated_at', 'id'];
+    protected $hidden = ['created_at', 'updated_at'];
 
 
     public function __construct(array $attributes = array())
