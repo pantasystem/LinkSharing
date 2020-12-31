@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Note;
+use Mecab\Tagger;
 
 class Summary extends Model
 {
@@ -30,6 +31,29 @@ class Summary extends Model
     public function notes()
     {
         return $this->hasMany(Summary::class, 'summary_id');
+    }
+
+    public function getWord(): array
+    {
+        $words = [];
+        $tagger = new Tagger();
+        foreach($tagger->parseToNode() as $node){
+            $surface = $node->getSurface();
+            if(!isset($surface) || empty($surface)){
+                continue;
+            }
+            if(isset($words[$surface]) && !empty($words[$surface])){
+                $words[$surface] ++;
+                continue;
+            }
+
+            $future = explode(',', $node->getSurface());
+            if(isset($future[0]) && $future[0] === '名詞'){
+                $words[$surface] = 1;
+            }
+        }
+        
+        return $words;
     }
 
     public function loadSummary(){
