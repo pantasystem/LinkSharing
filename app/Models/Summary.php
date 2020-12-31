@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Note;
-use Mecab\Tagger;
+use MeCab\Tagger;
 
 class Summary extends Model
 {
@@ -35,9 +35,12 @@ class Summary extends Model
 
     public function getWords(): array
     {
-        $words = [];
-        $tagger = new Tagger();
-        foreach($tagger->parseToNode() as $node){
+        if(!isset($this->description)){
+            return $words;
+        }
+        $tagger = new \MeCab\Tagger();
+        $nodes = $tagger->parseToNode($this->description);
+        foreach($nodes as $node){
             $surface = $node->getSurface();
             if(!isset($surface) || empty($surface)){
                 continue;
@@ -47,7 +50,7 @@ class Summary extends Model
                 continue;
             }
 
-            $future = explode(',', $node->getSurface());
+            $future = explode(',', $node->getFeature());
             if(isset($future[0]) && $future[0] === '名詞'){
                 $words[$surface] = 1;
             }

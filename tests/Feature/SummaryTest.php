@@ -27,4 +27,15 @@ class SummaryTest extends TestCase
 
 
     }
+
+    public function testGetWordsが動作しているか()
+    {
+        $summary = new Summary([]);
+        $summary->description = "Fateはいいぞ。正月はFateを見て過ごすことにした。PHPはLaravelを使えば楽しいな。寝耳に水。すももももももものもの";
+        $result = $summary->getWords();
+        echo "getWordsテスト";
+        var_dump($result);
+        $this->assertNotEmpty($result);
+
+    }
 }
