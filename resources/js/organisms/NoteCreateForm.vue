@@ -18,7 +18,7 @@
 
             <div class="row mt-2 contaienr ml-3 mr-3">
                 <b-form-checkbox
-                    v-for="tag in tags" :key="tag.id" @change="deleteTag(tag.id)"
+                    v-for="tag in tags" :key="tag.id" v-model="tag.select"
                     class="m-1"
                     :checked="tag.select"
                 >
@@ -81,12 +81,6 @@ export default {
             this.tag = '';
         },
         
-        deleteTag(key){
-            console.log(`${key}番目のタグを削除しようとしています`);
-            this.tags = this.tags.filter((tag)=>
-                tag.id != key
-            );
-        },
         submitListener(){
             this.create();
         },
@@ -98,7 +92,7 @@ export default {
             let note = {
                 url: this.url,
                 text: this.text,
-                tags: this.tags.map((tag)=>
+                tags: this.tags.filter((tag)=> tag.select).map((tag)=>
                     tag.name
                 )
             };
