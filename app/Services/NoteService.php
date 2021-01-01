@@ -9,6 +9,7 @@ use App\Http\Requests\CreateNoteRequest;
 use App\Models\Summary;
 use App\Models\Tag;
 use App\Events\NoteCreated;
+use DB;
 
 
 class NoteService
@@ -17,14 +18,20 @@ class NoteService
     public function create(User $user, CreateNoteRequest $request)
     {
 
-        $url = $request->only('url');
         
-        $summary = Summary::where('url', '=', $url)->first();
-        if(!isset($summary)){
-            $summary = new Summary($url);
-            $summary->loadSummary();
-            $summary->save();
-        }
+        $summary = DB::transaction(function() use ($user, $request){
+            $url = $request->only('url');
+
+            $summary = Summary::where('url', '=', $url)->lockForUpdate()->first();
+            if(!isset($summary)){
+                $summary = new Summary($url);
+                $summary->loadSummary();
+                $summary->save();
+                $summary->executeUpdateWords();
+            }
+            return $summary;
+        });
+        
 
         $reqTags = $request->input('tags');
 

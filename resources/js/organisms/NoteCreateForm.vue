@@ -3,7 +3,8 @@
         <form @submit="submitListener">
             <div>
                 <b-form-input
-                v-model="url"
+                :value="url"
+                @input="inputUrl"
                 placeholder="共有URL"
                 class="mb-2"
                 />
@@ -17,9 +18,9 @@
 
             <div class="row mt-2 contaienr ml-3 mr-3">
                 <b-form-checkbox
-                    v-for="tag in tags" :key="tag.id" @change="deleteTag(tag.id)"
+                    v-for="tag in tags" :key="tag.id" v-model="tag.select"
                     class="m-1"
-                    :checked="true"
+                    :checked="tag.select"
                 >
                     {{tag.name}}
                 </b-form-checkbox>
@@ -45,6 +46,8 @@
 
 <script>
 import { formatError } from '../errorutil';
+import axios from 'axios';
+
 export default {
     data(){
         return {
@@ -54,6 +57,7 @@ export default {
             tags: [],
             errors: {},
             isShow: false,
+            currentTagId: 1,
         }
     },
     computed:{
@@ -72,28 +76,23 @@ export default {
 
                 return;
             }
-            let nextId = this.tags.length;
-            let newTag = {
-                id: nextId,
-                name: this.tag
-            };
+            let newTag = this.generateTag(this.tag);
             this.tags.push(newTag);
             this.tag = '';
         },
-        deleteTag(key){
-            console.log(`${key}番目のタグを削除しようとしています`);
-            this.tags = this.tags.filter((tag)=>
-                tag.id != key
-            );
-        },
+        
         submitListener(){
             this.create();
+        },
+        inputUrl(e){
+            this.url = e;
+            this.fetchSummary();
         },
         create(){
             let note = {
                 url: this.url,
                 text: this.text,
-                tags: this.tags.map((tag)=>
+                tags: this.tags.filter((tag)=> tag.select).map((tag)=>
                     tag.name
                 )
             };
@@ -129,6 +128,40 @@ export default {
             this.url = '';
             this.tag = '';
             this.tags = [];
+        },
+        containsTagName(name){
+            this.tags.some((t)=> t.name == name);
+        },
+        pushTags(words){
+            words.filter((word)=>{
+                return !this.containsTagName(word) && word.length >= 2 && word.length <= 15;
+            }).forEach((word)=>{
+                this.tags.push(this.generateTag(word, false));
+            });
+        },
+        fetchSummary(){
+            axios.post('/api/summaries/fetch',{
+                url: this.url
+            }).catch((e)=>{
+                console.log(e);
+            }).then((res)=>{
+                let words = res.data.aggregate_words;
+                this.tags = this.tags.filter((tag)=> tag.select);
+                this.pushTags(words);
+            });
+        },
+        generateTag(word, select = true, url = null){
+            let tag = {
+                id: this.nextTagId(),
+                name: word,
+                select: select,
+                url: url
+            };
+            console.log(tag);
+            return tag;
+        },
+        nextTagId(){
+            return this.currentTagId++;
         }
     }
 }

@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Note;
+use MeCab\Tagger;
+use App\Models\Word;
 
 class Summary extends Model
 {
@@ -13,7 +15,7 @@ class Summary extends Model
 
     protected $fillable = ['url', 'title', 'image', 'description'];
 
-    protected $hidden = ['created_at', 'updated_at', 'id'];
+    protected $hidden = ['created_at', 'updated_at'];
 
 
     public function __construct(array $attributes = array())
@@ -31,6 +33,90 @@ class Summary extends Model
     {
         return $this->hasMany(Summary::class, 'summary_id');
     }
+
+    public function getWords(): array
+    {
+        if(!isset($this->description)){
+            return $words;
+        }
+        $tagger = new \MeCab\Tagger();
+        $nodes = $tagger->parseToNode($this->description);
+        foreach($nodes as $node){
+            $surface = $node->getSurface();
+            if(!isset($surface) || empty($surface)){
+                continue;
+            }
+            if(isset($words[$surface]) && !empty($words[$surface])){
+                $words[$surface] ++;
+                continue;
+            }
+
+            $future = explode(',', $node->getFeature());
+            if(isset($future[0]) && $future[0] === '名詞'){
+                $words[$surface] = 1;
+            }
+        }
+
+        return $words;
+    }
+
+    public function executeUpdateWords()
+    {
+        if(!isset($this->description)){
+            return;
+        }
+        $this->words()->detach();
+        $tagger = new Tagger();
+        $nodes = $tagger->parseToNode($this->description);
+        foreach($nodes as $node){
+            $surface = $node->getSurface();
+            if(isset($surface) && !empty(trim($surface))){
+                $future = explode(',', $node->getFeature());
+                if(isset($future[0]) && $future[0] === '名詞'){
+                    $word = Word::where('word', $surface)->firstOrCreate(['word' => $surface]);
+                    $this->words()->attach($word);
+                }
+            }
+            
+        }
+        
+    }
+
+    
+
+    public function words()
+    {
+        return $this->belongsToMany(Word::class, 'using_words');
+    }
+
+    
+    public function loadAggregateWords($isUnsetWords = true, $limit = 20)
+    {
+        if(isset($this->words)){
+            $this->aggregate_words = $this->words->groupBy(function($word, $key){
+                return $word->word;
+            })->map(function($item, $key){
+                return collect($item)->count();
+            })->sort(function($k, $l){
+                if($k == $l){
+                    return 0;
+                }
+                return ($k < $l) ? 1 : -1;
+            })->keys()->slice(0, $limit);
+        
+            if($isUnsetWords){
+                unset($this->words);
+            }
+        }
+        return $this;
+    }
+
+    /*public function scopeAggregateWords($query)
+    {
+        return $query->with(['words' => function($query){
+            $query->selectRaw('count(word) as word_count, word')->groupBy('word')->limit(10)->orderBy('word_count', 'desc');
+        }]);
+    }*/
 
     public function loadSummary(){
         if(isset($this->url)){

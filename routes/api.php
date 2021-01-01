@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SummaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,11 @@ Route::middleware('guest')->group(function(){
     Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
     Route::get('comments/{commentId}/comments', [CommentController::class, 'findComments']);
 
+    Route::post('summaries/fetch', [SummaryController::class, 'fetch']);
+
+    Route::get('summaries/{summaryId}', [SummaryController::class, 'get']);
+
+
 
 });
 
@@ -103,29 +109,6 @@ Route::post('login', [LoginController::class, 'login']);
 Route::get('no-auth', function(){
     return response( json_encode(['message'=> 'login']), 401);
 })->name('login');
-/*
-Route::post('login', function (Request $request) {
-    //return "Hoge";
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
-    }
-
-    $token = $user->createToken($request->device_name)->plainTextToken;
-
-    return [ "token" => $token ];
-    //return "hoge";
-});
-*/
 
 
 
