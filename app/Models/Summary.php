@@ -82,10 +82,7 @@ class Summary extends Model
         
     }
 
-    public function getHoge()
-    {
-        return "hoge";
-    }
+    
 
     public function words()
     {
@@ -93,7 +90,7 @@ class Summary extends Model
     }
 
     
-    public function loadAggregateWords($isUnsetWords = true, $limit = 10)
+    public function loadAggregateWords($isUnsetWords = true, $limit = 20)
     {
         if(isset($this->words)){
             $this->aggregate_words = $this->words->groupBy(function($word, $key){
