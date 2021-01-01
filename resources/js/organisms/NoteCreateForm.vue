@@ -3,7 +3,8 @@
         <form @submit="submitListener">
             <div>
                 <b-form-input
-                v-model="url"
+                :value="url"
+                @input="inputUrl"
                 placeholder="共有URL"
                 class="mb-2"
                 />
@@ -19,7 +20,7 @@
                 <b-form-checkbox
                     v-for="tag in tags" :key="tag.id" @change="deleteTag(tag.id)"
                     class="m-1"
-                    :checked="true"
+                    :checked="tag.select"
                 >
                     {{tag.name}}
                 </b-form-checkbox>
@@ -45,6 +46,8 @@
 
 <script>
 import { formatError } from '../errorutil';
+import axios from 'axios';
+
 export default {
     data(){
         return {
@@ -54,6 +57,7 @@ export default {
             tags: [],
             errors: {},
             isShow: false,
+            currentTagId: 0,
         }
     },
     computed:{
@@ -72,14 +76,11 @@ export default {
 
                 return;
             }
-            let nextId = this.tags.length;
-            let newTag = {
-                id: nextId,
-                name: this.tag
-            };
+            let newTag = this.generateTag(this.tag);
             this.tags.push(newTag);
             this.tag = '';
         },
+        
         deleteTag(key){
             console.log(`${key}番目のタグを削除しようとしています`);
             this.tags = this.tags.filter((tag)=>
@@ -88,6 +89,10 @@ export default {
         },
         submitListener(){
             this.create();
+        },
+        inputUrl(e){
+            this.url = e;
+            this.fetchSummary();
         },
         create(){
             let note = {
@@ -129,6 +134,37 @@ export default {
             this.url = '';
             this.tag = '';
             this.tags = [];
+        },
+        containsTagName(name){
+            this.tags.some((t)=> t.name == name);
+        },
+        pushTags(words){
+            let tags = words.filter((word)=>{
+                return !this.containsTagName(word) && word.length >= 2 && word.length <= 15;
+            }).map((word)=>{
+                return this.generateTag(word, false);
+            });
+            this.tags.push(...tags);
+        },
+        fetchSummary(){
+            axios.post('/api/summaries/fetch',{
+                url: this.url
+            }).catch((e)=>{
+                console.log(e);
+            }).then((res)=>{
+                let words = res.data.aggregate_words;
+                this.pushTags(words);
+            });
+        },
+        generateTag(word, select = true){
+            return {
+                id: this.nextTagId(),
+                name: word,
+                select: select
+            };
+        },
+        nextTagId(){
+            return this.tags.length++;
         }
     }
 }

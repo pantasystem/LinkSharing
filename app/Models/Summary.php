@@ -73,7 +73,7 @@ class Summary extends Model
             if(isset($surface) && !empty(trim($surface))){
                 $future = explode(',', $node->getFeature());
                 if(isset($future[0]) && $future[0] === '名詞'){
-                    $word = $this->words()->firstOrCreate(['word' => $surface]);
+                    $word = Word::where('word', $surface)->firstOrCreate(['word' => $surface]);
                     $this->words()->attach($word);
                 }
             }
