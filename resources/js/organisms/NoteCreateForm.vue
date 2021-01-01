@@ -146,14 +146,16 @@ export default {
                 console.log(e);
             }).then((res)=>{
                 let words = res.data.aggregate_words;
+                this.tags = this.tags.filter((tag)=> !(!tag.select && tag.url != this.url));
                 this.pushTags(words);
             });
         },
-        generateTag(word, select = true){
+        generateTag(word, select = true, url = null){
             let tag = {
                 id: this.nextTagId(),
                 name: word,
-                select: select
+                select: select,
+                url: url
             };
             console.log(tag);
             return tag;
