@@ -20,7 +20,7 @@ class SummaryController extends Controller
                 $summary->save();
                 $summary->executeUpdateWords();
             }
-            return $summary;
+            return $summary->load('aggregateWords');
         });
         
 

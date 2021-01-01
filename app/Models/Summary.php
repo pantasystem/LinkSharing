@@ -90,8 +90,10 @@ class Summary extends Model
 
     public function aggregateWords()
     {
-        return $this->hasMany(Word::class)
-            ->selectRaw('count(word) as word_count, word')->groupBy('word')->limit(10)->orderBy('word_count', 'desc');
+        /*return $this->hasMany(Word::class)
+            //->selectRaw('count(word) as word_count, words.word')->groupBy('word')->limit(10)->orderBy('word_count', 'desc');
+            ->selectRaw('words.*');*/
+        return \DB::table('words')->where('words.summary_id', $this->id);
     }
 
     /*public function scopeAggregateWords($query)
