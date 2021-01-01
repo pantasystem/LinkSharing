@@ -20,7 +20,9 @@ class SummaryController extends Controller
                 $summary->save();
                 $summary->executeUpdateWords();
             }
-            return $summary->load('aggregateWords');
+            $summary->load('words');
+            $summary->loadAggregateWords();
+            return $summary;
         });
         
 
@@ -28,7 +30,7 @@ class SummaryController extends Controller
 
     public function get($id)
     {
-        return Summary::with('aggregateWords')->findOrFail($id);
+        return Summary::findOrFail($id)->loadAggregateWords();
     }
 
     

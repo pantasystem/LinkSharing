@@ -65,7 +65,7 @@ class Summary extends Model
         if(!isset($this->description)){
             return;
         }
-        $this->words()->delete();
+        $this->words()->detach();
         $tagger = new Tagger();
         $nodes = $tagger->parseToNode($this->description);
         foreach($nodes as $node){
@@ -73,9 +73,8 @@ class Summary extends Model
             if(isset($surface) && !empty(trim($surface))){
                 $future = explode(',', $node->getFeature());
                 if(isset($future[0]) && $future[0] === '名詞'){
-                    $this->words()->create([
-                        'word' => $surface
-                    ]);
+                    $word = $this->words()->firstOrCreate(['word' => $surface]);
+                    $this->words()->attach($word);
                 }
             }
             
@@ -83,17 +82,36 @@ class Summary extends Model
         
     }
 
-    public function words()
+    public function getHoge()
     {
-        return $this->hasMany(Word::class);
+        return "hoge";
     }
 
-    public function aggregateWords()
+    public function words()
     {
-        /*return $this->hasMany(Word::class)
-            //->selectRaw('count(word) as word_count, words.word')->groupBy('word')->limit(10)->orderBy('word_count', 'desc');
-            ->selectRaw('words.*');*/
-        return \DB::table('words')->where('words.summary_id', $this->id);
+        return $this->belongsToMany(Word::class, 'using_words');
+    }
+
+    
+    public function loadAggregateWords($isUnsetWords = true, $limit = 10)
+    {
+        if(isset($this->words)){
+            $this->aggregate_words = $this->words->groupBy(function($word, $key){
+                return $word->word;
+            })->map(function($item, $key){
+                return collect($item)->count();
+            })->sort(function($k, $l){
+                if($k == $l){
+                    return 0;
+                }
+                return ($k < $l) ? 1 : -1;
+            })->keys()->slice(0, $limit);
+        
+            if($isUnsetWords){
+                unset($this->words);
+            }
+        }
+        return $this;
     }
 
     /*public function scopeAggregateWords($query)
