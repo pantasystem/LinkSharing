@@ -9,6 +9,7 @@ use App\Models\Summary;
 
 class SummaryTest extends TestCase
 {
+    use RefreshDatabase;
    
     public function testCreateSummary()
     {
@@ -37,5 +38,28 @@ class SummaryTest extends TestCase
         var_dump($result);
         $this->assertNotEmpty($result);
 
+    }
+
+    public function testExecuteUpdateWordsが機能しているか()
+    {
+        $summary = Summary::factory()->create();
+        $summary->description = "PHPでプログラミングをする。LaraveはPHPの欠点をラップしているのでとても使いやすい。概念も有名なフレームワークなどで使われているものが多いので習得しやすい。";
+        $summary->save();
+        $summary->executeUpdateWords();
+        $rdbWords = $summary->words()->get();
+        $this->assertNotEmpty($rdbWords->toArray());
+    }
+
+    public function testAggregateWordsが機能しているのか()
+    {
+        $summary = Summary::factory()->create();
+        $summary->description = "PHPでプログラミングをする。LaraveはPHPの欠点をラップしているのでとても使いやすい。概念も有名なフレームワークなどで使われているものが多いので習得しやすい。PHPはComposerを使うととてもいいぞいいぞ。PHPは使い方次第で楽しいし地獄にもなる";
+        $summary->save();
+        $summary->executeUpdateWords();
+        $aggregatedWords = $summary->aggregateWords()->get();
+
+        echo $aggregatedWords;
+        $this->assertNotEquals(0,$aggregatedWords->count());
+        $this->assertEquals("PHP", $aggregatedWords[0]->word);
     }
 }

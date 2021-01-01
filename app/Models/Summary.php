@@ -70,7 +70,7 @@ class Summary extends Model
         $nodes = $tagger->parseToNode($this->description);
         foreach($nodes as $node){
             $surface = $node->getSurface();
-            if(isset($surface) && empty(trim($surface))){
+            if(isset($surface) && !empty(trim($surface))){
                 $future = explode(',', $node->getFeature());
                 if(isset($future[0]) && $future[0] === '名詞'){
                     $this->words()->create([
@@ -88,12 +88,18 @@ class Summary extends Model
         return $this->hasMany(Word::class);
     }
 
-    public function scopeAggregateWords($query)
+    public function aggregateWords()
+    {
+        return $this->hasMany(Word::class)
+            ->selectRaw('count(word) as word_count, word')->groupBy('word')->limit(10)->orderBy('word_count', 'desc');
+    }
+
+    /*public function scopeAggregateWords($query)
     {
         return $query->with(['words' => function($query){
             $query->selectRaw('count(word) as word_count, word')->groupBy('word')->limit(10)->orderBy('word_count', 'desc');
         }]);
-    }
+    }*/
 
     public function loadSummary(){
         if(isset($this->url)){
