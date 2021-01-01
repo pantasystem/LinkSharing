@@ -96,7 +96,6 @@ Route::middleware('guest')->group(function(){
 
     Route::get('summaries/{summaryId}', [SummaryController::class, 'get']);
 
-    Route::get('summaries/{summaryId}', [SummaryController::class, 'getWords']);
 
 
 });
