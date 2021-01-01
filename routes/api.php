@@ -109,29 +109,6 @@ Route::post('login', [LoginController::class, 'login']);
 Route::get('no-auth', function(){
     return response( json_encode(['message'=> 'login']), 401);
 })->name('login');
-/*
-Route::post('login', function (Request $request) {
-    //return "Hoge";
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
-    }
-
-    $token = $user->createToken($request->device_name)->plainTextToken;
-
-    return [ "token" => $token ];
-    //return "hoge";
-});
-*/
 
 
 
