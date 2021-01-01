@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Note;
 use MeCab\Tagger;
+use App\Models\Word;
 
 class Summary extends Model
 {
@@ -57,6 +58,41 @@ class Summary extends Model
         }
 
         return $words;
+    }
+
+    public function executeUpdateWords()
+    {
+        if(!isset($this->description)){
+            return;
+        }
+        $this->words()->delete();
+        $tagger = new Tagger();
+        $nodes = $tagger->parseToNode($this->description);
+        foreach($nodes as $node){
+            $surface = $node->getSurface();
+            if(isset($surface) && empty(trim($surface))){
+                $future = explode(',', $node->getFeature());
+                if(isset($future[0]) && $future[0] === '名詞'){
+                    $this->words()->create([
+                        'word' => $surface
+                    ]);
+                }
+            }
+            
+        }
+        
+    }
+
+    public function words()
+    {
+        return $this->hasMany(Word::class);
+    }
+
+    public function scopeAggregateWords($query)
+    {
+        return $query->with(['words' => function($query){
+            $query->selectRaw('count(word) as word_count, word')->groupBy('word')->limit(10)->orderBy('word_count', 'desc');
+        }]);
     }
 
     public function loadSummary(){
