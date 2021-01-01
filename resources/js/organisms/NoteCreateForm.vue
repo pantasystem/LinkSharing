@@ -146,7 +146,7 @@ export default {
                 console.log(e);
             }).then((res)=>{
                 let words = res.data.aggregate_words;
-                this.tags = this.tags.filter((tag)=> !(!tag.select && tag.url != this.url));
+                this.tags = this.tags.filter((tag)=> tag.select);
                 this.pushTags(words);
             });
         },
