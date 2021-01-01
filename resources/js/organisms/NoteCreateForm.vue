@@ -57,7 +57,7 @@ export default {
             tags: [],
             errors: {},
             isShow: false,
-            currentTagId: 0,
+            currentTagId: 1,
         }
     },
     computed:{
@@ -139,12 +139,11 @@ export default {
             this.tags.some((t)=> t.name == name);
         },
         pushTags(words){
-            let tags = words.filter((word)=>{
+            words.filter((word)=>{
                 return !this.containsTagName(word) && word.length >= 2 && word.length <= 15;
-            }).map((word)=>{
-                return this.generateTag(word, false);
+            }).forEach((word)=>{
+                this.tags.push(this.generateTag(word, false));
             });
-            this.tags.push(...tags);
         },
         fetchSummary(){
             axios.post('/api/summaries/fetch',{
@@ -157,14 +156,16 @@ export default {
             });
         },
         generateTag(word, select = true){
-            return {
+            let tag = {
                 id: this.nextTagId(),
                 name: word,
                 select: select
             };
+            console.log(tag);
+            return tag;
         },
         nextTagId(){
-            return this.tags.length++;
+            return this.currentTagId++;
         }
     }
 }
