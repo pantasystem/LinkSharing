@@ -45,7 +45,23 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-  
+
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Models\User
+     */
+    protected function create(array $data)
+    {
+        return User::create([
+            'user_name' => $data['user_name'],
+            'email' => $data['email'],
+
+            'password' => Hash::make($data['password'])
+            
+        ]);
+    }
 
     public function register(CreateUserRequest $request)
     {
