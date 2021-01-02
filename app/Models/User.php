@@ -125,6 +125,15 @@ class User extends Authenticatable
         }]);
     }
 
+    public function scopeWithDetail($query, $me)
+    {
+        if(isset($me)){
+            $query->isFollowing($me)->isFollower($me);
+        }
+
+        return $query->withCount(['followings', 'followers', 'notes', 'favoritedNotes']);
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class, 'author_id');
