@@ -60,15 +60,9 @@ class UsersController extends Controller
         if(auth('sanctum')->check()){
             $me = auth('sanctum')->user();
             //$query->isFollowing($me)->isFollower($me);
-            $query->isFollowing(function($query) use ($me){
-                $query->whereRaw('following_users.following_user_id = users.id')
-                    ->where('following_users.user_id', '=', $me->id);
-            });
+            $query->isFollowing($me);
 
-            $query->isFollower(function($query) use ($me){
-                $query->whereRaw('following_users.user_id = users.id')
-                    ->where('following_users.following_user_id', $me->id);
-            });
+            $query->isFollower($me);
         }
 
         return $query->withCount(['favoritedNotes', 'followings', 'followers', 'notes'])->firstOrFail();
@@ -81,15 +75,10 @@ class UsersController extends Controller
 
         if(auth('sanctum')->check()){
             $me = auth('sanctum')->user();
-            $query->isFollowing(function($query) use ($me){
-                $query->whereRaw('following_users.following_user_id = users.id')
-                    ->where('following_users.user_id', '=', $me->id);
-            });
+            $query->isFollowing($me);
             
-            $query->isFollower(function($query) use ($me){
-                $query->whereRaw('following_users.user_id = users.id')
-                    ->where('following_users.following_user_id', '=', $me->id);
-            });
+            $query->isFollower($me);
+
             
         }
 
@@ -108,14 +97,8 @@ class UsersController extends Controller
             ->followings();
         if(auth('sanctum')->check()){
             $me = auth('sanctum')->user();
-            $query->isFollowing(function($query) use ($me){
-                $query->whereRaw('following_users.following_user_id = users.id')
-                    ->where('following_users.user_id', '=', $me->id);
-            });
-            $query->isFollower(function($query) use ($me){
-                $query->whereRaw('following_users.user_id = users.id')
-                    ->where('following_users.following_user_id', '=', $me->id);
-            });
+            $query->isFollowing($me);
+            $query->isFollower($me);
             
         
         }

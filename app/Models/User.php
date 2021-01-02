@@ -108,18 +108,20 @@ class User extends Authenticatable
 
    
 
-    public function scopeIsFollower($query, \Closure $conditionQueryBuilder){
-        return $query->addSelect(['is_follower' => function($query) use ($conditionQueryBuilder){
+    public function scopeIsFollower($query, $me){
+        return $query->addSelect(['is_follower' => function($query) use ($me){
             $query = $query->selectRaw("count(*)")->from('following_users');
-            $conditionQueryBuilder($query);
+            $query->whereRaw('following_users.user_id = users.id')
+                    ->where('following_users.following_user_id', $me->id);
             
         }]);
     }
 
-    public function scopeIsFollowing($query, \Closure $conditionQueryBuilder){
-        return $query->addSelect(['is_following' => function($query) use ($conditionQueryBuilder){
+    public function scopeIsFollowing($query, $me){
+        return $query->addSelect(['is_following' => function($query) use ($me){
             $query = $query->selectRaw("count(*)")->from('following_users');
-            $conditionQueryBuilder($query);
+            $query->whereRaw('following_users.following_user_id = users.id')
+                    ->where('following_users.user_id', '=', $me->id);
         }]);
     }
 
