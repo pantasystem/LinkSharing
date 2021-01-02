@@ -74,21 +74,6 @@ class UsersController extends Controller
         return $query->withCount(['favoritedNotes', 'followings', 'followers', 'notes'])->firstOrFail();
     }
 
-    function notes($userId)
-    {
-        return User::findOrFail($userId)->notes()->withDetail(auth('sanctum')->user())->orderBy('id', 'desc')->simplePaginate(30);
-    }
-
-    function followerCountsRanking()
-    {
-        return User::withCountModels()->orderBy('followers_count', 'desc')->simplePaginate(30);
-    }
-
-    function favoriteNotes($userId)
-    {
-        return User::findOrFail($userId)->favoritedNotes()->with('author')->simplePaginate(30);
-    }
-
     function followers(Request $request, $userId)
     {
         $user = User::findOrFail($userId);
@@ -107,9 +92,6 @@ class UsersController extends Controller
             });
             
         }
-        
-
-       
 
        return $query
             ->withCount(['followings', 'followers', 'notes', 'favoritedNotes'])
@@ -126,19 +108,37 @@ class UsersController extends Controller
             ->followings();
         if(auth('sanctum')->check()){
             $me = auth('sanctum')->user();
-            $query->isFollower(function($query) use ($me){
-                $query->whereRaw('following_users.user_id = users.id')
-                    ->where('following_users.following_user_id', '=', $me->id);
-            });
             $query->isFollowing(function($query) use ($me){
                 $query->whereRaw('following_users.following_user_id = users.id')
                     ->where('following_users.user_id', '=', $me->id);
             });
+            $query->isFollower(function($query) use ($me){
+                $query->whereRaw('following_users.user_id = users.id')
+                    ->where('following_users.following_user_id', '=', $me->id);
+            });
+            
         
         }
         return $query->withCount(['followings', 'followers', 'notes', 'favoritedNotes'])
             ->orderBy('following_users.id', 'desc')
             ->simplePaginate(30);
     }
+
+
+    function notes($userId)
+    {
+        return User::findOrFail($userId)->notes()->withDetail(auth('sanctum')->user())->orderBy('id', 'desc')->simplePaginate(30);
+    }
+
+    function followerCountsRanking()
+    {
+        return User::withCountModels()->orderBy('followers_count', 'desc')->simplePaginate(30);
+    }
+
+    function favoriteNotes($userId)
+    {
+        return User::findOrFail($userId)->favoritedNotes()->with('author')->simplePaginate(30);
+    }
+
 
 }
