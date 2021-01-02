@@ -57,22 +57,38 @@ class UsersController extends Controller
     {
 
         $query = User::select('users.*')->where('id', '=', $userId);
-        if(auth('sanctum')->check()){
-            $me = auth('sanctum')->user();
-            //$query->isFollowing($me)->isFollower($me);
-            $query->isFollowing(function($query) use ($me){
-                $query->whereRaw('following_users.following_user_id = users.id')
-                    ->where('following_users.user_id', '=', $me->id);
-            });
+        $me = auth('sanctum')->user();
 
-            $query->isFollower(function($query) use ($me){
-                $query->whereRaw('following_users.user_id = users.id')
-                    ->where('following_users.following_user_id', $me->id);
-            });
-        }
-
-        return $query->withCount(['favoritedNotes', 'followings', 'followers', 'notes'])->firstOrFail();
+        return $query->withDetail($me)->firstOrFail();
     }
+
+    function followers(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $query = $user->followers();
+
+        $me = auth('sanctum')->user();
+
+        return $query->withDetail($me)
+            ->orderBy('following_users.id', 'desc')->simplePaginate();
+        
+    }
+
+    function followings($userId)
+    {
+
+        
+
+        $query =  User::findOrFail($userId)
+            ->followings();
+        
+        $me = auth('sanctum')->user();
+
+        return $query->withDetail($me)
+            ->orderBy('following_users.id', 'desc')
+            ->simplePaginate(30);
+    }
+
 
     function notes($userId)
     {
@@ -89,56 +105,5 @@ class UsersController extends Controller
         return User::findOrFail($userId)->favoritedNotes()->with('author')->simplePaginate(30);
     }
 
-    function followers(Request $request, $userId)
-    {
-        $user = User::findOrFail($userId);
-        $query = $user->followers();
-
-        if(auth('sanctum')->check()){
-            $me = auth('sanctum')->user();
-            $query->isFollowing(function($query) use ($me){
-                $query->whereRaw('following_users.following_user_id = users.id')
-                    ->where('following_users.user_id', '=', $me->id);
-            });
-            
-            $query->isFollower(function($query) use ($me){
-                $query->whereRaw('following_users.user_id = users.id')
-                    ->where('following_users.following_user_id', '=', $me->id);
-            });
-            
-        }
-        
-
-       
-
-       return $query
-            ->withCount(['followings', 'followers', 'notes', 'favoritedNotes'])
-            ->orderBy('following_users.id', 'desc')->simplePaginate();
-        
-    }
-
-    function followings($userId)
-    {
-
-        
-
-        $query =  User::findOrFail($userId)
-            ->followings();
-        if(auth('sanctum')->check()){
-            $me = auth('sanctum')->user();
-            $query->isFollower(function($query) use ($me){
-                $query->whereRaw('following_users.user_id = users.id')
-                    ->where('following_users.following_user_id', '=', $me->id);
-            });
-            $query->isFollowing(function($query) use ($me){
-                $query->whereRaw('following_users.following_user_id = users.id')
-                    ->where('following_users.user_id', '=', $me->id);
-            });
-        
-        }
-        return $query->withCount(['followings', 'followers', 'notes', 'favoritedNotes'])
-            ->orderBy('following_users.id', 'desc')
-            ->simplePaginate(30);
-    }
 
 }

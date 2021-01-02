@@ -63,13 +63,7 @@ class Notification extends Model
                 'publisher' => function($query) use ($me){
                     $query->select(['users.*']);
                     if($me){
-                        $query->isFollowing(function($query) use ($me){
-                            $query->whereRaw('following_users.following_user_id = users.id')
-                                ->where('following_users.user_id', '=', $me->id);
-                        })->isFollower(function($query) use ($me){
-                            $query->whereRaw('following_users.user_id = users.id')
-                                ->where('following_users.following_user_id', '=', $me->id);
-                        });
+                        $query->isFollowing($me)->isFollower($me);
                     }
                     
                 }, 
