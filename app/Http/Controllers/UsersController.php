@@ -112,11 +112,15 @@ class UsersController extends Controller
         $user = Auth::user();
         $validated = $request->validate([
             'user_name' =>  ['required', 'alpha_dash','alpha_num', 'max:15', Rule::unique('users')->ignore($user->id)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)]
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'avatar_image' => ['file', 'image', 'max:10000']
         ]);
 
-        $user->fill($validated);
+        $user->fill($request->only(['user_name', 'email']));
+        $path = $request->file('avatar_image')->store('avatars', 'public');
+        $user->avatar_icon = $path;
         $user->save();
+
         return $user->loadCount(User::$counts);
     }
 
