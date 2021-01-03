@@ -57,6 +57,8 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::get('notifications/{notificationId}', [NotificationController::class, 'find']);
 
+    Route::post('me/profile', [UsersController::class, 'updateProfile']);
+
 
 
 });

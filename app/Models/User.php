@@ -51,6 +51,8 @@ class User extends Authenticatable
         'is_follower' => 'boolean'
     ];
 
+    public static $counts = ['followings', 'followers', 'notes', 'favoritedNotes'];
+
     function followings(){
 
         // 引数を間違えているかも知れない
@@ -131,7 +133,7 @@ class User extends Authenticatable
             $query->isFollowing($me)->isFollower($me);
         }
 
-        return $query->withCount(['followings', 'followers', 'notes', 'favoritedNotes']);
+        return $query->withCount(self::$counts);
     }
 
     public function comments()
