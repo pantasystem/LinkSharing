@@ -117,8 +117,11 @@ class UsersController extends Controller
         ]);
 
         $user->fill($request->only(['user_name', 'email']));
-        $path = $request->file('avatar_image')->store('avatars', 'public');
-        $user->avatar_icon = $path;
+        if($request->file('avatar_image')){
+            $path = $request->file('avatar_image')->store('avatars', 'public');
+            $user->avatar_icon = $path;
+            \Log::debug('path:' . $user->avatar_icon);
+        }
         $user->save();
 
         return $user->loadCount(User::$counts);
