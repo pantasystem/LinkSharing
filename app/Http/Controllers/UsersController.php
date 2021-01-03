@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Services\NotificationService;
 use App\Models\FollowingUser;
 use App\Events\Followed;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -105,5 +107,24 @@ class UsersController extends Controller
         return User::findOrFail($userId)->favoritedNotes()->with('author')->simplePaginate(30);
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+        $validated = $request->validate([
+            'user_name' =>  ['required', 'alpha_dash','alpha_num', 'max:15', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'avatar_image' => ['file', 'image', 'max:10000']
+        ]);
+
+        $user->fill($request->only(['user_name', 'email']));
+        if($request->file('avatar_image')){
+            $path = $request->file('avatar_image')->store('avatars', 'public');
+            $user->avatar_icon = $path;
+            \Log::debug('path:' . $user->avatar_icon);
+        }
+        $user->save();
+
+        return $user->loadCount(User::$counts);
+    }
 
 }

@@ -10,6 +10,7 @@ use App\Models\Note;
 use App\Models\FollowingUser;
 use App\Models\Comment;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -26,6 +27,7 @@ class User extends Authenticatable
         'user_name',
         'email',
         'password',
+        'avatar_icon'
     ];
 
     /**
@@ -37,7 +39,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'email',
-        'pivot'
+        'pivot',
+        'avatar_icon'
     ];
 
     /**
@@ -50,6 +53,12 @@ class User extends Authenticatable
         'is_following' => 'boolean',
         'is_follower' => 'boolean'
     ];
+
+    protected $appends = [
+        'avatar_url'
+    ];
+
+    public static $counts = ['followings', 'followers', 'notes', 'favoritedNotes'];
 
     function followings(){
 
@@ -131,7 +140,7 @@ class User extends Authenticatable
             $query->isFollowing($me)->isFollower($me);
         }
 
-        return $query->withCount(['followings', 'followers', 'notes', 'favoritedNotes']);
+        return $query->withCount(self::$counts);
     }
 
     public function comments()
@@ -144,5 +153,13 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class, 'subscriber_id');
     }
 
+    public function getAvatarUrlAttribute()
+    {
+        if(is_null($this->avatar_icon)){
+            return null;
+        }
+
+        return Storage::url($this->avatar_icon);
+    }
     
 }
