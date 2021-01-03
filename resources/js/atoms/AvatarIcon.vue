@@ -20,8 +20,8 @@ export default {
     
     computed: {
         image(){
-            if(this.user.avatar_icon){
-                return this.user.avatar_icon
+            if(this.user.avatar_url){
+                return window.location.protocol + '//' + window.location.host + this.user.avatar_url;
             }else{
                 let hash = new jsHash("SHA-256","TEXT");
                 hash.update(this.user.user_name);
