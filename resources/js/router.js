@@ -12,6 +12,7 @@ import UserNotification from './organisms/UserNotification.vue';
 import SearchNotes from './organisms/SearchNotes.vue';
 import Comments from './organisms/Comments';
 import FavoriteNotes from './organisms/FavoriteNotes';
+import ProfileSetting from './pages/ProfileSetting';
 
 import store from './store';
 
@@ -105,6 +106,10 @@ export default new VueRouter({
             name: 'register',
             component: RegisterPage
         },
+        {
+            path: '/profile',
+            component: ProfileSetting
+        }
         
         
 
