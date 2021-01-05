@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <img 
-            class="img img-fluid col-12" 
+            class="img img-fluid col" 
             :src="image" 
              >                 
     </div>
