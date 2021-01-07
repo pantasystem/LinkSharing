@@ -11,6 +11,7 @@ use App\Models\FollowingUser;
 use App\Events\Followed;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -112,12 +113,16 @@ class UsersController extends Controller
         $user = Auth::user();
         $validated = $request->validate([
             'user_name' =>  ['required', 'alpha_dash','alpha_num', 'max:15', Rule::unique('users')->ignore($user->id)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'avatar_image' => ['file', 'image', 'max:10000']
         ]);
 
-        $user->fill($request->only(['user_name', 'email']));
+        $user->fill($request->only(['user_name']));
         if($request->file('avatar_image')){
+            // 既存のアバター画像があれば削除をする
+            if(isset($user->avatar_icon) && Storage::disk('public')->exists($user->avatar_icon)){
+                Storage::disk('public')->delete($user->avatar_icon);
+            }
+
             $path = $request->file('avatar_image')->store('avatars', 'public');
             $user->avatar_icon = $path;
             \Log::debug('path:' . $user->avatar_icon);
@@ -125,6 +130,26 @@ class UsersController extends Controller
         $user->save();
 
         return $user->loadCount(User::$counts);
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        $request->validate(
+            ['avatar_image' => ['required','file', 'image', 'max:10000']]
+        );
+        $user = Auth::user();
+        $path = $request->file('avatar_image')->store('avatars', 'public');
+        
+        // 既存のアバター画像があれば削除をする
+        if(isset($user->avatar_icon) && Storage::disk('public')->exists($user->avatar_icon)){
+            Storage::disk('public')->delete($user->avatar_icon);
+        }
+        $user->fill(['avatar_icon' => $path]);
+
+        $user->save();
+
+        return $user->loadCount(User::$counts);
+        
     }
 
 }

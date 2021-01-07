@@ -37,6 +37,9 @@ export default new Vuex.Store({
         setToken(_state, token){
             localStorage.setItem('token', token);
         },
+        SET_USER(state, user) {
+            state.user = user;
+        }
         
     },
 
@@ -171,6 +174,38 @@ export default new Vuex.Store({
             context.dispatch('timeline/initTimeline');
             return res.data;
         },
+
+        async uploadAvatar(context, file) {
+            let form = new FormData();
+            form.append('avatar_image', file);
+            let res = await axios.post(
+                '/api/settings/profile/avatar',
+                form,
+                {
+                    headers: {
+                        'content-type': 'multipart/form-data',
+                        Authorization: `Bearer ${context.state.token}`
+                    },
+                }
+            );
+            if (res.status == 200) {
+                context.commit('SET_USER', res.data);
+            }
+            return res;
+        },
+
+        async updateProfile(context, data) {
+            let res = await axios.post(
+                '/api/settings/profile',
+                data
+            );
+            if (res.status == 200) {
+                context.commit('SET_USER', res.data);
+            }
+            return res;
+        },
+
+
         dispose(){
             streaming.disconnect();
         },
