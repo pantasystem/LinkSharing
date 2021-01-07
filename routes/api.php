@@ -59,6 +59,10 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('me/profile', [UsersController::class, 'updateProfile']);
 
+    Route::post('settings/profile', [UsersController::class, 'updateProfile']);
+
+    Route::post('settings/profile/avatar', [UsersController::class, 'updateAvatar']);
+
 
 
 });
