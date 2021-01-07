@@ -75,7 +75,6 @@ export default {
                     'conditions': this.getConditions()
                 },
                 {
-                    headers: { Authorization: `Bearer ${this.$store.state.token}` },
                     params: {
                         page: this.currentPage + 1
                     }

@@ -20,12 +20,9 @@ export default {
                 params: {
                     page
                 },
-                headers: this.createHeaders()
             })
         },
-        createHeaders(){
-            return { Authorization: `Bearer ${this.$store.state.token}`};
-        }
+        
     },
     beforeRouteUpdate(to, from, next){
         this.$refs.notes.init();

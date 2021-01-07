@@ -41,10 +41,7 @@ export default {
             let res = await axios.post(
                 'api/notes',
                 note,
-                {
-                    headers: { Authorization: `Bearer ${this.state.token}` }
-
-                }
+                
             );
 
             let createdNote = res.data;
@@ -65,7 +62,6 @@ export default {
             axios.get(
                 '/api/notes',
                 {
-                    headers: { Authorization: `Bearer ${rootState.token}`},
                     params: { page: state.currentPage + 1 }
                 }
             ).then((res)=>{        
@@ -92,10 +88,7 @@ export default {
         onTimelineUpdated({ commit, state, rootState }, noteId) {
             console.log(noteId);
             axios.get(
-                `/api/notes/${noteId}`,
-                {
-                    headers: { Authorization: `Bearer ${rootState.token}` },
-                }
+                `/api/notes/${noteId}`
             ).then((res) => {
                 let createdNote = res.data;
                 commit('addNotesAtTheFirst', createdNote);

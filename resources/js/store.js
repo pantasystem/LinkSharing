@@ -32,10 +32,12 @@ export default new Vuex.Store({
             localStorage.setItem('token', token);
             state.user = user;
             state.token = token;
+            setHeaderToken(token);
         },
         
         setToken(_state, token){
             localStorage.setItem('token', token);
+            setHeaderToken(token);
         },
         SET_USER(state, user) {
             state.user = user;
@@ -105,6 +107,7 @@ export default new Vuex.Store({
 
         async loadMe({ commit, dispatch }){
             let token = this.state.token;
+            setHeaderToken(token);
             if( ! token){
                 token = localStorage.getItem("token");
                 commit(
@@ -118,10 +121,7 @@ export default new Vuex.Store({
         
 
             const res = await axios.get(
-                '/api/me',
-                {
-                    headers: { Authorization: `Bearer ${token}` }
-                }
+                '/api/me'
             );
             if (res.status == 200) {
                 let account = {
@@ -153,10 +153,6 @@ export default new Vuex.Store({
         async follow(context, user){
             const res = await axios.post(
                 `/api/users/${user.id}`,
-                null,
-                {
-                    headers: { Authorization: `Bearer ${context.state.token}`}
-                }
             );
             context.commit('user', res.data);
             context.dispatch('timeline/initTimeline');
@@ -164,12 +160,7 @@ export default new Vuex.Store({
         },
 
         async unfollow(context, user){
-            const res = await axios.delete(
-                `/api/users/${user.id}`,
-                {
-                    headers: { Authorization: `Bearer ${context.state.token}`}
-                }
-            );
+            const res = await axios.delete(`/api/users/${user.id}`);
             context.commit('user', res.data);
             context.dispatch('timeline/initTimeline');
             return res.data;
@@ -184,7 +175,6 @@ export default new Vuex.Store({
                 {
                     headers: {
                         'content-type': 'multipart/form-data',
-                        Authorization: `Bearer ${context.state.token}`
                     },
                 }
             );
@@ -241,3 +231,7 @@ export default new Vuex.Store({
       
     }
 });
+
+function setHeaderToken(token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}

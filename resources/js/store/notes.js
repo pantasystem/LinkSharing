@@ -34,11 +34,6 @@ export default {
         favorite({commit , state, getters, rootState}, noteId){
             axios.post(
                 `/api/notes/${noteId}/favorites`,
-                {},
-                {
-                    headers: { Authorization: `Bearer ${rootState.token }` }
-                    
-                },
             ).then((res)=>{
                 let note = state.notes[String(noteId)];
                 console.assert(note, '無効なノート' + noteId);
@@ -54,9 +49,6 @@ export default {
         unfavorite({commit, state, rootState}, noteId){
             axios.delete(
                 `/api/notes/${noteId}/favorites`,
-                {
-                    headers: { Authorization: `Bearer ${rootState.token }` }
-                }
             ).then((res)=>{
                 let note = state.notes[String(noteId)];
                 console.assert(note, "無効なノートが指定されています:" + noteId);
