@@ -17,7 +17,7 @@
                         
                 </div>
                         
-                <b-form-file>
+                <b-form-file v-model="avatar_icon_file">
 
                 </b-form-file>
                 <p>
@@ -27,7 +27,7 @@
             <template v-slot:footer >
                 <div class="text-right">
                     <b-button class="ml-2">削除</b-button>
-                    <b-button variant="primary">アップロード</b-button>
+                    <b-button variant="primary" @click="uploadAvatarFile">アップロード</b-button>
 
                 </div>
 
@@ -51,7 +51,7 @@
             </template>
             <template v-slot:footer>
                 <div class="text-right">
-                    <b-button variant="primary">
+                    <b-button variant="primary" @click="updateProfile">
                         変更
                     </b-button>
                 </div>
@@ -70,7 +70,7 @@
                 </p>
             </template>
             <template v-slot:body>
-                <b-form-input placeholder="メールアドレス" type="email" />
+                <b-form-input placeholder="メールアドレス" type="email" @click="updateEmail" />
             </template>
         </setting-form-layout>
         <setting-form-layout class="mt-4">
@@ -99,7 +99,7 @@
             </template>
             <template v-slot:footer>
                 <div class="text-right">
-                    <b-button variant="primary">
+                    <b-button variant="primary" @click="changePassword">
                         変更
                     </b-button>
                 </div>
@@ -111,6 +111,8 @@
 import AvatarIcon from '../atoms/AvatarIcon';
 import SettingFormLayout from '../templates/SettingFormLayout';
 import { mapState } from 'vuex';
+import axios from 'axios';
+
 export default {
     components: {
         AvatarIcon,
@@ -126,6 +128,35 @@ export default {
             user_name: this.$store.state.user.user_name,
 
         };
+    },
+
+    methods: {
+        uploadAvatarFile(){
+            this.$store.dispatch('uploadAvatar', this.avatar_icon_file)
+            .catch((e)=>{
+                console.log(e);
+            }).then((res)=>{
+                console.log(res);
+            });
+        },
+
+        updateProfile(){
+            this.$store.dispatch('updateProfile', {
+                user_name: this.user_name
+            }).catch((e)=>{
+                console.log(e);
+            }).then((res)=>{
+                console.log(res);
+            });
+        },
+
+        updateEmail(){
+            
+        },
+
+        changePassword(){
+
+        }
     }
 }
 </script>
