@@ -39,7 +39,6 @@ export default {
             axios.get(
                 '/api/notifications',
                 {
-                    headers: { Authorization: `Bearer ${token}`},
                     params: { page: state.currentPage + 1 }
                 }
             ).then((res)=>{  
@@ -72,7 +71,6 @@ export default {
 
             axios.get(`/api/notifications/${notification.id}`,
             {
-                headers: { Authorization: `Bearer ${token}`},
                 params: { page: state.currentPage + 1 }
             })
                 .then((res)=>{

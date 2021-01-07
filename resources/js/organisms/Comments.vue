@@ -87,10 +87,7 @@ export default {
             if(this.commentId === undefined || this.commentId === null){
                 return;
             }
-            axios.get(`/api/notes/${this.noteId}/comments/${this.commentId}`,
-                {
-                    headers: this.createHeaders(),
-                }
+            axios.get(`/api/notes/${this.noteId}/comments/${this.commentId}`
             ).then((res)=>{
                 this.comment = res.data;
             })
@@ -104,10 +101,7 @@ export default {
             if(this.commentId !== undefined && this.commentId !== null){
                 endpoint += `/${this.commentId}`;
             }
-            let headers = this.createHeaders();
-            axios.post(endpoint, { text: text }, {
-                headers: headers,
-            })
+            axios.post(endpoint, { text: text })
             .then((res)=>{
                 this.comments.push(res.data);
                 this.submitted.success = '返信に成功しました。';
@@ -126,7 +120,6 @@ export default {
                 return;
             }
             this.isLoading = true;
-            let headers = this.createHeaders();
             let endpoint;
             if(this.commentId !== undefined && this.commentId !== null){
                 endpoint = `/api/comments/${this.commentId}`;
@@ -136,7 +129,6 @@ export default {
 
             axios.get(endpoint,{
                 params: { page: this.currentPage + 1},
-                headers: headers
             }).then((res)=>{
                 if(res.data.data != null){
                     this.currentPage = res.data.current_page;
@@ -157,9 +149,6 @@ export default {
             this.fetchReplyToComment();
         },
 
-        createHeaders(){
-            return { Authorization: `Bearer ${this.$store.state.token}`};
-        }
 
     },
 

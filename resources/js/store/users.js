@@ -61,11 +61,7 @@ export default {
                 return;
             }
             axios.get(
-                `/api/users/${userId}`,
-                {
-                    headers: { Authorization: `Bearer ${rootState.token }` }
-                    
-                }
+                `/api/users/${userId}`
             ).then((res)=>{
                 console.log(state.users);
                 console.log('fetchedUser:' + JSON.stringify(res.data));
