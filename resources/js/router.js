@@ -88,7 +88,6 @@ export default new VueRouter({
                 }
             ],
             beforeEnter: (to, from, next) => {
-                    next();
                 
                 if(store.state.user == null){
                     next('/login');
