@@ -86,9 +86,10 @@ export default new Vuex.Store({
                 ...req,
                 device_name: 'Web Client'
             };
+            await axios.get('/sanctum/csrf-cookie');
 
             const res = await axios.post(
-                '/api/login',
+                '/login',
                 data
             );
 
