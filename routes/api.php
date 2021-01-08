@@ -67,44 +67,40 @@ Route::middleware('auth:sanctum')->group(function() {
 
 });
 
-Route::middleware('guest')->group(function(){
+Route::get('users/{userId}/followers', [UsersController::class, 'followers']);
 
-    Route::get('users/{userId}/followers', [UsersController::class, 'followers']);
+Route::get('users/{userId}/followings', [UsersController::class, 'followings']);
 
-    Route::get('users/{userId}/followings', [UsersController::class, 'followings']);
+Route::get('notes/{noteId}', [NotesController::class, 'get']);
 
-    Route::get('notes/{noteId}', [NotesController::class, 'get']);
-
-    Route::get('users/followers-count-ranking', [UsersController::class, 'followerCountsRanking']);
+Route::get('users/followers-count-ranking', [UsersController::class, 'followerCountsRanking']);
 
 
-    Route::get('users/{userId}', [UsersController::class, 'get']);
+Route::get('users/{userId}', [UsersController::class, 'get']);
 
 
-    Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
+Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
 
-    Route::get('users/{userId}/favorites', [UsersController::class, 'favoriteNotes']);
-
-
-    Route::get('tags/{name?}', [TagsController::class, 'search']);
-
-    Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
-
-    Route::get('notes/{noteId}/favorites', [FavoritesController::class, 'favorites']);
+Route::get('users/{userId}/favorites', [UsersController::class, 'favoriteNotes']);
 
 
-    Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote']);
+Route::get('tags/{name?}', [TagsController::class, 'search']);
 
-    Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
-    Route::get('comments/{commentId}/comments', [CommentController::class, 'findComments']);
+Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
 
-    Route::post('summaries/fetch', [SummaryController::class, 'fetch']);
-
-    Route::get('summaries/{summaryId}', [SummaryController::class, 'get']);
+Route::get('notes/{noteId}/favorites', [FavoritesController::class, 'favorites']);
 
 
+Route::get('notes/{noteId}/comments', [CommentController::class, 'findAllByNote']);
 
-});
+Route::get('notes/{noteId}/comments/{commentId}', [CommentController::class, 'show']);
+Route::get('comments/{commentId}/comments', [CommentController::class, 'findComments']);
+
+Route::post('summaries/fetch', [SummaryController::class, 'fetch']);
+
+Route::get('summaries/{summaryId}', [SummaryController::class, 'get']);
+
+
 
 Route::get('csrf', [HomeController::class, 'csrfToken']);
 

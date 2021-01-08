@@ -93,23 +93,23 @@ export default new Vuex.Store({
                 data
             );
 
-            if (res.data) {
-                localStorage.setItem("token", res.data.token);
-
-                commit("setAccount", res.data);
+            if (res.status == 200) {
+                await dispatch('loadMe');
+                //commit("setAccount", res.data);
                 dispatch('listen');
                 dispatch('timeline/initTimeline');
                 dispatch('notification/init');
             }
+           
             
             return res;
             
         },
 
         async loadMe({ commit, dispatch }){
-            let token = this.state.token;
-            setHeaderToken(token);
-            if( ! token){
+            //let token = this.state.token;
+            //setHeaderToken(token);
+            /*if( ! token){
                 token = localStorage.getItem("token");
                 commit(
                     'setAccount',
@@ -118,36 +118,33 @@ export default new Vuex.Store({
                         user: null
                     }
                 );
-            }
+            }*/
         
 
             const res = await axios.get(
                 '/api/me'
             );
             if (res.status == 200) {
-                let account = {
-                    token: token,
-                    user: res.data
-                };
-                commit("setAccount", account);
+                
+                commit('SET_USER', res.data);
                 dispatch('listen');
 
-                return account;
+                return res.data;
             }
             return null;
         },
 
         logout({ commit, dispatch }){
-            commit(
-                'setAccount',
-                {
-                    token: null,
-                    user: null
-                }
-            );
-            dispatch('timeline/initTimeline');
-            dispatch('notification/init');
-            dispatch('dispose')
+            axios.post('/logout')
+                .catch((e) => {
+                    console.log(e);
+                }).then((res) => {
+                    commit('SET_USER', null);
+                    dispatch('timeline/initTimeline');
+                    dispatch('notification/init');
+                    dispatch('dispose');
+                })
+            
         },
 
         
