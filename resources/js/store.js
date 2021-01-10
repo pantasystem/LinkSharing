@@ -57,13 +57,12 @@ export default new Vuex.Store({
             req,
         ){
             const response = await axios.post(
-                '/api/register',
+                '/register',
                 { 
                     email: req.email, 
                     user_name: req.userName, 
                     password: req.password,
                     password_confirmation: req.confirmPassword,
-                    device_name: 'Client' 
                 }
             );
             if (response.data) {
