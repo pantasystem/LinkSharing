@@ -98,24 +98,10 @@ export default {
     },
     getters:{
         getNotifications(state, getters, rootState, rootGetters){
-            return state.notifications.map((notify)=>{
+            return state.notifications.map((notify) => {
                 return {
                     ...notify
                 }
-            })
-            .map((notify)=>{
-                notify.publisher = rootGetters.get(notify.publisher_id);
-                if(notify.favorite != null){
-                    
-                    //notify.favorite.note = rootGetters.notes[notify.favorite.note_id];
-                    let note =  rootGetters.getNoteById(notify.favorite.note_id);
-                    console.assert(note != null && note != undefined, "無効なデータ:" + notify.favorite.note_id);
-
-                    if(note !== undefined){
-                        notify.favorite.note = note;
-                    }
-                }
-                return notify;
             });
         }
     }

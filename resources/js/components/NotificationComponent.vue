@@ -16,7 +16,7 @@
         <div>
             <div v-if="notification.favorite">
                 <slot name="favorite" :favorite="notification.favorite">
-                    <note-component :note="notification.favorite.note" @favorite="favorite" @unfavorite="unfavorite"/>
+                    <note-component :note="getNote(notification.favorite.note_id)" @favorite="favorite" @unfavorite="unfavorite"/>
                 </slot>
             </div>
             <div v-else-if="notification.comment">
@@ -39,7 +39,7 @@ import AvatarIcon from '../atoms/AvatarIcon';
 import NoteComponent from './NoteComponent';
 import FolloweeComponent from './FolloweeComponent';
 import Comment from './../molecules/Comment';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
     props: {
@@ -56,6 +56,11 @@ export default {
     },
     computed: {
         ...mapState(['user']),
+        getNote(){
+            return (id) => {
+                return this.$store.getters['getNoteById'](id);
+            }
+        }
     },
     methods: {
         follow(user){
