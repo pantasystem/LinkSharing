@@ -22,33 +22,16 @@ export default new Vuex.Store({
     },
     state:{
         user: null,
-        token: localStorage.getItem("token"),
         
     },
 
 
     mutations: {
-        setAccount(state, { token, user }){
-            localStorage.setItem('token', token);
-            state.user = user;
-            state.token = token;
-            setHeaderToken(token);
-        },
         
-        setToken(_state, token){
-            localStorage.setItem('token', token);
-            setHeaderToken(token);
-        },
         SET_USER(state, user) {
             state.user = user;
         }
         
-    },
-
-    getters: {
-        token({state}){
-            return state.token;
-        }
     },
 
     actions: {
@@ -93,7 +76,6 @@ export default new Vuex.Store({
 
             if (res.status == 200) {
                 await dispatch('loadMe');
-                //commit("setAccount", res.data);
                 dispatch('listen');
                 dispatch('timeline/initTimeline');
                 dispatch('notification/init');
@@ -186,7 +168,7 @@ export default new Vuex.Store({
         },
         listen({ state, dispatch }){
             try{
-                streaming.connect(state.token);
+                streaming.connect();
                 let echo = streaming.getEcho();
                 console.assert(echo != null, "echoがNULLです");
                 console.assert(state.user.id, "user.idが無効です");
@@ -217,6 +199,3 @@ export default new Vuex.Store({
     }
 });
 
-function setHeaderToken(token) {
-    //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
