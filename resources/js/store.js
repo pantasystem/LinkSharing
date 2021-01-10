@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import axios from 'axios';
-import { reject } from 'lodash';
+import { isSet, reject } from 'lodash';
 import timeline from './store/timeline';
 import notification from './store/notification';
 import users from './store/users';
@@ -53,7 +53,7 @@ export default new Vuex.Store({
 
     actions: {
         async register(
-            { commit, dispatch }, 
+            { dispatch }, 
             req,
         ){
             const response = await axios.post(
@@ -65,21 +65,20 @@ export default new Vuex.Store({
                     password_confirmation: req.confirmPassword,
                 }
             );
-            if (response.data) {
-                console.log(response.data);
-                console.log(response.data.token);
-                commit("setAccount", {
-                    user: response.data.user,
-                    token: response.data.token.plainTextToken
-                });
-                dispatch('timeline/initTimeline');
-                dispatch('notification/init');
-                dispatch('listen');
+            if (response.status >= 200 && response.status < 300) {
+                let user = await dispatch('loadMe');
+                if (user) {
+                    dispatch('timeline/initTimeline');
+                    dispatch('notification/init');
+                    dispatch('listen');
+                }
+
             }
+            
             return response;
         },
 
-        async login({ commit, dispatch }, req){
+        async login({ dispatch }, req){
             
             let data = {
                 ...req,
@@ -106,18 +105,7 @@ export default new Vuex.Store({
         },
 
         async loadMe({ commit, dispatch }){
-            //let token = this.state.token;
-            //setHeaderToken(token);
-            /*if( ! token){
-                token = localStorage.getItem("token");
-                commit(
-                    'setAccount',
-                    { 
-                        token: token,
-                        user: null
-                    }
-                );
-            }*/
+            
         
 
             const res = await axios.get(

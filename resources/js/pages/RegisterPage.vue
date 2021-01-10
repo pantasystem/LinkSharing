@@ -74,18 +74,18 @@ export default {
     },
     methods: {
         register(){
-            this.$store.dispatch('register', this).then((response)=>{
-                console.log("アカウント作成完了");
-                this.$router.push("/");
-
-            }).catch((e)=>{
-                console.log("エラー発生" + JSON.stringify(e.response));
+            this.$store.dispatch('register', this).catch((e)=>{
+                console.log("エラー発生" + e);
                 let errors = e.response.data.errors;
                 
                 this.errors.email = errors.email ? errors.email[0] : ''
                 this.errors.password = errors.password ? errors.password[0] : ''
                 this.errors.userName = errors.user_name ? errors.user_name[0] : ''
                 
+            }).then((response)=>{
+                console.log("アカウント作成完了");
+                this.$router.push("/");
+
             });
         },
         inputUserName(userName){

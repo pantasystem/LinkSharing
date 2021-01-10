@@ -29,13 +29,12 @@ export default {
         }
     },
     actions: {
-        loadNext({commit, state, rootState}){
+        loadNext({commit, state, }){
             console.log("notification#loadNext");
             if(state.isLoading){
                 return;
             }
             commit('setLoading', true);
-            let token = rootState.token;
             axios.get(
                 '/api/notifications',
                 {
@@ -62,12 +61,11 @@ export default {
                 console.log(e);
             });
         },
-        onRecieveNotification({commit, state, rootState}, notification){
+        onRecieveNotification({commit, state }, notification){
             if(state.isLoading){
                 return;
             }
             commit('setLoading', true);
-            let token = rootState.token;
 
             axios.get(`/api/notifications/${notification.id}`,
             {
@@ -99,7 +97,7 @@ export default {
         }
     },
     getters:{
-        getNotifications(state, getters, rootState, rootGetters){
+        getNotifications(state, getters,  rootGetters){
             return state.notifications.map((notify)=>{
                 return {
                     ...notify
