@@ -31,7 +31,7 @@ export default {
     },
 
     actions: {
-        favorite({commit , state, getters, rootState}, noteId){
+        favorite({commit , state }, noteId){
             axios.post(
                 `/api/notes/${noteId}/favorites`,
             ).then((res)=>{
@@ -46,7 +46,7 @@ export default {
                 console.log(e);
             });
         },
-        unfavorite({commit, state, rootState}, noteId){
+        unfavorite({commit, state }, noteId){
             axios.delete(
                 `/api/notes/${noteId}/favorites`,
             ).then((res)=>{

@@ -47,15 +47,13 @@ export default {
             });  
             return mapped;
         },
-        token(state, getters, rootState){
-            return rootState.token;
-        },
+       
         getAll(state){
             return state.users;
         }
     },
     actions: {
-        fetchUser({commit, state, rootState}, userId){
+        fetchUser({commit, state}, userId){
             if(state.users[userId]){
                 console.log("既に存在しています。")
                 return;

@@ -97,7 +97,7 @@ export default {
         }
     },
     getters:{
-        getNotifications(state, getters,  rootGetters){
+        getNotifications(state, getters, rootState, rootGetters){
             return state.notifications.map((notify)=>{
                 return {
                     ...notify
