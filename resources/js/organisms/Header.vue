@@ -33,7 +33,7 @@
                         <b-dropdown-item to="/profile" v-if="user">
                             プロフィール
                         </b-dropdown-item>
-                        <b-dropdown-item @click="logout" v-if="token">
+                        <b-dropdown-item @click="logout" v-if="user">
                             ログアウト
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
@@ -66,8 +66,7 @@ export default {
     },
     computed: {
         ...mapState([
-            'user',
-            'token'
+            'user'
         ]),
         isLoggedIn(){
             return this.$store.state.user != null;
@@ -75,8 +74,11 @@ export default {
     },
     methods: {
         logout(){
-            this.$store.dispatch("logout");
-            this.$router.push("/login");
+            this.$store.dispatch("logout")
+                .finally(()=>{
+                    this.$router.push("/login");
+
+                });
         },
         
         tryCreate(){

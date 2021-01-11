@@ -103,16 +103,13 @@ export default new Vuex.Store({
             return null;
         },
 
-        logout({ commit, dispatch }){
-            axios.post('/logout')
-                .catch((e) => {
-                    console.log(e);
-                }).then((res) => {
-                    commit('SET_USER', null);
-                    dispatch('timeline/initTimeline');
-                    dispatch('notification/init');
-                    dispatch('dispose');
-                })
+        async logout({ commit, dispatch }){
+            let res = await axios.post('/logout');
+            commit('SET_USER', null);
+            dispatch('timeline/initTimeline');
+            dispatch('notification/init');
+            dispatch('dispose');
+            return res;
             
         },
 
