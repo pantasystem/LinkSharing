@@ -8,10 +8,10 @@
 
             <b-collapse id="navbarSupportedContent" is-nav>
                 <b-navbar-nav class="mr-auto">
-                    <b-nav-item to="/" exact-active-class="active">
+                    <b-nav-item to="/" exact-active-class="active" v-if="user">
                         <i class="fas fa-home pull-left" height="100%"></i><span class="nav-link d-inline d-md-none d-xl-inline icon-title">ホーム</span>
                     </b-nav-item>
-                    <b-nav-item to="/favorites" exact-active-class="active">
+                    <b-nav-item to="/favorites" exact-active-class="active" v-if="user">
                         <i class="fas fa-star pull-left" height="100%"></i><span class="nav-link d-inline d-md-none d-xl-inline icon-title">お気に入り</span>
                     
                     </b-nav-item>
@@ -25,7 +25,7 @@
                     </b-nav-form>
                     <b-nav-item to="/login" v-if="!isLoggedIn">ログイン</b-nav-item>
                     <b-nav-item to="/register" v-if="!isLoggedIn">登録</b-nav-item>
-                    <b-nav-item to="/notifications" v-if="isLoggedIn">
+                    <b-nav-item to="/notifications" v-if="user">
                         <i class="fas fa-bell pull-left mr-2 ml-2" height="100%"></i><span class="nav-link d-md-none d-inline icon-title">通知</span>
 
                     </b-nav-item>
@@ -33,7 +33,7 @@
                         <b-dropdown-item to="/profile" v-if="user">
                             プロフィール
                         </b-dropdown-item>
-                        <b-dropdown-item @click="logout" v-if="token">
+                        <b-dropdown-item @click="logout" v-if="user">
                             ログアウト
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
@@ -42,7 +42,7 @@
                 
                 
             </b-collapse>
-            <b-button class="ml-auto mr-1" variant="primary" @click="tryCreate">投稿</b-button>
+            <b-button class="ml-auto mr-1" variant="primary" @click="tryCreate" v-if="user">投稿</b-button>
             <b-navbar-toggle target="navbarSupportedContent" />
 
         </div>
@@ -66,8 +66,7 @@ export default {
     },
     computed: {
         ...mapState([
-            'user',
-            'token'
+            'user'
         ]),
         isLoggedIn(){
             return this.$store.state.user != null;
@@ -75,8 +74,11 @@ export default {
     },
     methods: {
         logout(){
-            this.$store.dispatch("logout");
-            this.$router.push("/login");
+            this.$store.dispatch("logout")
+                .finally(()=>{
+                    this.$router.push("/login");
+
+                });
         },
         
         tryCreate(){

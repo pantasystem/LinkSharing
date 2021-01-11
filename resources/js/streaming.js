@@ -9,10 +9,10 @@ export class Streaming{
 
     constructor(){
         this.echo = null;
-        
+        this.connect();
     }
 
-    connect(token){
+    connect(){
         if(this.echo != null){
             this.echo.disconnect();
         }
@@ -21,18 +21,19 @@ export class Streaming{
             host: window.location.host,
             //key: 'd1f04d6670716a2ab185',
             //cluster: 'ap3',
-            encrypted: true,
             auth: {
-                headers: { Authorization: `Bearer ${token}`}
+                headers: {
+                    'Referer': window.location.host
+                }
             },
+            encrypted: true,
             authorizer: (channel, options) => {
+                console.log('authorizer');
                 return {
                     authorize: (socketId, callback) => {
-                        axios.post('/api/broadcasting/auth', {
+                        axios.post('/broadcasting/auth', {
                             socket_id: socketId,
                             channel_name: channel.name
-                        },{
-                            headers: { Authorization: `Bearer ${token}`}
                         })
                         .then(response => {
                             callback(false, response.data);

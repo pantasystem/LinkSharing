@@ -20,9 +20,11 @@
                     :required="true"
                     :autofocus="false"
                     v-model="password"></text-field>
+                
+                <b-checkbox v-model="isRememberMe">ログイン状態を維持する。</b-checkbox>
 
                 <router-link class="btn btn-link btn-lg btn-block" to="/register">登録</router-link>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" :disabled="isLoading">
                     ログイン
                 </button>
                         
@@ -52,6 +54,8 @@ export default {
             },
             email: '',
             password: '',
+            isRememberMe: false,
+            isLoading: false
                         
         };
     },
@@ -61,9 +65,11 @@ export default {
             let email = this.email;
             let password = this.password;
             let req = {
-                email, password
+                email, 
+                password,
+                remember: this.isRememberMe
             };
-            console.log("email, password" + JSON.stringify(req));
+            this.isLoading = true;
             let res = this.$store.dispatch("login", req);
             res.then((response)=>{
                 console.log("レスポンスが来た");
@@ -83,7 +89,9 @@ export default {
                     console.log(this.errors);
                 }
                 
-            });
+            }).finally(()=>{
+                this.isLoading = false;
+            })
         }
     }
 }

@@ -29,13 +29,12 @@ export default {
         }
     },
     actions: {
-        loadNext({commit, state, rootState}){
+        loadNext({commit, state, }){
             console.log("notification#loadNext");
             if(state.isLoading){
                 return;
             }
             commit('setLoading', true);
-            let token = rootState.token;
             axios.get(
                 '/api/notifications',
                 {
@@ -56,18 +55,19 @@ export default {
                     return n;
                 });
                 commit('pushNotifications', notifications);
-                commit('setCurrentPage', res.data.current_page);
+                if (res.data.data != null && res.data.data.length) {
+                    commit('setCurrentPage', res.data.current_page);
+                }
                 commit('setLoading', false);
             }).catch((e)=>{
                 console.log(e);
             });
         },
-        onRecieveNotification({commit, state, rootState}, notification){
+        onRecieveNotification({commit, state }, notification){
             if(state.isLoading){
                 return;
             }
             commit('setLoading', true);
-            let token = rootState.token;
 
             axios.get(`/api/notifications/${notification.id}`,
             {
@@ -100,24 +100,10 @@ export default {
     },
     getters:{
         getNotifications(state, getters, rootState, rootGetters){
-            return state.notifications.map((notify)=>{
+            return state.notifications.map((notify) => {
                 return {
                     ...notify
                 }
-            })
-            .map((notify)=>{
-                notify.publisher = rootGetters.get(notify.publisher_id);
-                if(notify.favorite != null){
-                    
-                    //notify.favorite.note = rootGetters.notes[notify.favorite.note_id];
-                    let note =  rootGetters.getNoteById(notify.favorite.note_id);
-                    console.assert(note != null && note != undefined, "無効なデータ:" + notify.favorite.note_id);
-
-                    if(note !== undefined){
-                        notify.favorite.note = note;
-                    }
-                }
-                return notify;
             });
         }
     }

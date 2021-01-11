@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import axios from 'axios';
-import { reject } from 'lodash';
+import { isSet, reject } from 'lodash';
 import timeline from './store/timeline';
 import notification from './store/notification';
 import users from './store/users';
@@ -22,131 +22,96 @@ export default new Vuex.Store({
     },
     state:{
         user: null,
-        token: localStorage.getItem("token"),
         
     },
 
 
     mutations: {
-        setAccount(state, { token, user }){
-            localStorage.setItem('token', token);
-            state.user = user;
-            state.token = token;
-            setHeaderToken(token);
-        },
         
-        setToken(_state, token){
-            localStorage.setItem('token', token);
-            setHeaderToken(token);
-        },
         SET_USER(state, user) {
             state.user = user;
         }
         
     },
 
-    getters: {
-        token({state}){
-            return state.token;
-        }
-    },
-
     actions: {
         async register(
-            { commit, dispatch }, 
+            { dispatch }, 
             req,
         ){
             const response = await axios.post(
-                '/api/register',
+                '/register',
                 { 
                     email: req.email, 
                     user_name: req.userName, 
                     password: req.password,
                     password_confirmation: req.confirmPassword,
-                    device_name: 'Client' 
                 }
             );
-            if (response.data) {
-                console.log(response.data);
-                console.log(response.data.token);
-                commit("setAccount", {
-                    user: response.data.user,
-                    token: response.data.token.plainTextToken
-                });
-                dispatch('timeline/initTimeline');
-                dispatch('notification/init');
-                dispatch('listen');
+            if (response.status >= 200 && response.status < 300) {
+                let user = await dispatch('loadMe');
+                if (user) {
+                    dispatch('timeline/initTimeline');
+                    dispatch('notification/init');
+                    dispatch('listen');
+                }
+
             }
+            
             return response;
         },
 
-        async login({ commit, dispatch }, req){
+        async login({ dispatch }, req){
             
             let data = {
                 ...req,
                 device_name: 'Web Client'
             };
+            await axios.get('/sanctum/csrf-cookie');
 
             const res = await axios.post(
-                '/api/login',
+                '/login',
                 data
             );
 
-            if (res.data) {
-                localStorage.setItem("token", res.data.token);
-
-                commit("setAccount", res.data);
+            if (res.status == 200) {
+                await dispatch('loadMe');
                 dispatch('listen');
                 dispatch('timeline/initTimeline');
                 dispatch('notification/init');
+                dispatch('notification/loadNext');
             }
+           
             
             return res;
             
         },
 
         async loadMe({ commit, dispatch }){
-            let token = this.state.token;
-            setHeaderToken(token);
-            if( ! token){
-                token = localStorage.getItem("token");
-                commit(
-                    'setAccount',
-                    { 
-                        token: token,
-                        user: null
-                    }
-                );
-            }
+            
         
 
             const res = await axios.get(
                 '/api/me'
             );
             if (res.status == 200) {
-                let account = {
-                    token: token,
-                    user: res.data
-                };
-                commit("setAccount", account);
+                
+                commit('SET_USER', res.data);
                 dispatch('listen');
 
-                return account;
+                return res.data;
             }
             return null;
         },
 
-        logout({ commit, dispatch }){
-            commit(
-                'setAccount',
-                {
-                    token: null,
-                    user: null
-                }
-            );
+        async logout({ commit, dispatch }){
+            let res = await axios.post('/logout');
+            commit('SET_USER', null);
             dispatch('timeline/initTimeline');
             dispatch('notification/init');
-            dispatch('dispose')
+            dispatch('dispose');
+            return res;
+            
         },
 
         
@@ -201,7 +166,7 @@ export default new Vuex.Store({
         },
         listen({ state, dispatch }){
             try{
-                streaming.connect(state.token);
+                streaming.connect();
                 let echo = streaming.getEcho();
                 console.assert(echo != null, "echoがNULLです");
                 console.assert(state.user.id, "user.idが無効です");
@@ -232,6 +197,3 @@ export default new Vuex.Store({
     }
 });
 
-function setHeaderToken(token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}

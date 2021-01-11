@@ -32,7 +32,9 @@ export default {
                 state.noteIds.push(...page.data.map((note)=>note.id));
             }
             state.isLoading = false;
-            state.currentPage = page.current_page;
+            if (page.data != null && page.data.length) {
+                state.currentPage = page.current_page;
+            }
         }
 
     },
@@ -50,15 +52,13 @@ export default {
             return res;
         },
 
-        loadNext({commit, state, rootState}){
+        loadNext({commit, state }){
             if(state.isLoading){
                 return;
             }
-            console.log(rootState);
             state.isLoading = true;
 
             console.log("load開始");
-            console.log(rootState.token);
             axios.get(
                 '/api/notes',
                 {
@@ -85,7 +85,7 @@ export default {
             context.dispatch('loadNext');
         },
 
-        onTimelineUpdated({ commit, state, rootState }, noteId) {
+        onTimelineUpdated({ commit, state }, noteId) {
             console.log(noteId);
             axios.get(
                 `/api/notes/${noteId}`

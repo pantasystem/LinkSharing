@@ -87,8 +87,9 @@ export default new VueRouter({
                     component: Comments
                 }
             ],
-            beforeEnter: (to, from, next)=>{
-                if(store.state.token == null){
+            beforeEnter: (to, from, next) => {
+                
+                if(store.state.user == null){
                     next('/login');
                 }else{
                     next();
