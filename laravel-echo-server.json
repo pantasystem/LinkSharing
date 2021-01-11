@@ -1,6 +1,6 @@
 {
 	"authHost": "http://linksharing_nginx",
-	"authEndpoint": "/api/broadcasting/auth",
+	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
 	"databaseConfig": {
