@@ -22,7 +22,7 @@
                     v-model="password"></text-field>
 
                 <router-link class="btn btn-link btn-lg btn-block" to="/register">登録</router-link>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" :disabled="isLoading">
                     ログイン
                 </button>
                         
@@ -52,6 +52,7 @@ export default {
             },
             email: '',
             password: '',
+            isLoading: false
                         
         };
     },
@@ -63,7 +64,7 @@ export default {
             let req = {
                 email, password
             };
-            console.log("email, password" + JSON.stringify(req));
+            this.isLoading = true;
             let res = this.$store.dispatch("login", req);
             res.then((response)=>{
                 console.log("レスポンスが来た");
@@ -83,7 +84,9 @@ export default {
                     console.log(this.errors);
                 }
                 
-            });
+            }).finally(()=>{
+                this.isLoading = false;
+            })
         }
     }
 }

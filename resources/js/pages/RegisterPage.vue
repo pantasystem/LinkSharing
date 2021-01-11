@@ -39,7 +39,7 @@
                             />
 
                             <router-link class="btn btn-link btn-lg btn-block" to="/login">ログイン</router-link>
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" :disabled="isLoading">
                                 登録
                             </button>
                             
@@ -65,7 +65,8 @@ export default {
             email: '',
             userName: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            isLoading: false
 
         }
     },
@@ -74,6 +75,7 @@ export default {
     },
     methods: {
         register(){
+            this.isLoading = true;
             this.$store.dispatch('register', this).catch((e)=>{
                 console.log("エラー発生" + e);
                 let errors = e.response.data.errors;
@@ -86,7 +88,9 @@ export default {
                 console.log("アカウント作成完了");
                 this.$router.push("/");
 
-            });
+            }).finally(()=>{
+                this.isLoading = false;
+            })
         },
         inputUserName(userName){
             this.userName = userName;
