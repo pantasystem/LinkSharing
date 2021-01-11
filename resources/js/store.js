@@ -79,6 +79,7 @@ export default new Vuex.Store({
                 dispatch('listen');
                 dispatch('timeline/initTimeline');
                 dispatch('notification/init');
+                dispatch('notification/loadNext');
             }
            
             

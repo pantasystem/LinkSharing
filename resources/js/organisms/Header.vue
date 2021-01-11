@@ -42,7 +42,7 @@
                 
                 
             </b-collapse>
-            <b-button class="ml-auto mr-1" variant="primary" @click="tryCreate">投稿</b-button>
+            <b-button class="ml-auto mr-1" variant="primary" @click="tryCreate" v-if="user">投稿</b-button>
             <b-navbar-toggle target="navbarSupportedContent" />
 
         </div>
