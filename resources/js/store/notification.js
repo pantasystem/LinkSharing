@@ -55,7 +55,9 @@ export default {
                     return n;
                 });
                 commit('pushNotifications', notifications);
-                commit('setCurrentPage', res.data.current_page);
+                if (res.data.data != null && res.data.data.length) {
+                    commit('setCurrentPage', res.data.current_page);
+                }
                 commit('setLoading', false);
             }).catch((e)=>{
                 console.log(e);

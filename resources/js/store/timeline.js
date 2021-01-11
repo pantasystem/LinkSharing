@@ -32,7 +32,9 @@ export default {
                 state.noteIds.push(...page.data.map((note)=>note.id));
             }
             state.isLoading = false;
-            state.currentPage = page.current_page;
+            if (page.data != null && page.data.length) {
+                state.currentPage = page.current_page;
+            }
         }
 
     },

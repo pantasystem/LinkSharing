@@ -25,7 +25,7 @@
                     </b-nav-form>
                     <b-nav-item to="/login" v-if="!isLoggedIn">ログイン</b-nav-item>
                     <b-nav-item to="/register" v-if="!isLoggedIn">登録</b-nav-item>
-                    <b-nav-item to="/notifications" v-if="isLoggedIn">
+                    <b-nav-item to="/notifications" v-if="user">
                         <i class="fas fa-bell pull-left mr-2 ml-2" height="100%"></i><span class="nav-link d-md-none d-inline icon-title">通知</span>
 
                     </b-nav-item>
