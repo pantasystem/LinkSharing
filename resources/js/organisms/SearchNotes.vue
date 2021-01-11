@@ -3,9 +3,8 @@
         <advanced-search-form
             :conditions="conditions"
             @addCondition="addCondition"
-
+            @search="search"
         />
-        <b-button @click="search">検索</b-button>
         <notes-view
             title="検索結果"
             :notes="notes"
