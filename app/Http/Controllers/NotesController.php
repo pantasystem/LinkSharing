@@ -76,13 +76,7 @@ class NotesController extends Controller
         $conditions = $request->input('conditions');
 
         $builder = Note::whereHas('tags', function($builder) use ($conditions){
-            foreach($conditions as $orConditions){
-                $builder->where(function($builder) use ($orConditions){
-                    foreach($orConditions as $condition){
-                        $builder->orWhere('name', 'ILIKE', $condition);
-                    }
-                });
-            }
+            $builder->whereIn('name', $conditions);
         });
 
         

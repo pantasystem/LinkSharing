@@ -1,10 +1,14 @@
 <template>
     <div>
-        <advanced-search-form
-            :conditions="conditions"
-            @addCondition="addCondition"
-            @search="search"
-        />
+        <div class="d-flex mb-2">
+            <b-form-input v-model="condition">
+
+            </b-form-input>
+            <b-button @click="search" class="text-nowrap">
+                検索
+            </b-button>
+            
+        </div>
         <notes-view
             title="検索結果"
             :notes="notes"
@@ -19,7 +23,6 @@
 
 <script>
 import Notes from './../components/NotesComponent';
-import AdvancedSearchForm from './../molecules/AdvancedSearchForm.vue';
 
 import axios from 'axios';
 import { mapGetters, mapActions } from 'vuex';
@@ -29,7 +32,6 @@ export default {
     
     components: {
         'notes-view': Notes,
-        'advanced-search-form': AdvancedSearchForm
     },
 
     data(){
@@ -37,8 +39,8 @@ export default {
             noteIds: [],
             isLoading: false,
             conditionKey: 0,
-            conditions: [{ condition: this.name, id: 0}],
-            currentPage: 0
+            currentPage: 0,
+            condition: ''
         }
     },
     computed:{
@@ -49,29 +51,19 @@ export default {
 
     methods: {
         
-        getConditions(){
-            let srcConditions = this.conditions;
-
-            console.assert(Array.isArray(srcConditions), "エラー：配列ではありません");
-
-            let searchConditions = srcConditions.map((conditionObj)=> conditionObj.condition)
-                .map((condition)=> {console.log(condition); return condition.split(/\s/)});
-
-            console.assert(Array.isArray(searchConditions), "できたオブジェクトはなんと配列ではありませんでした！！");
-            return searchConditions;
-        },
+        
         loadNext(){
             console.log('リクエスト条件');
-            console.log(this.getConditions());
             if(this.isLoading){
                 return;
             }
             this.isLoading = true;
 
+            
             axios.post(
                 '/api/notes/search-by-tag',
                 {
-                    'conditions': this.getConditions()
+                    'conditions': this.condition.split(/\s/),
                 },
                 {
                     params: {
@@ -99,32 +91,11 @@ export default {
             this.loadNext();
         },
         
-        initByCondition(condition){
-            this.conditions.splice(0);
-            this.conditionKey += 1;
-
-            if(!Array.isArray(condition)){
-                this.addCondition(condition);
-                this.init();
-
-                return;
-            }
-            for(let i = 0; i < condition.length; i ++){
-                this.addCondition(condition[i]);
-
-            }
-            this.init();
-        },
+        
        
-        addCondition(str = ''){
-            this.conditions.push({
-                id: this.conditionKey + 1,
-                condition: str
-            });
-            this.conditionKey += 1;
-        },
+        
         search(){
-            let searchCondition = this.conditions.map((obj)=>obj.condition);
+            let searchCondition = this.condition.split('/\s/');
             let req = {
                 name: 'searchByTag',
                 query: {
@@ -148,14 +119,26 @@ export default {
         
     },*/
     created(){
-        let condition = queryString.parse(window.location.search);
-        this.initByCondition(condition.condition);
+        let condition = queryString.parse(window.location.search).condition;
+        if(Array.isArray(condition)){
+            let str = '';
+            for(let i = 0; i < condition.length; i ++){
+                str += i == 0 ? condition[i] : ' ' + condition[i];
+            }
+            this.condition = str;
+            
+
+        }
+        this.condition = condition;
+        this.init();
+        //this.condition = condition;
     },
     
     beforeRouteUpdate(to, from, next){
         console.log('push');
         console.log(to);
-        this.initByCondition(to.query.condition);
+        //this.condition = to.query.condition;
+        this.init();
 
         next();
     },
