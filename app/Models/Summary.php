@@ -161,9 +161,9 @@ class Summary extends Model
 
     private function getSummaryAttrs($url, $body)
     {
-        $content = mb_convert_encoding($body, 'UTF-8');
-        $dom = new \DOMDocument();
-        @$dom->loadHTML($content);
+        $content = mb_convert_encoding($body, 'UTF-8', 'auto');
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        @$dom->loadHTML('<?xml encoding="UTF-8">' . $content);
 
         $xml = simplexml_import_dom($dom);
 
@@ -179,19 +179,19 @@ class Summary extends Model
         ];
 
         if(!empty($ogTitle)){
-            $attrs['title'] = $ogTitle[0];
+            $attrs['title'] = mb_convert_encoding($ogTitle[0], 'UTF-8');
         }
 
         if(!isset($attrs['title'])){
-            $attrs['title'] = $dom->getElementsByTagName('title')->item(0)->textContent;
+            $attrs['title'] = mb_convert_encoding($dom->getElementsByTagName('title')->item(0)->textContent, 'UTF-8');
         }
 
         if(!empty($ogDescription)){
-            $attrs['description'] = (string)$ogDescription[0];
+            $attrs['description'] = mb_convert_encoding((string)$ogDescription[0], 'UTF-8');
         }
 
         if(!empty($ogImage) && !empty($ogImage[0]['content']) && !empty($ogImage[0]['content'][0])){
-            $attrs['image'] = (string)$ogImage[0]['content'];
+            $attrs['image'] = mb_convert_encoding((string)$ogImage[0]['content'], 'UTF-8');
         }
 
         return $attrs;
