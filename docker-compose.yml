@@ -27,7 +27,7 @@ services:
     image: postgres:13.1
     container_name: linksharing_pgsql
     volumes:
-      - ./docker/pg:/var/lib/postgresql
+      - dbdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: homestead
       POSTGRES_PASSWORD: secret
@@ -52,3 +52,6 @@ services:
     volumes:
       - ./:/work:cached
     working_dir: /work
+
+volumes:
+  dbdata:
