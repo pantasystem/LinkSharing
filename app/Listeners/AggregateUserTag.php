@@ -26,6 +26,16 @@ class AggregateUserTag
      */
     public function handle(NoteCreated $event)
     {
-        //
+        // ユーザーが利用しているタグを集計します。
+        $note = $event->note;
+        $user = $note->user()->first();
+        DB::transaction(function() use ($note){
+            $noteIds = $note->tags()->pluck('id');
+            $useTagAgg = UseTagAggregate::where('tag_id', '=', $id)->firstOrNew();
+            $noteIds->each(function($id){
+                $useTagAgg->increment();
+                $useTagAgg->save();
+            });
+        });
     }
 }
