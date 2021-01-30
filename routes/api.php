@@ -113,7 +113,7 @@ Route::get('no-auth', function(){
 })->name('login');
 
 
-
+Route::get('users-relatid-to-tags', [UsersController::class, 'relatedToTags']);
 
 
 

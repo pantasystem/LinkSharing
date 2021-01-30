@@ -12,6 +12,7 @@ use App\Events\Followed;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Tag;
 
 class UsersController extends Controller
 {
@@ -149,6 +150,23 @@ class UsersController extends Controller
         $user->save();
 
         return $user->loadCount(User::$counts);
+        
+    }
+
+    /**
+     * 入力されたタグをもとにタグに関連するユーザーをタグの使用頻度の高い順にソートして返します。
+     */
+    public function relatedToTags(Request $request)
+    {
+        $tags = $request->input('tags');
+
+        return UsingTagCount::join('tags')
+            ->whereIn('tags.name', $tags)
+            ->with(['user' => function($query){
+                $query->withDetail(Auth::user());
+            }])
+            ->orderBy('count', 'desc')
+            ->get();
         
     }
 
