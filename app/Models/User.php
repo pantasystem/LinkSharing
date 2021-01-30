@@ -11,6 +11,7 @@ use App\Models\FollowingUser;
 use App\Models\Comment;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
+use App\Models\UsingTagCount;
 
 class User extends Authenticatable
 {
@@ -162,4 +163,11 @@ class User extends Authenticatable
         return Storage::url($this->avatar_icon);
     }
     
+    /**
+     * 利用しているタグの集計モデルへのリレーション
+     */
+    public function usingTagCounts()
+    {
+        return $this->hasMany(UsingTagCount::class);
+    }
 }

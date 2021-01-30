@@ -29,13 +29,17 @@ class AggregateUserTag
         // ユーザーが利用しているタグを集計します。
         $note = $event->note;
         $user = $note->user()->first();
-        DB::transaction(function() use ($note){
-            $noteIds = $note->tags()->pluck('id');
-            $useTagAgg = UseTagAggregate::where('tag_id', '=', $id)->firstOrNew();
-            $noteIds->each(function($id){
+        DB::transaction(function() use ($note, $user){
+            $tagIds = $note->tags()->pluck('id');
+            $tagIds->each(function($tagId) use ($user){
+                $useTagAgg = UseTagAggregate::firstOrNew([
+                    'user_id' => $user->id,
+                    'tag_id' => $tagId
+                ]);
+
                 $useTagAgg->increment();
                 $useTagAgg->save();
             });
-        });
+        });;
     }
 }
