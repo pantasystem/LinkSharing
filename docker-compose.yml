@@ -11,6 +11,7 @@ services:
       - ./:/var/www/html
     depends_on:
       - php
+      - laravel-echo-server
   php:
     container_name: linksharing_php
     user: ${user}
