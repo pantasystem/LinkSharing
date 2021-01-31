@@ -16,13 +16,16 @@
                     </div>
                     
                     <div v-else>
-                        <b-form-checkbox v-for="tag in tags" :key="tag.name" 
-                            :checked="selected.some((t)=> t.name == tag.name)"
-                            @input="(e)=>changed(e, tag)"
-                        >
-                            {{ tag.name}}
-                        </b-form-checkbox>
-
+                        <div class="row">
+                            <b-form-checkbox 
+                                class="m-1"
+                                v-for="tag in tags" :key="tag.name" 
+                                :checked="selected.some((t)=> t.name == tag.name)"
+                                @input="(e)=>changed(e, tag)"
+                            >
+                                    {{ tag.name}}
+                            </b-form-checkbox>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,12 +38,16 @@
                     選択済みタグ
                 </div>
                 <div class="card-body">
-                    <b-form-checkbox v-for="tag in selected" :key="tag.name" 
-                        :checked="selected.some((t)=> t.name == tag.name)"
-                        @input="(e)=>changed(e, tag)"
-                    >
-                            {{ tag.name}}
-                    </b-form-checkbox>
+                    <div class="row">
+                        <b-form-checkbox 
+                            class="m-1"
+                            v-for="tag in selected" :key="tag.name" 
+                            :checked="selected.some((t)=> t.name == tag.name)"
+                            @input="(e)=>changed(e, tag)"
+                        >
+                                {{ tag.name}}
+                        </b-form-checkbox>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,6 +102,7 @@ export default {
             }else{
                 this.select(tag);
             }
+            this.$emit('changed', this.selected);
         },
         select(tag) {
             if(!this.selected.some((e)=> tag.name == e.name)){
