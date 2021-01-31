@@ -167,6 +167,7 @@ class User extends Authenticatable
             $query->isFollowing($me)->isFollower($me);
         }
 
+        $query->with('usingTagCounts');
         return $query->withCount(self::$counts);
     }
 
