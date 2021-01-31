@@ -61,6 +61,32 @@ class User extends Authenticatable
 
     public static $counts = ['followings', 'followers', 'notes', 'favoritedNotes'];
 
+    public static function isFollowingQuery($query, $me)
+    {
+        if(isset($me)){
+            return $query->addSelect(['is_following' => function($query) use ($me){
+                $query = $query->selectRaw("count(*)")->from('following_users');
+                $query->whereRaw('following_users.following_user_id = users.id')
+                        ->where('following_users.user_id', '=', $me->id);
+            }]);
+        }
+        return $query;
+        
+    }
+
+    public static function isFollowerQuery($query, $me)
+    {
+        if(isset($me)){
+            return $query->addSelect(['is_follower' => function($query) use ($me){
+                $query = $query->selectRaw("count(*)")->from('following_users');
+                $query->whereRaw('following_users.user_id = users.id')
+                        ->where('following_users.following_user_id', $me->id);
+                
+            }]);
+        }
+        return $query;
+    }
+
     function followings(){
 
         // 引数を間違えているかも知れない
