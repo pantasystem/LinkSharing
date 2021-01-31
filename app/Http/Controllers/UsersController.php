@@ -160,9 +160,12 @@ class UsersController extends Controller
     {
         $tags = $request->input('tags');
 
-        return UsingTagCount::join('tags')
-            ->whereIn('tags.name', $tags)
-            ->with(['user' => function($query){
+        $query = UsingTagCount::join('tags');
+
+            if(is_array($tags) && count($tags) > 0){
+                $query->whereIn('tags.name', $tags);
+            }
+            $query->with(['user' => function($query){
                 $query->withDetail(Auth::user());
             }])
             ->orderBy('count', 'desc')
