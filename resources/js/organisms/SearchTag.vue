@@ -18,7 +18,7 @@
                     <div v-else>
                         <b-form-checkbox v-for="tag in tags" :key="tag.name" 
                             :checked="selected.some((t)=> t.name == tag.name)"
-                            @input="changed(tag)"
+                            @input="(e)=>changed(e, tag)"
                         >
                             {{ tag.name}}
                         </b-form-checkbox>
@@ -35,14 +35,12 @@
                     選択済みタグ
                 </div>
                 <div class="card-body">
-                    <input v-for="tag in selected" :key="tag.name" 
-                        type="checkbox"
+                    <b-form-checkbox v-for="tag in selected" :key="tag.name" 
                         :checked="selected.some((t)=> t.name == tag.name)"
-
-                        @input="changed(tag)"
-                        value="hoge"
-
-                    />
+                        @input="(e)=>changed(e, tag)"
+                    >
+                            {{ tag.name}}
+                    </b-form-checkbox>
                 </div>
             </div>
         </div>
@@ -86,15 +84,19 @@ export default {
                 }
             });
         },
-        changed(tag) {
-            if(this.selected.some((t)=> t.name == tag.name)){
+        changed(e, tag) {
+            let isAlreadySelected = this.selected.some((t)=> t.name == tag.name);
+
+            if(isAlreadySelected == e){
+                return;
+            }
+            if(isAlreadySelected){
                 this.unselect(tag);
             }else{
                 this.select(tag);
             }
         },
         select(tag) {
-            console.log(tag);
             if(!this.selected.some((e)=> tag.name == e.name)){
                 this.selected.push(tag);
                 this.$emit('selected', this.selected);
