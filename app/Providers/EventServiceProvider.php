@@ -30,7 +30,6 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Notified' => [],
         'App\Events\NoteCreated' => [
             'App\Listeners\PublishNote',
-            'App\Listeners\AggregateUserTag'
         ],
         'App\Events\TimelineUpdated' => []
     ];

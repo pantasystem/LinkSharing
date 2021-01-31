@@ -13,14 +13,13 @@ class CreateUsingTagCountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('using_tag_counts', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->integer('count');
-            $table->foreignId('user_id')->constraind();
-            $table->foreignId('tag_id')->constraind();
-            $table->unique(['user_id', 'tag_id']);
-        });
+        $sql = "SELECT distinct tags.id as tag_id, tags.name as name, users.id as user_id, count(*) as count " .
+        "FROM tags INNER JOIN tags_and_notes ON tags.id = tags_and_notes.tag_id " .
+        "INNER JOIN notes ON tags_and_notes.note_id = notes.id " .
+        "INNER JOIN users ON notes.author_id = users.id " .
+        "GROUP BY users.id, tags.id;";
+        DB::statement("DROP VIEW IF EXISTS using_tag_counts");
+        DB::statement("CREATE VIEW using_tag_counts AS {$sql}");
     }
 
     /**
@@ -30,6 +29,6 @@ class CreateUsingTagCountsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('using_tag_counts');
+        DB::statement("DROP VIEW IF EXISTS using_tag_counts");
     }
 }
