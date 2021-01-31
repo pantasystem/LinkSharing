@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Tag;
 use App\Models\User;
 
-class UseTagAggregate extends Model
+class UsingTagCount extends Model
 {
     use HasFactory;
 
-    public function increment()
-    {
-        $this->count++;
-    }
+    protected $fillable = ['user_id', 'tag_id', 'count'];
+
+    
 
     public function tag()
     {
