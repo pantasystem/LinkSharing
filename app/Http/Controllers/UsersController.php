@@ -169,6 +169,7 @@ class UsersController extends Controller
                 $query->withDetail(Auth::user());
             }])
             ->orderBy('count', 'desc')
+            ->limit(100)
             ->get();
         
     }
