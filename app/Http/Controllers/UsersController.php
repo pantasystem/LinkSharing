@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Tag;
+use App\Models\UsingTagCount;
+use DB;
 
 class UsersController extends Controller
 {
@@ -158,20 +160,31 @@ class UsersController extends Controller
      */
     public function relatedToTags(Request $request)
     {
+
+        $query = DB::table('users')
+            ->leftJoin('notes', 'users.id', '=', 'notes.author_id')
+            ->join('tags_and_notes', 'tags_and_notes.note_id', '=', 'notes.id')
+            ->join('tags', 'tags.id', 'tags_and_notes.tag_id')
+            ->groupBy('users.id')
+            ->selectRaw('users.*, count(users.id) as relatid_count')
+            ->orderBy('relatid_count', 'desc');
+        if(Auth::check()){
+            $query->where('users.id', '<>', Auth::id());
+        }
         $tags = $request->input('tags');
 
-        $query = UsingTagCount::join('tags');
+        if(isset($tags) && !is_array($tags)){
+            $tags = [$tags];
+        }
+        if(is_array($tags) && !empty($tags)){
+            $query->whereIn('tags.name', $tags);
+        }
+        User::isFollowingQuery($query, Auth::user());
+        User::isFollowerQuery($query, Auth::user());
 
-            if(is_array($tags) && count($tags) > 0){
-                $query->whereIn('tags.name', $tags);
-            }
-            $query->with(['user' => function($query){
-                $query->withDetail(Auth::user());
-            }])
-            ->orderBy('count', 'desc')
-            ->limit(100)
-            ->get();
-        
+        $result = $query->get();
+        return User::hydrate($result->toArray())->loadCount(User::$counts);
+
     }
 
 }
