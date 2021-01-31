@@ -13,6 +13,7 @@
                     <div v-if="user.is_follower" class="mx-auto">
                         フォローされています。
                     </div>
+                    <slot />
                     <div class="row">
                         <router-link class="col-md-4" :to="{ name: 'user_notes', params: { userId: user.id} }">
                             <div class="main-text">{{ user.notes_count }}</div> 
