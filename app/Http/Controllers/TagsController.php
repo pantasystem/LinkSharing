@@ -14,9 +14,12 @@ class TagsController extends Controller
     
     function search(Request $request)
     {
-        
-        return Tag::where('name', 'like', "%{$request->name}%")
-            ->orderBy('name', 'asc')->simplePaginate(30);
+        $word = $request->input('word');
+        $query = Tag::limit(50);
+        if(isset($word) && !empty(trim($word))){
+            $query->where('name', 'like', "%{$word}%");
+        }
+        return $query->orderBy('name', 'asc')->get();
         
     }
 }

@@ -13,6 +13,7 @@ import SearchNotes from './organisms/SearchNotes.vue';
 import Comments from './organisms/Comments';
 import FavoriteNotes from './organisms/FavoriteNotes';
 import UserSetting from './pages/UserSetting';
+import FindUser from './organisms/FindUser';
 
 import store from './store';
 
@@ -85,6 +86,11 @@ export default new VueRouter({
                     name: 'comment_replies',
                     props: true,
                     component: Comments
+                },
+                {
+                    path: 'find',
+                    name: 'find',
+                    component: FindUser
                 }
             ],
             beforeEnter: (to, from, next) => {

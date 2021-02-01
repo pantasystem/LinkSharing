@@ -84,7 +84,7 @@ Route::get('users/{userId}/notes', [UsersController::class, 'notes']);
 Route::get('users/{userId}/favorites', [UsersController::class, 'favoriteNotes']);
 
 
-Route::get('tags/{name?}', [TagsController::class, 'search']);
+Route::get('tags', [TagsController::class, 'search']);
 
 Route::post('notes/search-by-tag', [NotesController::class, 'searchByTag']);
 
@@ -113,7 +113,7 @@ Route::get('no-auth', function(){
 })->name('login');
 
 
-
+Route::get('users-relatid-to-tags', [UsersController::class, 'relatedToTags']);
 
 
 

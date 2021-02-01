@@ -12,6 +12,9 @@ use App\Events\Followed;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Tag;
+use App\Models\UsingTagCount;
+use DB;
 
 class UsersController extends Controller
 {
@@ -150,6 +153,38 @@ class UsersController extends Controller
 
         return $user->loadCount(User::$counts);
         
+    }
+
+    /**
+     * 入力されたタグをもとにタグに関連するユーザーをタグの使用頻度の高い順にソートして返します。
+     */
+    public function relatedToTags(Request $request)
+    {
+
+        $query = DB::table('users')
+            ->leftJoin('notes', 'users.id', '=', 'notes.author_id')
+            ->join('tags_and_notes', 'tags_and_notes.note_id', '=', 'notes.id')
+            ->join('tags', 'tags.id', 'tags_and_notes.tag_id')
+            ->groupBy('users.id')
+            ->selectRaw('users.*, count(users.id) as relatid_count')
+            ->orderBy('relatid_count', 'desc');
+        if(Auth::check()){
+            $query->where('users.id', '<>', Auth::id());
+        }
+        $tags = $request->input('tags');
+
+        if(isset($tags) && !is_array($tags)){
+            $tags = [$tags];
+        }
+        if(is_array($tags) && !empty($tags)){
+            $query->whereIn('tags.name', $tags);
+        }
+        User::isFollowingQuery($query, Auth::user());
+        User::isFollowerQuery($query, Auth::user());
+
+        $result = $query->get();
+        return User::hydrate($result->toArray())->loadCount(User::$counts);
+
     }
 
 }

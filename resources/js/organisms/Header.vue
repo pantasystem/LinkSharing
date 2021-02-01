@@ -15,6 +15,10 @@
                         <i class="fas fa-star pull-left" height="100%"></i><span class="nav-link d-inline d-md-none d-xl-inline icon-title">お気に入り</span>
                     
                     </b-nav-item>
+                    <b-nav-item to="/find" exact-active-class="active" v-if="user">
+                        <i class="fas fa-users pull-left" height="100%"></i><span class="nav-link d-inline d-md-none d-xl-inline icon-title">見つける</span>
+                    
+                    </b-nav-item>
                     
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">

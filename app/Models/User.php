@@ -11,6 +11,7 @@ use App\Models\FollowingUser;
 use App\Models\Comment;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
+use App\Models\UsingTagCount;
 
 class User extends Authenticatable
 {
@@ -59,6 +60,32 @@ class User extends Authenticatable
     ];
 
     public static $counts = ['followings', 'followers', 'notes', 'favoritedNotes'];
+
+    public static function isFollowingQuery($query, $me)
+    {
+        if(isset($me)){
+            return $query->addSelect(['is_following' => function($query) use ($me){
+                $query = $query->selectRaw("count(*)")->from('following_users');
+                $query->whereRaw('following_users.following_user_id = users.id')
+                        ->where('following_users.user_id', '=', $me->id);
+            }]);
+        }
+        return $query;
+        
+    }
+
+    public static function isFollowerQuery($query, $me)
+    {
+        if(isset($me)){
+            return $query->addSelect(['is_follower' => function($query) use ($me){
+                $query = $query->selectRaw("count(*)")->from('following_users');
+                $query->whereRaw('following_users.user_id = users.id')
+                        ->where('following_users.following_user_id', $me->id);
+                
+            }]);
+        }
+        return $query;
+    }
 
     function followings(){
 
@@ -140,6 +167,7 @@ class User extends Authenticatable
             $query->isFollowing($me)->isFollower($me);
         }
 
+        $query->with('usingTagCounts');
         return $query->withCount(self::$counts);
     }
 
@@ -162,4 +190,11 @@ class User extends Authenticatable
         return Storage::url($this->avatar_icon);
     }
     
+    /**
+     * 利用しているタグの集計モデルへのリレーション
+     */
+    public function usingTagCounts()
+    {
+        return $this->hasMany(UsingTagCount::class);
+    }
 }

@@ -9,7 +9,11 @@
             
 
             <user-profile 
-                :user="user" :isMine="isMe"  v-if="user" v-on:follow="follow" v-on:unfollow="unfollow" />
+                :user="user" :isMine="isMe"  v-if="user" v-on:follow="follow" v-on:unfollow="unfollow" >
+                <div>
+                    <tag-list :tags="user.using_tag_counts" />
+                </div>
+            </user-profile>
             <router-view></router-view>
 
         </div>
@@ -18,11 +22,13 @@
 </template>
 <script>
 import UserProfileComponent from './../components/UserProfileComponent';
+import TagList from '../components/TagsComponent';
 import axios from 'axios';
 
 export default {
     components : {
-        'user-profile': UserProfileComponent
+        'user-profile': UserProfileComponent,
+        TagList
     },
     props: {
         userId: {
