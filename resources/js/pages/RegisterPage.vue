@@ -76,7 +76,11 @@ export default {
     methods: {
         register(){
             this.isLoading = true;
-            this.$store.dispatch('register', this).catch((e)=>{
+            this.$store.dispatch('register', this).then((response)=>{
+                console.log("アカウント作成完了");
+                this.$router.push("/");
+
+            }).catch((e)=>{
                 console.log("エラー発生" + e);
                 let errors = e.response.data.errors;
                 
@@ -84,13 +88,9 @@ export default {
                 this.errors.password = errors.password ? errors.password[0] : ''
                 this.errors.userName = errors.user_name ? errors.user_name[0] : ''
                 
-            }).then((response)=>{
-                console.log("アカウント作成完了");
-                this.$router.push("/");
-
             }).finally(()=>{
                 this.isLoading = false;
-            })
+            });
         },
         inputUserName(userName){
             this.userName = userName;
