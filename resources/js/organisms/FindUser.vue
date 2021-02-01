@@ -18,6 +18,13 @@
                     </div>
                 </div>
                 <div v-else>
+                    <user-followee 
+                        v-for="u in users" 
+                        :key="u.id" :user="u" 
+                        :me="user"
+                        @follow="follow(u)"
+                        @unfollow="unfollow(u)"
+                    />
                 </div>
             </div>
 
@@ -29,6 +36,7 @@
 import SearchTag from './SearchTag';
 import UserFollowee from '../components/FolloweeComponent';
 import axios from 'axios';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     components: {
@@ -41,6 +49,18 @@ export default {
             isLoading: false,
             loadVersion: 0
         }
+    },
+
+    computed: {
+        users(){
+            let f = this.$store.getters['getByUserIds'];
+            let users = f(this.userIds);
+            console.log('computed');
+            console.log(this.$store.getters['getByUserIds']);
+            console.log(users);
+            return users;
+        },
+        ...mapState(['user'])
     },
 
     methods: {
@@ -64,12 +84,14 @@ export default {
                 }
             })
         },
+
+        ...mapActions(['follow', 'unfollow']),
     },
 
     
 
     created() {
-        this.fetch(null);
+        this.fetch([]);
     }
 }
 </script>
