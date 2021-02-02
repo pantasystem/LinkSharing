@@ -15,16 +15,19 @@
         </div>
         <div>
             <div v-if="notification.favorite">
+                {{ notification.publisher.user_name }}がお気に入りにしました。
                 <slot name="favorite" :favorite="notification.favorite">
                     <note-component :note="getNote(notification.favorite.note_id)" @favorite="favorite" @unfavorite="unfavorite"/>
                 </slot>
             </div>
             <div v-else-if="notification.comment">
-                <slot name="comment" :comment="notification.favorite">
+                {{ notification.publisher.user_name }}がコメントしました。
+                <slot name="comment" :comment="notification.comment">
                     <a-comment :comment="notification.comment" />
                 </slot>
             </div>
             <div v-else>
+                {{ notification.publisher.user_name }}がフォローしました。
                 <slot name="follow" :publisher="notification.publisher">
                     <followee-component :user="notification.publisher" :me="user" @follow="follow" @unfollow="unfollow" />
                 </slot>
