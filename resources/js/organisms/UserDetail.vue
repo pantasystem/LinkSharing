@@ -11,7 +11,7 @@
             <user-profile 
                 :user="user" :isMine="isMe"  v-if="user" v-on:follow="follow" v-on:unfollow="unfollow" >
                 <div>
-                    <tag-list :tags="user.using_tag_counts" />
+                    <tag-list v-if="user.using_tag_counts" :tags="user.using_tag_counts" />
                 </div>
             </user-profile>
             <router-view></router-view>
@@ -48,6 +48,9 @@ export default {
         console.log(`遷移しようとしている:${to.params.userId}`);
         this.loadUser(to.params.userId);
         next();
+    },
+    created() {
+        this.loadUser();
     },
 
     computed: {

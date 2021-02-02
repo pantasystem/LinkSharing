@@ -56,7 +56,6 @@ export default {
         fetchUser({commit, state}, userId){
             if(state.users[userId]){
                 console.log("既に存在しています。")
-                return;
             }
             axios.get(
                 `/api/users/${userId}`
